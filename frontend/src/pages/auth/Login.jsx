@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
+  const navigate = useNavigate()
   const [form, setForm] = useState({ email: '', password: '' })
   const [errors, setErrors] = useState({})
   const [success, setSuccess] = useState('')
@@ -34,7 +36,14 @@ const Login = () => {
         if (res.ok) {
           setSuccess('Login successful!')
           localStorage.setItem('token', data.token)
-          // Optionally redirect or update app state here
+          localStorage.setItem('user', JSON.stringify(data.user))
+          
+          // Navigate based on user type
+          if (data.user.user_type === 'employer') {
+            navigate('/employer/dashboard')
+          } else {
+            navigate('/') // For jobseekers, navigate to home page
+          }
         } else {
           setErrors({ api: data.error || 'Login failed.' })
         }

@@ -44,7 +44,7 @@ router.get('/dashboard', authenticateToken, verifyEmployer, async (req, res) => 
 
     // Get job statistics
     const totalJobs = await knex('jobs').where({ employer_id: employer.id }).count('* as count').first();
-    const activeJobs = await knex('jobs').where({ employer_id: employer.id, is_active: true }).count('* as count').first();
+    const activeJobs = await knex('jobs').where({ employer_id: employer.id, status: 'active' }).count('* as count').first();
     const totalApplications = await knex('applications')
       .join('jobs', 'applications.job_id', 'jobs.id')
       .where('jobs.employer_id', employer.id)
@@ -99,7 +99,7 @@ router.get('/jobs', authenticateToken, verifyEmployer, async (req, res) => {
       .where({ employer_id: employer.id })
       .orderBy('created_at', 'desc');
     
-    res.json(jobs);
+    res.json({ jobs });
   } catch (err) {
     res.status(500).json({ error: 'Failed to load jobs' });
   }
@@ -126,6 +126,7 @@ router.post('/jobs', authenticateToken, verifyEmployer, async (req, res) => {
       experience_level,
       salary_range,
       benefits,
+      status: 'active',
       application_deadline: application_deadline ? new Date(application_deadline) : null
     }).returning('*');
     
@@ -162,6 +163,40 @@ router.put('/jobs/:id', authenticateToken, verifyEmployer, async (req, res) => {
     res.json(updatedJob);
   } catch (err) {
     res.status(500).json({ error: 'Failed to update job posting' });
+  }
+});
+
+// Update job status
+router.patch('/jobs/:id/status', authenticateToken, verifyEmployer, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  
+  if (!status) {
+    return res.status(400).json({ error: 'Status is required' });
+  }
+  
+  try {
+    const employer = await knex('employers').where({ user_id: req.user.id }).first();
+    
+    const job = await knex('jobs')
+      .where({ id, employer_id: employer.id })
+      .first();
+    
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+    
+    const [updatedJob] = await knex('jobs')
+      .where({ id })
+      .update({
+        status,
+        updated_at: new Date()
+      })
+      .returning('*');
+    
+    res.json(updatedJob);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update job status' });
   }
 });
 
@@ -212,7 +247,7 @@ router.get('/jobs/:id/applications', authenticateToken, verifyEmployer, async (r
 });
 
 // Update application status
-router.put('/applications/:id/status', authenticateToken, verifyEmployer, async (req, res) => {
+router.patch('/applications/:id/status', authenticateToken, verifyEmployer, async (req, res) => {
   const { id } = req.params;
   const { status, employer_notes } = req.body;
   
@@ -253,15 +288,47 @@ router.put('/applications/:id/status', authenticateToken, verifyEmployer, async 
 router.get('/applications', authenticateToken, verifyEmployer, async (req, res) => {
   try {
     const employer = await knex('employers').where({ user_id: req.user.id }).first();
+    const { job_id } = req.query;
     
-    const applications = await knex('applications')
+    let query = knex('applications')
       .join('jobs', 'applications.job_id', 'jobs.id')
       .join('users', 'applications.jobseeker_id', 'users.id')
       .where('jobs.employer_id', employer.id)
-      .select('applications.*', 'jobs.title as job_title', 'users.fullname as applicant_name', 'users.email as applicant_email', 'users.phone as applicant_phone')
-      .orderBy('applications.applied_at', 'desc');
+      .select(
+        'applications.*',
+        'jobs.title as job_title',
+        'users.fullname as applicant_name',
+        'users.email as applicant_email',
+        'users.phone as applicant_phone'
+      );
     
-    res.json(applications);
+    if (job_id && job_id !== 'all') {
+      query = query.where('applications.job_id', job_id);
+    }
+    
+    const applications = await query.orderBy('applications.applied_at', 'desc');
+    
+    // Transform the data to match frontend expectations
+    const transformedApplications = applications.map(app => ({
+      id: app.id,
+      status: app.status,
+      cover_letter: app.cover_letter,
+      resume_url: app.resume_url,
+      created_at: app.applied_at,
+      updated_at: app.updated_at,
+      job: {
+        id: app.job_id,
+        title: app.job_title
+      },
+      applicant: {
+        id: app.jobseeker_id,
+        fullname: app.applicant_name,
+        email: app.applicant_email,
+        phone: app.applicant_phone
+      }
+    }));
+    
+    res.json({ applications: transformedApplications });
   } catch (err) {
     res.status(500).json({ error: 'Failed to load applications' });
   }

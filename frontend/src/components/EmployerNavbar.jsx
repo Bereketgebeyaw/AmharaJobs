@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/AmharaJlogo.png'
 
-const Navbar = () => {
+const EmployerNavbar = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
 
@@ -17,11 +17,12 @@ const Navbar = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     setUser(null)
-    navigate('/')
+    navigate('/employer')
   }
+
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label="Employer navigation"
       style={{
         background: '#f7f9fb',
         color: 'var(--primary)',
@@ -38,7 +39,7 @@ const Navbar = () => {
     >
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 64 }}>
         <Link
-          to="/"
+          to="/employer/dashboard"
           style={{
             fontWeight: 'bold',
             fontSize: '1.5rem',
@@ -50,7 +51,7 @@ const Navbar = () => {
           }}
         >
           <img src={logo} alt="AmharaJobs Logo" style={{ height: 52, marginRight: 12 }} />
-          AmharaJobs
+          AmharaJobs - Employer Portal
         </Link>
         <ul
           style={{
@@ -63,29 +64,31 @@ const Navbar = () => {
           }}
         >
           <li>
-            <Link to="/" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-              Home
+            <Link to="/employer/dashboard" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+              Dashboard
             </Link>
           </li>
           <li>
-            <Link to="/jobs" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-              Jobs
+            <Link to="/employer/post-job" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+              Post Job
+            </Link>
+          </li>
+          <li>
+            <Link to="/employer/jobs" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+              My Jobs
+            </Link>
+          </li>
+          <li>
+            <Link to="/employer/applications" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+              Applications
             </Link>
           </li>
           
           {user ? (
-            // Logged in user menu
             <>
-              {user.user_type === 'employer' && (
-                <li>
-                  <Link to="/employer/dashboard" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                    Dashboard
-                  </Link>
-                </li>
-              )}
               <li>
-                <span style={{ color: '#fff', fontSize: '1rem' }}>
-                  Welcome, {user.fullname}
+                <span style={{ color: 'var(--primary)', fontSize: '1rem' }}>
+                  Welcome, {user.company_name || user.fullname}
                 </span>
               </li>
               <li>
@@ -94,12 +97,12 @@ const Navbar = () => {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#fff',
+                    color: 'var(--primary)',
                     fontSize: '1rem',
                     cursor: 'pointer',
                     padding: '0.5rem 1rem',
                     borderRadius: '4px',
-                    border: '1px solid #fff'
+                    border: '1px solid var(--primary)'
                   }}
                 >
                   Logout
@@ -107,35 +110,11 @@ const Navbar = () => {
               </li>
             </>
           ) : (
-            // Not logged in menu
-            <>
-              <li>
-                <Link to="/login" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link to="/register" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                  Register
-                </Link>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigate('/employer')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#fff',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    padding: 0
-                  }}
-                >
-                  Are you an Employer or Recruiter?
-                </button>
-              </li>
-            </>
+            <li>
+              <Link to="/employer/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+                Login
+              </Link>
+            </li>
           )}
         </ul>
       </div>
@@ -143,4 +122,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default EmployerNavbar 

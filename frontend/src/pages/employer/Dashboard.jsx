@@ -82,7 +82,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div style={{ padding: '2rem 1rem', maxWidth: 1200, margin: '0 auto' }}>
+    <div style={{ padding: '1rem', maxWidth: 1200, margin: '0 auto' }}>
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>

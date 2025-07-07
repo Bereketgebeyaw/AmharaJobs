@@ -1,3 +1,10 @@
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
 :root {
   --primary: #00732F;
   --primary-dark: #005a25;
@@ -14,7 +21,6 @@ html, body, #root {
   height: 100%;
   width: 100%;
   font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
-  background: #f7f9fb;
   color: #222;
 }
 html, body {
@@ -54,7 +60,8 @@ nav, footer {
 }
 
 nav {
-  background: var(--primary) !important;
+  background: #f7f9fb !important;
+  color: var(--primary) !important;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -77,6 +84,13 @@ button, .btn-primary {
 }
 button:hover, .btn-primary:hover {
   background: var(--primary-dark);
+}
+
+nav a, nav button, nav ul li a, nav ul li div {
+  color: #111 !important;
+}
+nav a:hover, nav button:hover, nav ul li a:hover, nav ul li div:hover {
+  color: #00732F !important;
 }
 
 /* Responsive styles */
