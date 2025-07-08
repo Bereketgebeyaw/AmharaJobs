@@ -152,7 +152,7 @@ const Navbar = () => {
                 </>
               )}
               <li>
-                <span style={{ color: '#fff', fontSize: '1rem' }}>
+                <span style={{ color: 'var(--primary)', fontSize: '1rem', fontWeight: 600 }}>
                   Welcome, {user.fullname}
                 </span>
               </li>

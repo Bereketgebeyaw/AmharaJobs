@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const knex = require('knex')(require('../knexfile').development);
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../utils/mailer');
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
@@ -129,6 +130,27 @@ router.post('/jobs', authenticateToken, verifyEmployer, async (req, res) => {
       status: 'active',
       application_deadline: application_deadline ? new Date(application_deadline) : null
     }).returning('*');
+
+    // Send email notification to all job seekers
+    const jobSeekers = await knex('users').where({ user_type: 'jobseeker', is_verified: true });
+    const jobUrl = `http://localhost:5173/job/${job.id}`;
+    const subject = `New Job Posted: ${title} (${location})`;
+    const html = `
+      <h2>New Job Opportunity: ${title}</h2>
+      <p><strong>Company:</strong> ${employer.company_name || 'A top employer'}</p>
+      <p><strong>Location:</strong> ${location}</p>
+      <p><strong>Type:</strong> ${job_type} | <strong>Experience:</strong> ${experience_level}</p>
+      <p><strong>Description:</strong> ${description.substring(0, 200)}...</p>
+      <p><a href="${jobUrl}" style="background:#4caf50;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;">View & Apply</a></p>
+      <p style="color:#888;font-size:0.9em;">You are receiving this because you have an account on AmharaJobs.</p>
+    `;
+    for (const seeker of jobSeekers) {
+      await sendEmail({
+        to: seeker.email,
+        subject,
+        html
+      });
+    }
     
     res.status(201).json(job);
   } catch (err) {

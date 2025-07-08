@@ -66,8 +66,8 @@ const Login = () => {
 
   return (
     <div style={{ 
-      minHeight: '100vh', 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      minHeight: '100vh',
+      background: '#f7f9fb',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
