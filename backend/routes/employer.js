@@ -293,13 +293,19 @@ router.get('/applications', authenticateToken, verifyEmployer, async (req, res) 
     let query = knex('applications')
       .join('jobs', 'applications.job_id', 'jobs.id')
       .join('users', 'applications.user_id', 'users.id')
+      .leftJoin('user_documents as resume_doc', 'applications.resume_document_id', 'resume_doc.id')
+      .leftJoin('user_documents as cover_letter_doc', 'applications.cover_letter_document_id', 'cover_letter_doc.id')
       .where('jobs.employer_id', employer.id)
       .select(
         'applications.*',
         'jobs.title as job_title',
         'users.fullname as applicant_name',
         'users.email as applicant_email',
-        'users.phone as applicant_phone'
+        'users.phone as applicant_phone',
+        'resume_doc.title as resume_title',
+        'resume_doc.file_path as resume_path',
+        'cover_letter_doc.title as cover_letter_title',
+        'cover_letter_doc.file_path as cover_letter_path'
       );
     
     if (job_id && job_id !== 'all') {
@@ -325,7 +331,15 @@ router.get('/applications', authenticateToken, verifyEmployer, async (req, res) 
         fullname: app.applicant_name,
         email: app.applicant_email,
         phone: app.applicant_phone
-      }
+      },
+      resume_document: app.resume_path ? {
+        title: app.resume_title,
+        file_path: app.resume_path
+      } : null,
+      cover_letter_document: app.cover_letter_path ? {
+        title: app.cover_letter_title,
+        file_path: app.cover_letter_path
+      } : null
     }));
     
     res.json({ applications: transformedApplications });

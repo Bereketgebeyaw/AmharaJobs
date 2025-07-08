@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,8 @@ app.use('/api/documents', require('./routes/documents'));
 // Use profile routes
 app.use('/api/auth/profile', require('./routes/profile'));
 
+// Serve uploaded documents statically
+app.use('/uploads/documents', express.static(path.join(__dirname, 'uploads/documents')));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 

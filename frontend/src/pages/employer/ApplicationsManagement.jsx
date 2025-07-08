@@ -154,6 +154,14 @@ const ApplicationsManagement = () => {
     }
   };
 
+  // Helper to get the correct document URL
+  const getDocumentUrl = (filePath) => {
+    if (!filePath) return '#';
+    const parts = filePath.split(/[/\\]/); // split on / or \
+    const filename = parts[parts.length - 1];
+    return `http://localhost:5000/uploads/documents/${filename}`;
+  };
+
   if (loading) {
     return (
       <div style={{ 
@@ -464,9 +472,9 @@ const ApplicationsManagement = () => {
                   
                   <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
                     {/* Resume Link */}
-                    {(application.resume_url || application.resume_document_id) && (
+                    {application.resume_document && application.resume_document.file_path && (
                       <a 
-                        href={application.resume_url || '#'} 
+                        href={getDocumentUrl(application.resume_document.file_path)} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         style={{
@@ -478,7 +486,8 @@ const ApplicationsManagement = () => {
                           borderRadius: '6px',
                           background: '#f0f8ff',
                           border: '1px solid #e1f5fe',
-                          transition: 'all 0.2s'
+                          transition: 'all 0.2s',
+                          display: 'inline-block'
                         }}
                         onMouseOver={(e) => {
                           e.target.style.background = '#e3f2fd';
@@ -488,8 +497,40 @@ const ApplicationsManagement = () => {
                           e.target.style.background = '#f0f8ff';
                           e.target.style.borderColor = '#e1f5fe';
                         }}
+                        download={application.resume_document.title}
                       >
                         📄 View Resume
+                      </a>
+                    )}
+                    {/* Cover Letter Link */}
+                    {application.cover_letter_document && application.cover_letter_document.file_path && (
+                      <a 
+                        href={getDocumentUrl(application.cover_letter_document.file_path)} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{
+                          color: '#2196f3',
+                          textDecoration: 'none',
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          padding: '0.5rem 1rem',
+                          borderRadius: '6px',
+                          background: '#e3f2fd',
+                          border: '1px solid #bbdefb',
+                          transition: 'all 0.2s',
+                          display: 'inline-block'
+                        }}
+                        onMouseOver={(e) => {
+                          e.target.style.background = '#bbdefb';
+                          e.target.style.borderColor = '#2196f3';
+                        }}
+                        onMouseOut={(e) => {
+                          e.target.style.background = '#e3f2fd';
+                          e.target.style.borderColor = '#bbdefb';
+                        }}
+                        download={application.cover_letter_document.title}
+                      >
+                        📝 View Cover Letter
                       </a>
                     )}
 
