@@ -96,7 +96,6 @@ const EmployerNavbar = () => {
                   onClick={handleLogout}
                   style={{
                     background: 'none',
-                    border: 'none',
                     color: 'var(--primary)',
                     fontSize: '1rem',
                     cursor: 'pointer',

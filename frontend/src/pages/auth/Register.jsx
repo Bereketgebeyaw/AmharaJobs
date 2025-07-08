@@ -1,13 +1,21 @@
 import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import logo from '../../assets/AmharaJlogo.png'
 
 const Register = () => {
+  const navigate = useNavigate()
   const [form, setForm] = useState({ fullname: '', email: '', phone: '', password: '' })
   const [errors, setErrors] = useState({})
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value })
+    // Clear error when user starts typing
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: '' })
+    }
   }
 
   const validate = () => {
@@ -48,40 +56,541 @@ const Register = () => {
   }
 
   return (
-    <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
-      <section style={{ width: '100%', maxWidth: 420, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px #eee', padding: '2rem 1rem', margin: '0 auto' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: 24 }}>Register</h2>
-        {success ? (
-          <div style={{ color: 'green', marginBottom: 12, textAlign: 'center' }}>{success}</div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: 16 }}>
-              <label>Full Name</label><br />
-              <input type="text" name="fullname" value={form.fullname} onChange={handleChange} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} />
-              {errors.fullname && <div style={{ color: 'red', fontSize: 13 }}>{errors.fullname}</div>}
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem'
+    }}>
+      <div style={{ 
+        width: '100%', 
+        maxWidth: 500, 
+        background: '#fff', 
+        borderRadius: '20px', 
+        boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+        overflow: 'hidden',
+        position: 'relative'
+      }}>
+        {/* Header Section */}
+        <div style={{
+          background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+          color: '#fff',
+          padding: '2rem',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: '-50%',
+            right: '-50%',
+            width: '200%',
+            height: '200%',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+            animation: 'float 6s ease-in-out infinite'
+          }}></div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+            <img src={logo} alt="AmharaJobs Logo" style={{ height: 50, marginRight: 12 }} />
+            <h1 style={{ fontSize: '1.8rem', fontWeight: '700', margin: 0 }}>AmharaJobs</h1>
+          </div>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            margin: '0 0 0.5rem 0',
+            opacity: 0.95
+          }}>
+            Join Our Community!
+          </h2>
+          <p style={{ 
+            fontSize: '1rem', 
+            margin: 0, 
+            opacity: 0.8,
+            fontWeight: '400'
+          }}>
+            Create your account and start your job search journey
+          </p>
+        </div>
+
+        {/* Form Section */}
+        <div style={{ padding: '2rem' }}>
+          {success ? (
+            <div style={{ textAlign: 'center', padding: '2rem' }}>
+              <div style={{
+                width: '80px',
+                height: '80px',
+                background: 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1.5rem',
+                fontSize: '2.5rem'
+              }}>
+                ✅
+              </div>
+              <h3 style={{ color: '#2e7d32', marginBottom: '1rem', fontSize: '1.3rem' }}>
+                Registration Successful!
+              </h3>
+              <p style={{ 
+                color: '#666', 
+                lineHeight: '1.6',
+                marginBottom: '2rem',
+                fontSize: '1rem'
+              }}>
+                {success}
+              </p>
+              <Link
+                to="/login"
+                style={{
+                  display: 'inline-block',
+                  padding: '1rem 2rem',
+                  background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  fontSize: '1rem',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 15px rgba(0,115,47,0.3)'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'translateY(-2px)'
+                  e.target.style.boxShadow = '0 6px 20px rgba(0,115,47,0.4)'
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.boxShadow = '0 4px 15px rgba(0,115,47,0.3)'
+                }}
+              >
+                🚀 Go to Login
+              </Link>
             </div>
-            <div style={{ marginBottom: 16 }}>
-              <label>Email</label><br />
-              <input type="email" name="email" value={form.email} onChange={handleChange} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} />
-              {errors.email && <div style={{ color: 'red', fontSize: 13 }}>{errors.email}</div>}
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <label>Phone</label><br />
-              <input type="text" name="phone" value={form.phone} onChange={handleChange} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} />
-              {errors.phone && <div style={{ color: 'red', fontSize: 13 }}>{errors.phone}</div>}
-            </div>
-            <div style={{ marginBottom: 24 }}>
-              <label>Password</label><br />
-              <input type="password" name="password" value={form.password} onChange={handleChange} style={{ width: '100%', padding: 8, borderRadius: 4, border: '1px solid #ccc' }} />
-              {errors.password && <div style={{ color: 'red', fontSize: 13 }}>{errors.password}</div>}
-            </div>
-            {errors.api && <div style={{ color: 'red', marginBottom: 12 }}>{errors.api}</div>}
-            <button type="submit" style={{ width: '100%', padding: '0.75rem', background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: 4, fontSize: '1rem' }} disabled={loading}>
-              {loading ? 'Registering...' : 'Register'}
-            </button>
-          </form>
-        )}
-      </section>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              {/* Full Name Field */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '0.5rem', 
+                  color: '#333', 
+                  fontSize: '0.95rem',
+                  fontWeight: '600'
+                }}>
+                  👤 Full Name
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type="text" 
+                    name="fullname" 
+                    value={form.fullname} 
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    style={{ 
+                      width: '100%', 
+                      padding: '1rem 1rem 1rem 3rem', 
+                      borderRadius: '12px', 
+                      border: errors.fullname ? '2px solid #f44336' : '2px solid #e1e5e9',
+                      fontSize: '1rem',
+                      background: '#f8f9fa',
+                      transition: 'all 0.3s ease',
+                      boxSizing: 'border-box'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.background = '#fff'
+                      e.target.style.borderColor = 'var(--primary)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.background = '#f8f9fa'
+                      e.target.style.borderColor = errors.fullname ? '#f44336' : '#e1e5e9'
+                      e.target.style.boxShadow = 'none'
+                    }}
+                  />
+                  <div style={{
+                    position: 'absolute',
+                    left: '1rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '1.2rem',
+                    color: '#666'
+                  }}>
+                    👤
+                  </div>
+                </div>
+                {errors.fullname && (
+                  <div style={{ 
+                    color: '#f44336', 
+                    fontSize: '0.85rem', 
+                    marginTop: '0.5rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem'
+                  }}>
+                    ⚠️ {errors.fullname}
+                  </div>
+                )}
+              </div>
+
+              {/* Email Field */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '0.5rem', 
+                  color: '#333', 
+                  fontSize: '0.95rem',
+                  fontWeight: '600'
+                }}>
+                  📧 Email Address
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type="email" 
+                    name="email" 
+                    value={form.email} 
+                    onChange={handleChange}
+                    placeholder="Enter your email address"
+                    style={{ 
+                      width: '100%', 
+                      padding: '1rem 1rem 1rem 3rem', 
+                      borderRadius: '12px', 
+                      border: errors.email ? '2px solid #f44336' : '2px solid #e1e5e9',
+                      fontSize: '1rem',
+                      background: '#f8f9fa',
+                      transition: 'all 0.3s ease',
+                      boxSizing: 'border-box'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.background = '#fff'
+                      e.target.style.borderColor = 'var(--primary)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.background = '#f8f9fa'
+                      e.target.style.borderColor = errors.email ? '#f44336' : '#e1e5e9'
+                      e.target.style.boxShadow = 'none'
+                    }}
+                  />
+                  <div style={{
+                    position: 'absolute',
+                    left: '1rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '1.2rem',
+                    color: '#666'
+                  }}>
+                    📧
+                  </div>
+                </div>
+                {errors.email && (
+                  <div style={{ 
+                    color: '#f44336', 
+                    fontSize: '0.85rem', 
+                    marginTop: '0.5rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem'
+                  }}>
+                    ⚠️ {errors.email}
+                  </div>
+                )}
+              </div>
+
+              {/* Phone Field */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '0.5rem', 
+                  color: '#333', 
+                  fontSize: '0.95rem',
+                  fontWeight: '600'
+                }}>
+                  📞 Phone Number
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type="text" 
+                    name="phone" 
+                    value={form.phone} 
+                    onChange={handleChange}
+                    placeholder="Enter your phone number"
+                    style={{ 
+                      width: '100%', 
+                      padding: '1rem 1rem 1rem 3rem', 
+                      borderRadius: '12px', 
+                      border: errors.phone ? '2px solid #f44336' : '2px solid #e1e5e9',
+                      fontSize: '1rem',
+                      background: '#f8f9fa',
+                      transition: 'all 0.3s ease',
+                      boxSizing: 'border-box'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.background = '#fff'
+                      e.target.style.borderColor = 'var(--primary)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.background = '#f8f9fa'
+                      e.target.style.borderColor = errors.phone ? '#f44336' : '#e1e5e9'
+                      e.target.style.boxShadow = 'none'
+                    }}
+                  />
+                  <div style={{
+                    position: 'absolute',
+                    left: '1rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '1.2rem',
+                    color: '#666'
+                  }}>
+                    📞
+                  </div>
+                </div>
+                {errors.phone && (
+                  <div style={{ 
+                    color: '#f44336', 
+                    fontSize: '0.85rem', 
+                    marginTop: '0.5rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem'
+                  }}>
+                    ⚠️ {errors.phone}
+                  </div>
+                )}
+              </div>
+
+              {/* Password Field */}
+              <div style={{ marginBottom: '2rem' }}>
+                <label style={{ 
+                  display: 'block', 
+                  marginBottom: '0.5rem', 
+                  color: '#333', 
+                  fontSize: '0.95rem',
+                  fontWeight: '600'
+                }}>
+                  🔒 Password
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type={showPassword ? 'text' : 'password'} 
+                    name="password" 
+                    value={form.password} 
+                    onChange={handleChange}
+                    placeholder="Create a strong password"
+                    style={{ 
+                      width: '100%', 
+                      padding: '1rem 1rem 1rem 3rem', 
+                      borderRadius: '12px', 
+                      border: errors.password ? '2px solid #f44336' : '2px solid #e1e5e9',
+                      fontSize: '1rem',
+                      background: '#f8f9fa',
+                      transition: 'all 0.3s ease',
+                      boxSizing: 'border-box'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.background = '#fff'
+                      e.target.style.borderColor = 'var(--primary)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.background = '#f8f9fa'
+                      e.target.style.borderColor = errors.password ? '#f44336' : '#e1e5e9'
+                      e.target.style.boxShadow = 'none'
+                    }}
+                  />
+                  <div style={{
+                    position: 'absolute',
+                    left: '1rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '1.2rem',
+                    color: '#666'
+                  }}>
+                    🔒
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: '1rem',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      fontSize: '1.2rem',
+                      cursor: 'pointer',
+                      color: '#666',
+                      padding: '0.25rem'
+                    }}
+                  >
+                    {showPassword ? '🙈' : '👁️'}
+                  </button>
+                </div>
+                {errors.password && (
+                  <div style={{ 
+                    color: '#f44336', 
+                    fontSize: '0.85rem', 
+                    marginTop: '0.5rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem'
+                  }}>
+                    ⚠️ {errors.password}
+                  </div>
+                )}
+              </div>
+
+              {/* Error Messages */}
+              {errors.api && (
+                <div style={{ 
+                  background: '#ffebee', 
+                  color: '#c62828', 
+                  padding: '1rem', 
+                  borderRadius: '8px', 
+                  marginBottom: '1.5rem',
+                  border: '1px solid #ffcdd2',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}>
+                  ❌ {errors.api}
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <button 
+                type="submit" 
+                disabled={loading}
+                style={{ 
+                  width: '100%', 
+                  padding: '1rem', 
+                  background: loading ? '#ccc' : 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+                  color: '#fff', 
+                  border: 'none', 
+                  borderRadius: '12px', 
+                  fontSize: '1.1rem',
+                  fontWeight: '600',
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: loading ? 'none' : '0 4px 15px rgba(0,115,47,0.3)',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                onMouseOver={(e) => {
+                  if (!loading) {
+                    e.target.style.transform = 'translateY(-2px)'
+                    e.target.style.boxShadow = '0 6px 20px rgba(0,115,47,0.4)'
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (!loading) {
+                    e.target.style.transform = 'translateY(0)'
+                    e.target.style.boxShadow = '0 4px 15px rgba(0,115,47,0.3)'
+                  }
+                }}
+              >
+                {loading ? (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '2px solid #fff',
+                      borderTop: '2px solid transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite'
+                    }}></div>
+                    Creating Account...
+                  </div>
+                ) : (
+                  '🚀 Create Account'
+                )}
+              </button>
+
+              {/* Divider */}
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                margin: '2rem 0',
+                color: '#666'
+              }}>
+                <div style={{ flex: 1, height: '1px', background: '#e1e5e9' }}></div>
+                <span style={{ padding: '0 1rem', fontSize: '0.9rem' }}>or</span>
+                <div style={{ flex: 1, height: '1px', background: '#e1e5e9' }}></div>
+              </div>
+
+              {/* Login Link */}
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ color: '#666', margin: '0 0 1rem 0', fontSize: '0.95rem' }}>
+                  Already have an account?
+                </p>
+                <Link
+                  to="/login"
+                  style={{
+                    display: 'inline-block',
+                    padding: '0.75rem 2rem',
+                    background: 'transparent',
+                    color: 'var(--primary)',
+                    border: '2px solid var(--primary)',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontWeight: '600',
+                    fontSize: '1rem',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.background = 'var(--primary)'
+                    e.target.style.color = '#fff'
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.background = 'transparent'
+                    e.target.style.color = 'var(--primary)'
+                  }}
+                >
+                  🔑 Sign In
+                </Link>
+              </div>
+
+              {/* Employer Link */}
+              <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                <p style={{ color: '#666', margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>
+                  Are you an employer?
+                </p>
+                <Link
+                  to="/employer/register"
+                  style={{
+                    color: '#2196f3',
+                    textDecoration: 'none',
+                    fontSize: '0.9rem',
+                    fontWeight: '500',
+                    transition: 'color 0.3s ease'
+                  }}
+                  onMouseOver={(e) => e.target.style.color = '#1976d2'}
+                  onMouseOut={(e) => e.target.style.color = '#2196f3'}
+                >
+                  🏢 Register as Employer
+                </Link>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+      `}</style>
     </div>
   )
 }

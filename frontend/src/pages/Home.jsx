@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import logo from '../assets/AmharaJlogo.png'
+import JobApplicationModal from '../components/JobApplicationModal'
 
 const Home = () => {
   const navigate = useNavigate()
@@ -11,6 +12,8 @@ const Home = () => {
   const [jobTypeFilter, setJobTypeFilter] = useState('')
   const [experienceFilter, setExperienceFilter] = useState('')
   const [filteredJobs, setFilteredJobs] = useState([])
+  const [selectedJob, setSelectedJob] = useState(null)
+  const [showApplicationModal, setShowApplicationModal] = useState(false)
 
   useEffect(() => {
     fetchJobs()
@@ -58,6 +61,22 @@ const Home = () => {
     }
     return colors[status] || '#666'
   }
+
+  const handleApplyForJob = (job) => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      alert('Please log in to apply for jobs');
+      navigate('/login');
+      return;
+    }
+    setSelectedJob(job);
+    setShowApplicationModal(true);
+  };
+
+  const handleApplicationSuccess = (application) => {
+    console.log('Application submitted:', application);
+    // You can add additional logic here if needed
+  };
 
   return (
     <div style={{ minHeight: '100vh', background: '#f7f9fb' }}>
@@ -285,118 +304,263 @@ const Home = () => {
               </p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {filteredJobs.map(job => (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '1.5rem' }}>
+              {filteredJobs.map((job, index) => (
                 <div key={job.id} style={{ 
                   background: '#fff', 
-                  padding: '1.5rem', 
-                  borderRadius: '8px', 
-                  boxShadow: '0 2px 8px #eee',
-                  borderLeft: `4px solid ${getStatusColor(job.status)}`,
-                  transition: 'transform 0.2s, box-shadow 0.2s'
+                  borderRadius: '16px', 
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                  border: '1px solid #f0f0f0',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  cursor: 'pointer'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.transform = 'translateY(-2px)'
-                  e.target.style.boxShadow = '0 4px 16px #ddd'
+                  e.target.style.transform = 'translateY(-4px)'
+                  e.target.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)'
                 }}
                 onMouseOut={(e) => {
                   e.target.style.transform = 'translateY(0)'
-                  e.target.style.boxShadow = '0 2px 8px #eee'
+                  e.target.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)'
                 }}
+                onClick={() => navigate(`/job/${job.id}`)}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ flex: 1 }}>
+                  {/* Status Indicator */}
+                  <div style={{ 
+                    position: 'absolute', 
+                    top: 0, 
+                    left: 0, 
+                    right: 0, 
+                    height: '4px', 
+                    background: `linear-gradient(90deg, ${getStatusColor(job.status)} 0%, ${getStatusColor(job.status)}80 100%)` 
+                  }} />
+
+                  {/* Job Number Badge */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '1rem',
+                    right: '1rem',
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: '#fff',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.875rem',
+                    fontWeight: 'bold',
+                    zIndex: 1
+                  }}>
+                    #{index + 1}
+                  </div>
+
+                  {/* Header Section */}
+                  <div style={{ padding: '1.5rem 1.5rem 1rem 1.5rem' }}>
+                    <div style={{ marginBottom: '1rem' }}>
                       <h3 style={{ 
                         margin: '0 0 0.5rem 0', 
-                        color: '#333', 
+                        color: '#1a1a1a', 
                         fontSize: '1.25rem',
-                        cursor: 'pointer'
-                      }}
-                      onClick={() => navigate(`/job/${job.id}`)}
-                      >
+                        fontWeight: '600',
+                        lineHeight: '1.3'
+                      }}>
                         {job.title}
                       </h3>
-                      <p style={{ color: '#666', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
-                        {job.company_name || 'Company Name'}
+                      <p style={{ 
+                        color: '#666', 
+                        margin: '0 0 0.75rem 0', 
+                        fontSize: '1.1rem',
+                        fontWeight: '500'
+                      }}>
+                        🏢 {job.company_name || 'Company Name'}
                       </p>
-                      
-                      <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                        <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                          📍 {job.location}
+                    </div>
+
+                    {/* Job Details Grid */}
+                    <div style={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: '1fr 1fr', 
+                      gap: '0.75rem',
+                      marginBottom: '1rem'
+                    }}>
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.5rem',
+                        padding: '0.5rem 0.75rem',
+                        background: '#f8f9fa',
+                        borderRadius: '8px'
+                      }}>
+                        <span style={{ fontSize: '1.1rem' }}>📍</span>
+                        <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                          {job.location}
                         </span>
-                        <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                          💼 {job.job_type}
-                        </span>
-                        <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                          ⏰ {job.experience_level}
-                        </span>
-                        {job.salary_range && (
-                          <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                            💰 {job.salary_range}
-                          </span>
-                        )}
                       </div>
                       
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.5rem',
+                        padding: '0.5rem 0.75rem',
+                        background: '#f8f9fa',
+                        borderRadius: '8px'
+                      }}>
+                        <span style={{ fontSize: '1.1rem' }}>💼</span>
+                        <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                          {job.job_type}
+                        </span>
+                      </div>
+                      
+                      <div style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '0.5rem',
+                        padding: '0.5rem 0.75rem',
+                        background: '#f8f9fa',
+                        borderRadius: '8px'
+                      }}>
+                        <span style={{ fontSize: '1.1rem' }}>⏰</span>
+                        <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                          {job.experience_level}
+                        </span>
+                      </div>
+                      
+                      {job.salary_range && (
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: '0.5rem',
+                          padding: '0.5rem 0.75rem',
+                          background: '#f8f9fa',
+                          borderRadius: '8px'
+                        }}>
+                          <span style={{ fontSize: '1.1rem' }}>💰</span>
+                          <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                            {job.salary_range}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Description Preview */}
+                    <div style={{ marginBottom: '1rem' }}>
                       <p style={{ 
                         color: '#666', 
                         margin: 0,
                         display: '-webkit-box',
-                        WebkitLineClamp: 2,
+                        WebkitLineClamp: 3,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
-                        lineHeight: '1.5'
+                        lineHeight: '1.5',
+                        fontSize: '0.9rem'
                       }}>
                         {job.description}
                       </p>
                     </div>
-                    
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
+
+                    {/* Status Badge */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '1rem' }}>
                       <span style={{ 
-                        padding: '0.25rem 0.75rem', 
-                        borderRadius: '12px', 
-                        fontSize: '0.8rem', 
-                        fontWeight: '500',
+                        padding: '0.375rem 0.875rem', 
+                        borderRadius: '20px', 
+                        fontSize: '0.75rem', 
+                        fontWeight: '600',
                         textTransform: 'uppercase',
-                        background: `${getStatusColor(job.status)}20`,
-                        color: getStatusColor(job.status)
+                        background: `${getStatusColor(job.status)}15`,
+                        color: getStatusColor(job.status),
+                        border: `1px solid ${getStatusColor(job.status)}30`,
+                        letterSpacing: '0.5px'
                       }}>
                         {job.status}
                       </span>
-                      
-                      <button
-                        onClick={() => navigate(`/job/${job.id}`)}
-                        style={{
-                          background: 'var(--primary)',
-                          color: '#fff',
-                          border: 'none',
-                          padding: '0.5rem 1rem',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          fontSize: '0.9rem',
-                          fontWeight: '500'
-                        }}
-                      >
-                        View Details
-                      </button>
                     </div>
                   </div>
-                  
+
+                  {/* Footer Section */}
                   <div style={{ 
-                    display: 'flex', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    marginTop: '1rem',
-                    paddingTop: '1rem',
-                    borderTop: '1px solid #eee'
+                    background: '#f8f9fa',
+                    padding: '1rem 1.5rem',
+                    borderTop: '1px solid #f0f0f0'
                   }}>
-                    <span style={{ color: '#999', fontSize: '0.8rem' }}>
-                      Posted: {new Date(job.created_at).toLocaleDateString()}
-                    </span>
-                    {job.application_deadline && (
-                      <span style={{ color: '#ff9800', fontSize: '0.8rem', fontWeight: '500' }}>
-                        Deadline: {new Date(job.application_deadline).toLocaleDateString()}
-                      </span>
-                    )}
+                    <div style={{ 
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      alignItems: 'center',
+                      marginBottom: '1rem'
+                    }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                        <span style={{ color: '#999', fontSize: '0.8rem' }}>
+                          📅 Posted: {new Date(job.created_at).toLocaleDateString()}
+                        </span>
+                        {job.application_deadline && (
+                          <span style={{ color: '#ff9800', fontSize: '0.8rem', fontWeight: '500' }}>
+                            ⏰ Deadline: {new Date(job.application_deadline).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div style={{ display: 'flex', gap: '0.75rem' }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleApplyForJob(job);
+                        }}
+                        style={{
+                          flex: 1,
+                          background: 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)',
+                          color: '#fff',
+                          border: 'none',
+                          padding: '0.75rem 1rem',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          fontSize: '0.9rem',
+                          fontWeight: '600',
+                          transition: 'all 0.2s ease',
+                          boxShadow: '0 2px 8px rgba(76, 175, 80, 0.3)'
+                        }}
+                        onMouseOver={(e) => {
+                          e.target.style.transform = 'translateY(-1px)'
+                          e.target.style.boxShadow = '0 4px 12px rgba(76, 175, 80, 0.4)'
+                        }}
+                        onMouseOut={(e) => {
+                          e.target.style.transform = 'translateY(0)'
+                          e.target.style.boxShadow = '0 2px 8px rgba(76, 175, 80, 0.3)'
+                        }}
+                      >
+                        🚀 Apply Now
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/job/${job.id}`);
+                        }}
+                        style={{
+                          background: 'transparent',
+                          color: 'var(--primary)',
+                          border: '2px solid var(--primary)',
+                          padding: '0.75rem 1rem',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          fontSize: '0.9rem',
+                          fontWeight: '600',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseOver={(e) => {
+                          e.target.style.background = 'var(--primary)'
+                          e.target.style.color = '#fff'
+                        }}
+                        onMouseOut={(e) => {
+                          e.target.style.background = 'transparent'
+                          e.target.style.color = 'var(--primary)'
+                        }}
+                      >
+                        👁️ View Details
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -497,6 +661,19 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Job Application Modal */}
+      {selectedJob && (
+        <JobApplicationModal
+          job={selectedJob}
+          isOpen={showApplicationModal}
+          onClose={() => {
+            setShowApplicationModal(false);
+            setSelectedJob(null);
+          }}
+          onSuccess={handleApplicationSuccess}
+        />
+      )}
     </div>
   )
 }

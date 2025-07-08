@@ -38,6 +38,7 @@ const EmployerLogin = () => {
           if (data.user.user_type === 'employer') {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('userId', data.user.id);
             navigate('/employer/dashboard');
           } else {
             setErrors({ api: 'This login is for employers only. Please use the job seeker login.' });

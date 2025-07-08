@@ -15,6 +15,15 @@ app.use('/api/employer', require('./routes/employer'));
 // Use public job routes
 app.use('/api/jobs', require('./routes/jobs'));
 
+// Use applications routes
+app.use('/api/applications', require('./routes/applications'));
+
+// Use documents routes
+app.use('/api/documents', require('./routes/documents'));
+
+// Use profile routes
+app.use('/api/auth/profile', require('./routes/profile'));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 

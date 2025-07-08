@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import logo from '../assets/AmharaJlogo.png'
 
 const Navbar = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [user, setUser] = useState(null)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
     if (userData) {
       setUser(JSON.parse(userData))
+    } else {
+      setUser(null)
+    }
+  }, [location]) // Re-check when location changes (after login/logout)
+
+  // Listen for login events
+  useEffect(() => {
+    const handleUserLogin = (event) => {
+      setUser(event.detail)
+    }
+
+    window.addEventListener('userLogin', handleUserLogin)
+
+    return () => {
+      window.removeEventListener('userLogin', handleUserLogin)
     }
   }, [])
 
@@ -76,12 +92,26 @@ const Navbar = () => {
           {user ? (
             // Logged in user menu
             <>
-              {user.user_type === 'employer' && (
+              {user.user_type === 'employer' ? (
                 <li>
                   <Link to="/employer/dashboard" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
                     Dashboard
                   </Link>
                 </li>
+              ) : (
+                // Job seeker menu
+                <>
+                  <li>
+                    <Link to="/profile" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
+                      My Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/my-applications" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
+                      My Applications
+                    </Link>
+                  </li>
+                </>
               )}
               <li>
                 <span style={{ color: '#fff', fontSize: '1rem' }}>
@@ -93,7 +123,6 @@ const Navbar = () => {
                   onClick={handleLogout}
                   style={{
                     background: 'none',
-                    border: 'none',
                     color: '#fff',
                     fontSize: '1rem',
                     cursor: 'pointer',

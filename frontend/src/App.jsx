@@ -14,6 +14,8 @@ import PostJob from './pages/employer/PostJob'
 import JobsManagement from './pages/employer/JobsManagement'
 import ApplicationsManagement from './pages/employer/ApplicationsManagement'
 import Home from './pages/Home'
+import UserProfile from './pages/jobseeker/UserProfile'
+import MyApplications from './pages/jobseeker/MyApplications'
 
 function App() {
   const location = useLocation();
@@ -32,6 +34,21 @@ function App() {
     }
   }, [isEmployerPortal]);
 
+  // Ensure userId is always set if user exists
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      try {
+        const userData = JSON.parse(user);
+        if (userData && userData.id && !localStorage.getItem('userId')) {
+          localStorage.setItem('userId', userData.id);
+        }
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+      }
+    }
+  }, []);
+
   return (
     <>
       {!isEmployerPortal && <Navbar />}
@@ -48,6 +65,8 @@ function App() {
           <Route path="/employer/post-job" element={<PostJob />} />
           <Route path="/employer/jobs" element={<JobsManagement />} />
           <Route path="/employer/applications" element={<ApplicationsManagement />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/my-applications" element={<MyApplications />} />
         </Routes>
       </main>
       {!isEmployerPortal && <Footer />}
