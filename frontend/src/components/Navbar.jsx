@@ -7,14 +7,50 @@ const Navbar = () => {
   const location = useLocation()
   const [user, setUser] = useState(null)
 
+  // Check for existing user data on initial load
+  useEffect(() => {
+    const checkUserData = () => {
+      const userData = localStorage.getItem('user')
+      const token = localStorage.getItem('token')
+      
+      if (userData && token) {
+        try {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+        } catch (error) {
+          console.error('Error parsing user data:', error)
+          // Clear invalid data
+          localStorage.removeItem('user')
+          localStorage.removeItem('token')
+          setUser(null)
+        }
+      } else {
+        setUser(null)
+      }
+    }
+
+    checkUserData()
+  }, []) // Run only on mount
+
+  // Re-check when location changes (after login/logout)
   useEffect(() => {
     const userData = localStorage.getItem('user')
-    if (userData) {
-      setUser(JSON.parse(userData))
+    const token = localStorage.getItem('token')
+    
+    if (userData && token) {
+      try {
+        const parsedUser = JSON.parse(userData)
+        setUser(parsedUser)
+      } catch (error) {
+        console.error('Error parsing user data:', error)
+        localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        setUser(null)
+      }
     } else {
       setUser(null)
     }
-  }, [location]) // Re-check when location changes (after login/logout)
+  }, [location])
 
   // Listen for login events
   useEffect(() => {
@@ -32,9 +68,11 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('userId')
     setUser(null)
     navigate('/')
   }
+
   return (
     <nav
       aria-label="Main navigation"
