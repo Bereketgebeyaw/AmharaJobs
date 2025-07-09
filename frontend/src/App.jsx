@@ -21,6 +21,9 @@ import Jobs from './pages/Jobs'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminUsers from './pages/admin/AdminUsers'
+import AdminJobsManagement from './pages/admin/AdminJobsManagement'
+import AdminApplicationsManagement from './pages/admin/AdminApplicationsManagement'
+import AdminReports from './pages/admin/AdminReports'
 
 function App() {
   const location = useLocation();
@@ -78,6 +81,9 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/jobs" element={<AdminJobsManagement />} />
+          <Route path="/admin/applications" element={<AdminApplicationsManagement />} />
+          <Route path="/admin/reports" element={<AdminReports />} />
         </Routes>
       </main>
       {!isEmployerPortal && !isAdminPortal && <Footer />}

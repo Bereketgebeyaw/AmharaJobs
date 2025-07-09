@@ -89,9 +89,11 @@ router.post('/upload', authenticateUser, upload.single('document'), async (req, 
       title: title || file.originalname,
       description: description || '',
       original_name: file.originalname,
+      file_name: file.filename,
       file_path: file.path,
       file_size: file.size,
       mime_type: file.mimetype,
+      file_type: file.mimetype,
       is_default: is_default === 'true' || is_default === true
     }).returning('*');
 

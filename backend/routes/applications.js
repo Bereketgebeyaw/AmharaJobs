@@ -30,7 +30,7 @@ router.post('/', authenticateUser, async (req, res) => {
 
     // Check if user already applied to this job
     const existingApplication = await knex('applications')
-      .where('user_id', userId)
+      .where('jobseeker_id', userId)
       .where('job_id', job_id)
       .first();
 
@@ -63,7 +63,7 @@ router.post('/', authenticateUser, async (req, res) => {
 
     // Create application
     const [application] = await knex('applications').insert({
-      user_id: userId,
+      jobseeker_id: userId,
       job_id: job_id,
       resume_document_id: resume_document_id || null,
       cover_letter_document_id: cover_letter_document_id || null,
@@ -93,7 +93,7 @@ router.get('/my-applications', authenticateUser, async (req, res) => {
         'jobs.location as job_location',
         'jobs.job_type',
         'jobs.salary_range',
-        'employers.company_name',
+        'employers.company_type',
         'resume_doc.title as resume_title',
         'cover_letter_doc.title as cover_letter_title'
       )

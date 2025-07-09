@@ -184,9 +184,9 @@ const AdminDashboard = () => {
           {[
             { id: 'overview', label: 'Overview', icon: '📊' },
             { id: 'users', label: 'User Management', icon: '👥', link: '/admin/users' },
-            { id: 'jobs', label: 'Job Management', icon: '💼' },
-            { id: 'applications', label: 'Applications', icon: '📝' },
-            { id: 'reports', label: 'Reports', icon: '📈' }
+            { id: 'jobs', label: 'Job Management', icon: '💼', link: '/admin/jobs' },
+            { id: 'applications', label: 'Applications', icon: '📝', link: '/admin/applications' },
+            { id: 'reports', label: 'Reports', icon: '📈', link: '/admin/reports' }
           ].map(tab => (
             tab.link ? (
               <Link

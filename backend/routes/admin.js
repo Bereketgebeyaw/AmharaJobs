@@ -261,7 +261,7 @@ router.get('/jobs', authenticateAdminToken, async (req, res) => {
       query = query.where('users.fullname', 'ilike', `%${employer}%`);
     }
 
-    const total = await query.clone().count('* as count').first();
+    const total = await query.clone().clearSelect().count('* as count').first();
     const jobs = await query.orderBy('jobs.created_at', 'desc').limit(limit).offset(offset);
 
     res.json({
@@ -273,6 +273,7 @@ router.get('/jobs', authenticateAdminToken, async (req, res) => {
       }
     });
   } catch (err) {
+    console.error('Error in /admin/jobs:', err); // Added error logging
     res.status(500).json({ error: 'Failed to load jobs' });
   }
 });
@@ -343,7 +344,7 @@ router.get('/applications', authenticateAdminToken, async (req, res) => {
       query = query.where('users.fullname', 'ilike', `%${applicant}%`);
     }
 
-    const total = await query.clone().count('* as count').first();
+    const total = await query.clone().clearSelect().count('* as count').first();
     const applications = await query.orderBy('applications.applied_at', 'desc').limit(limit).offset(offset);
 
     res.json({
@@ -355,6 +356,7 @@ router.get('/applications', authenticateAdminToken, async (req, res) => {
       }
     });
   } catch (err) {
+    console.error('Error in /admin/applications:', err); // Added error logging
     res.status(500).json({ error: 'Failed to load applications' });
   }
 });
