@@ -16,6 +16,7 @@ exports.up = function(knex) {
     table.string('benefits').nullable();
     table.boolean('is_active').defaultTo(true);
     table.boolean('is_featured').defaultTo(false);
+    table.string('status').defaultTo('active'); // active, inactive, draft
     table.timestamp('application_deadline').nullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());

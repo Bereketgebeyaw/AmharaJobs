@@ -101,7 +101,7 @@ router.get('/my-applications', authenticateUser, async (req, res) => {
       .join('employers', 'jobs.employer_id', 'employers.id')
       .leftJoin('user_documents as resume_doc', 'applications.resume_document_id', 'resume_doc.id')
       .leftJoin('user_documents as cover_letter_doc', 'applications.cover_letter_document_id', 'cover_letter_doc.id')
-      .where('applications.user_id', userId)
+      .where('applications.jobseeker_id', userId)
       .orderBy('applications.applied_at', 'desc');
 
     res.json({ applications });
@@ -138,7 +138,7 @@ router.get('/job/:jobId', async (req, res) => {
         'cover_letter_doc.title as cover_letter_title',
         'cover_letter_doc.file_path as cover_letter_path'
       )
-      .join('users', 'applications.user_id', 'users.id')
+      .join('users', 'applications.jobseeker_id', 'users.id')
       .leftJoin('user_documents as resume_doc', 'applications.resume_document_id', 'resume_doc.id')
       .leftJoin('user_documents as cover_letter_doc', 'applications.cover_letter_document_id', 'cover_letter_doc.id')
       .where('applications.job_id', jobId)

@@ -58,25 +58,28 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     
     const job = await knex('jobs')
-      .join('employers', 'jobs.employer_id', 'employers.id')
-      .join('users', 'employers.user_id', 'users.id')
       .where('jobs.id', id)
-      .where('jobs.status', 'active')
-      .select(
-        'jobs.*',
-        'users.fullname as company_name',
-        'users.email as company_email',
-        'employers.contact_person',
-        'employers.address',
-        'employers.phone'
-      )
       .first();
-    
     if (!job) {
       return res.status(404).json({ error: 'Job not found' });
     }
-    
-    res.json({ job });
+    const employer = await knex('employers').where('id', job.employer_id).first();
+    if (!employer) {
+      return res.status(404).json({ error: 'Employer not found for this job' });
+    }
+    const user = await knex('users').where('id', employer.user_id).first();
+    if (!user) {
+      return res.status(404).json({ error: 'User not found for this employer' });
+    }
+    const jobDetails = {
+      ...job,
+      company_name: user.fullname,
+      company_email: user.email,
+      contact_person: employer.contact_person,
+      address: employer.address,
+      phone: employer.phone
+    };
+    res.json({ job: jobDetails });
   } catch (err) {
     console.error('Error fetching job:', err);
     res.status(500).json({ error: 'Failed to load job' });

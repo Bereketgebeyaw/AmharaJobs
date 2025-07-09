@@ -65,7 +65,7 @@ router.get('/dashboard', authenticateToken, verifyEmployer, async (req, res) => 
     // Get recent applications
     const recentApplications = await knex('applications')
       .join('jobs', 'applications.job_id', 'jobs.id')
-      .join('users', 'applications.user_id', 'users.id')
+      .join('users', 'applications.jobseeker_id', 'users.id')
       .where('jobs.employer_id', employer.id)
       .select('applications.*', 'jobs.title as job_title', 'users.fullname as applicant_name', 'users.email as applicant_email')
       .orderBy('applications.applied_at', 'desc')
@@ -257,7 +257,7 @@ router.get('/jobs/:id/applications', authenticateToken, verifyEmployer, async (r
     }
     
     const applications = await knex('applications')
-      .join('users', 'applications.user_id', 'users.id')
+      .join('users', 'applications.jobseeker_id', 'users.id')
       .where('applications.job_id', id)
       .select('applications.*', 'users.fullname as applicant_name', 'users.email as applicant_email', 'users.phone as applicant_phone')
       .orderBy('applications.applied_at', 'desc');
@@ -314,7 +314,7 @@ router.get('/applications', authenticateToken, verifyEmployer, async (req, res) 
     
     let query = knex('applications')
       .join('jobs', 'applications.job_id', 'jobs.id')
-      .join('users', 'applications.user_id', 'users.id')
+      .join('users', 'applications.jobseeker_id', 'users.id')
       .leftJoin('user_documents as resume_doc', 'applications.resume_document_id', 'resume_doc.id')
       .leftJoin('user_documents as cover_letter_doc', 'applications.cover_letter_document_id', 'cover_letter_doc.id')
       .where('jobs.employer_id', employer.id)
@@ -349,7 +349,7 @@ router.get('/applications', authenticateToken, verifyEmployer, async (req, res) 
         title: app.job_title
       },
       applicant: {
-        id: app.user_id,
+        id: app.jobseeker_id,
         fullname: app.applicant_name,
         email: app.applicant_email,
         phone: app.applicant_phone

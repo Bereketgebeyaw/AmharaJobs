@@ -10,6 +10,9 @@ app.use(express.json());
 // Use auth routes
 app.use('/api/auth', require('./routes/auth'));
 
+// Use admin routes
+app.use('/api/admin', require('./routes/admin'));
+
 // Use employer routes
 app.use('/api/employer', require('./routes/employer'));
 

@@ -13,7 +13,10 @@ exports.up = function(knex) {
     table.text('employer_notes').nullable();
     table.timestamp('applied_at').defaultTo(knex.fn.now());
     table.timestamp('updated_at').defaultTo(knex.fn.now());
-    
+    // New columns from update migration
+    table.integer('resume_document_id').unsigned().nullable().references('id').inTable('user_documents').onDelete('SET NULL');
+    table.integer('cover_letter_document_id').unsigned().nullable().references('id').inTable('user_documents').onDelete('SET NULL');
+    table.text('application_notes').nullable();
     // Ensure a jobseeker can only apply once to a job
     table.unique(['job_id', 'jobseeker_id']);
   });

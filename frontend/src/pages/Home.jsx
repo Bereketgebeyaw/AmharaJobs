@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import logo from '../assets/AmharaJlogo.png'
 import JobApplicationModal from '../components/JobApplicationModal'
 
-const Home = () => {
+const Home = ({ onlyActive = false, minimal = false }) => {
   const navigate = useNavigate()
   const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(true)
@@ -39,6 +39,7 @@ const Home = () => {
 
   const filterJobs = () => {
     let filtered = jobs.filter(job => {
+      if (onlyActive && job.status !== 'active') return false;
       const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            job.company_name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -81,196 +82,200 @@ const Home = () => {
   return (
     <div style={{ minHeight: '100vh', background: '#f7f9fb' }}>
       {/* Hero Section */}
-      <div style={{
-        background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
-        color: '#fff',
-        padding: '4rem 2rem',
-        textAlign: 'center'
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
-            <img src={logo} alt="AmharaJobs Logo" style={{ height: 80, marginRight: 16 }} />
-            <h1 style={{
-              fontSize: '3.5rem',
-              fontWeight: 700,
-              margin: 0,
-              letterSpacing: 1
-            }}>
-              AmharaJobs
-            </h1>
-          </div>
-          <h2 style={{
-            fontSize: '2.5rem',
-            fontWeight: 600,
-            marginBottom: '1rem'
-          }}>
-            Find Your Dream Job in the Amhara Region
-          </h2>
-          <p style={{
-            fontSize: '1.25rem',
-            marginBottom: '3rem',
-            opacity: 0.9,
-            maxWidth: 800,
-            marginLeft: 'auto',
-            marginRight: 'auto'
-          }}>
-            Connect with top employers, discover new opportunities, and take the next step in your career journey.
-          </p>
-          
-          {/* Search Bar */}
-          <div style={{
-            background: '#fff',
-            borderRadius: '12px',
-            padding: '2rem',
-            maxWidth: 800,
-            margin: '0 auto',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
-          }}>
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-              <input
-                type="text"
-                placeholder="Search jobs, companies, or keywords..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{
-                  flex: 1,
-                  minWidth: '250px',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ddd',
-                  fontSize: '1rem'
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Location"
-                value={locationFilter}
-                onChange={(e) => setLocationFilter(e.target.value)}
-                style={{
-                  minWidth: '150px',
-                  padding: '1rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ddd',
-                  fontSize: '1rem'
-                }}
-              />
+      {!minimal && (
+        <div style={{
+          background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+          color: '#fff',
+          padding: '4rem 2rem',
+          textAlign: 'center'
+        }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
+              <img src={logo} alt="AmharaJobs Logo" style={{ height: 80, marginRight: 16 }} />
+              <h1 style={{
+                fontSize: '3.5rem',
+                fontWeight: 700,
+                margin: 0,
+                letterSpacing: 1
+              }}>
+                AmharaJobs
+              </h1>
             </div>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <select
-                value={jobTypeFilter}
-                onChange={(e) => setJobTypeFilter(e.target.value)}
-                style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ddd',
-                  fontSize: '1rem',
-                  background: '#fff'
-                }}
-              >
-                <option value="">All Job Types</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Internship">Internship</option>
-                <option value="Freelance">Freelance</option>
-              </select>
-              <select
-                value={experienceFilter}
-                onChange={(e) => setExperienceFilter(e.target.value)}
-                style={{
-                  padding: '0.75rem 1rem',
-                  borderRadius: '8px',
-                  border: '1px solid #ddd',
-                  fontSize: '1rem',
-                  background: '#fff'
-                }}
-              >
-                <option value="">All Experience Levels</option>
-                <option value="Entry">Entry Level</option>
-                <option value="Mid">Mid Level</option>
-                <option value="Senior">Senior Level</option>
-                <option value="Executive">Executive Level</option>
-              </select>
+            <h2 style={{
+              fontSize: '2.5rem',
+              fontWeight: 600,
+              marginBottom: '1rem'
+            }}>
+              Find Your Dream Job in the Amhara Region
+            </h2>
+            <p style={{
+              fontSize: '1.25rem',
+              marginBottom: '3rem',
+              opacity: 0.9,
+              maxWidth: 800,
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }}>
+              Connect with top employers, discover new opportunities, and take the next step in your career journey.
+            </p>
+            
+            {/* Search Bar */}
+            <div style={{
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '2rem',
+              maxWidth: 800,
+              margin: '0 auto',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+            }}>
+              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                <input
+                  type="text"
+                  placeholder="Search jobs, companies, or keywords..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{
+                    flex: 1,
+                    minWidth: '250px',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontSize: '1rem'
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Location"
+                  value={locationFilter}
+                  onChange={(e) => setLocationFilter(e.target.value)}
+                  style={{
+                    minWidth: '150px',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontSize: '1rem'
+                  }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <select
+                  value={jobTypeFilter}
+                  onChange={(e) => setJobTypeFilter(e.target.value)}
+                  style={{
+                    padding: '0.75rem 1rem',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontSize: '1rem',
+                    background: '#fff'
+                  }}
+                >
+                  <option value="">All Job Types</option>
+                  <option value="Full-time">Full-time</option>
+                  <option value="Part-time">Part-time</option>
+                  <option value="Contract">Contract</option>
+                  <option value="Internship">Internship</option>
+                  <option value="Freelance">Freelance</option>
+                </select>
+                <select
+                  value={experienceFilter}
+                  onChange={(e) => setExperienceFilter(e.target.value)}
+                  style={{
+                    padding: '0.75rem 1rem',
+                    borderRadius: '8px',
+                    border: '1px solid #ddd',
+                    fontSize: '1rem',
+                    background: '#fff'
+                  }}
+                >
+                  <option value="">All Experience Levels</option>
+                  <option value="Entry">Entry Level</option>
+                  <option value="Mid">Mid Level</option>
+                  <option value="Senior">Senior Level</option>
+                  <option value="Executive">Executive Level</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Quick Actions */}
-      <div style={{
-        padding: '3rem 2rem',
-        background: '#fff',
-        borderBottom: '1px solid #eee'
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '2rem', color: '#333' }}>
-            Ready to take the next step?
-          </h3>
-          <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => navigate('/register')}
-              style={{
-                padding: '1rem 2rem',
-                fontSize: '1.1rem',
-                background: 'var(--primary)',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontWeight: '600',
-                boxShadow: '0 4px 12px rgba(0,115,47,0.3)',
-                transition: 'transform 0.2s'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              Create Account
-            </button>
-            <Link
-              to="/login"
-              style={{
-                padding: '1rem 2rem',
-                fontSize: '1.1rem',
-                background: 'transparent',
-                color: 'var(--primary)',
-                border: '2px solid var(--primary)',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                fontWeight: '600',
-                transition: 'all 0.2s'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = 'var(--primary)'
-                e.target.style.color = '#fff'
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = 'transparent'
-                e.target.style.color = 'var(--primary)'
-              }}
-            >
-              Sign In
-            </Link>
-            <button
-              onClick={() => navigate('/employer')}
-              style={{
-                padding: '1rem 2rem',
-                fontSize: '1.1rem',
-                background: '#2196f3',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontWeight: '600',
-                transition: 'transform 0.2s'
-              }}
-              onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
-              onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
-            >
-              Post a Job
-            </button>
+      {!minimal && (
+        <div style={{
+          padding: '3rem 2rem',
+          background: '#fff',
+          borderBottom: '1px solid #eee'
+        }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '2rem', color: '#333' }}>
+              Ready to take the next step?
+            </h3>
+            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => navigate('/register')}
+                style={{
+                  padding: '1rem 2rem',
+                  fontSize: '1.1rem',
+                  background: 'var(--primary)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  boxShadow: '0 4px 12px rgba(0,115,47,0.3)',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                Create Account
+              </button>
+              <Link
+                to="/login"
+                style={{
+                  padding: '1rem 2rem',
+                  fontSize: '1.1rem',
+                  background: 'transparent',
+                  color: 'var(--primary)',
+                  border: '2px solid var(--primary)',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = 'var(--primary)'
+                  e.target.style.color = '#fff'
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = 'transparent'
+                  e.target.style.color = 'var(--primary)'
+                }}
+              >
+                Sign In
+              </Link>
+              <button
+                onClick={() => navigate('/employer')}
+                style={{
+                  padding: '1rem 2rem',
+                  fontSize: '1.1rem',
+                  background: '#2196f3',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  transition: 'transform 0.2s'
+                }}
+                onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
+                onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
+              >
+                Post a Job
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Job Listings Section */}
       <div style={{ padding: '3rem 2rem' }}>
@@ -570,97 +575,99 @@ const Home = () => {
       </div>
 
       {/* Features Section */}
-      <div style={{
-        padding: '4rem 2rem',
-        background: '#fff',
-        borderTop: '1px solid #eee'
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <h2 style={{
-            textAlign: 'center',
-            fontSize: '2.5rem',
-            color: '#333',
-            marginBottom: '3rem'
-          }}>
-            Why Choose AmharaJobs?
-          </h2>
-          
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-            gap: '2rem' 
-          }}>
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <div style={{
-                width: '80px',
-                height: '80px',
-                background: 'var(--primary)',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 1rem',
-                fontSize: '2rem',
-                color: '#fff'
-              }}>
-                🔍
+      {!minimal && (
+        <div style={{
+          padding: '4rem 2rem',
+          background: '#fff',
+          borderTop: '1px solid #eee'
+        }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+            <h2 style={{
+              textAlign: 'center',
+              fontSize: '2.5rem',
+              color: '#333',
+              marginBottom: '3rem'
+            }}>
+              Why Choose AmharaJobs?
+            </h2>
+            
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+              gap: '2rem' 
+            }}>
+              <div style={{ textAlign: 'center', padding: '2rem' }}>
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  background: 'var(--primary)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1rem',
+                  fontSize: '2rem',
+                  color: '#fff'
+                }}>
+                  🔍
+                </div>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
+                  Easy Job Search
+                </h3>
+                <p style={{ color: '#666', lineHeight: '1.6' }}>
+                  Find the perfect job with our advanced search and filtering options. Browse by location, job type, and experience level.
+                </p>
               </div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
-                Easy Job Search
-              </h3>
-              <p style={{ color: '#666', lineHeight: '1.6' }}>
-                Find the perfect job with our advanced search and filtering options. Browse by location, job type, and experience level.
-              </p>
-            </div>
 
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <div style={{
-                width: '80px',
-                height: '80px',
-                background: 'var(--primary)',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 1rem',
-                fontSize: '2rem',
-                color: '#fff'
-              }}>
-                🚀
+              <div style={{ textAlign: 'center', padding: '2rem' }}>
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  background: 'var(--primary)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1rem',
+                  fontSize: '2rem',
+                  color: '#fff'
+                }}>
+                  🚀
+                </div>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
+                  Quick Applications
+                </h3>
+                <p style={{ color: '#666', lineHeight: '1.6' }}>
+                  Apply to multiple jobs with just a few clicks. Save your resume and cover letter for faster applications.
+                </p>
               </div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
-                Quick Applications
-              </h3>
-              <p style={{ color: '#666', lineHeight: '1.6' }}>
-                Apply to multiple jobs with just a few clicks. Save your resume and cover letter for faster applications.
-              </p>
-            </div>
 
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
-              <div style={{
-                width: '80px',
-                height: '80px',
-                background: 'var(--primary)',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 1rem',
-                fontSize: '2rem',
-                color: '#fff'
-              }}>
-                📊
+              <div style={{ textAlign: 'center', padding: '2rem' }}>
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  background: 'var(--primary)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1rem',
+                  fontSize: '2rem',
+                  color: '#fff'
+                }}>
+                  📊
+                </div>
+                <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
+                  Track Progress
+                </h3>
+                <p style={{ color: '#666', lineHeight: '1.6' }}>
+                  Monitor your application status in real-time. Get notified when employers view your application.
+                </p>
               </div>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
-                Track Progress
-              </h3>
-              <p style={{ color: '#666', lineHeight: '1.6' }}>
-                Monitor your application status in real-time. Get notified when employers view your application.
-              </p>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Job Application Modal */}
       {selectedJob && (

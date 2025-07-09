@@ -16,14 +16,20 @@ import ApplicationsManagement from './pages/employer/ApplicationsManagement'
 import Home from './pages/Home'
 import UserProfile from './pages/jobseeker/UserProfile'
 import MyApplications from './pages/jobseeker/MyApplications'
+import Job from './pages/Job'
+import Jobs from './pages/Jobs'
+import AdminLogin from './pages/admin/AdminLogin'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import AdminUsers from './pages/admin/AdminUsers'
 
 function App() {
   const location = useLocation();
   const isEmployerPortal = location.pathname.startsWith('/employer');
+  const isAdminPortal = location.pathname.startsWith('/admin');
   const isEmployerLoggedIn = location.pathname.startsWith('/employer/dashboard') || location.pathname.startsWith('/employer/post-job') || location.pathname.startsWith('/employer/jobs') || location.pathname.startsWith('/employer/applications');
 
   useEffect(() => {
-    if (isEmployerPortal) {
+    if (isEmployerPortal || isAdminPortal) {
       document.body.style.background = 'transparent';
       document.documentElement.style.background = 'transparent';
       document.getElementById('root').style.background = 'transparent';
@@ -32,7 +38,7 @@ function App() {
       document.documentElement.style.background = '#f7f9fb';
       document.getElementById('root').style.background = '#f7f9fb';
     }
-  }, [isEmployerPortal]);
+  }, [isEmployerPortal, isAdminPortal]);
 
   // Ensure userId is always set if user exists
   useEffect(() => {
@@ -51,7 +57,7 @@ function App() {
 
   return (
     <>
-      {!isEmployerPortal && <Navbar />}
+      {!isEmployerPortal && !isAdminPortal && <Navbar />}
       {isEmployerLoggedIn && <EmployerNavbar />}
       <main style={isEmployerLoggedIn ? { paddingTop: '80px', minHeight: 'calc(100vh - 80px)' } : { minHeight: '70vh', padding: '2rem 1rem' }}>
         <Routes>
@@ -67,9 +73,14 @@ function App() {
           <Route path="/employer/applications" element={<ApplicationsManagement />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/my-applications" element={<MyApplications />} />
+          <Route path="/job/:id" element={<Job />} />
+          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
         </Routes>
       </main>
-      {!isEmployerPortal && <Footer />}
+      {!isEmployerPortal && !isAdminPortal && <Footer />}
     </>
   )
 }
