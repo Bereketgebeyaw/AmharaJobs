@@ -67,10 +67,10 @@ nav {
   z-index: 100;
 }
 nav ul li a, nav ul li div {
-  color: #fff !important;
+  color: #111 !important;
 }
 nav ul li a:hover {
-  color: var(--primary-light) !important;
+  color: var(--primary) !important;
 }
 button, .btn-primary {
   background: var(--primary);

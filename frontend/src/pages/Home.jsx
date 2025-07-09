@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import logo from '../assets/AmharaJlogo.png'
 import JobApplicationModal from '../components/JobApplicationModal'
 
 const Home = ({ onlyActive = false, minimal = false }) => {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -106,7 +108,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               fontWeight: 600,
               marginBottom: '1rem'
             }}>
-              Find Your Dream Job in the Amhara Region
+              {t('home.title')}
             </h2>
             <p style={{
               fontSize: '1.25rem',
@@ -116,7 +118,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               marginLeft: 'auto',
               marginRight: 'auto'
             }}>
-              Connect with top employers, discover new opportunities, and take the next step in your career journey.
+              {t('home.subtitle')}
             </p>
             
             {/* Search Bar */}
@@ -131,7 +133,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                 <input
                   type="text"
-                  placeholder="Search jobs, companies, or keywords..."
+                  placeholder={t('home.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{
@@ -145,7 +147,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                 />
                 <input
                   type="text"
-                  placeholder="Location"
+                  placeholder={t('common.location')}
                   value={locationFilter}
                   onChange={(e) => setLocationFilter(e.target.value)}
                   style={{
@@ -169,11 +171,11 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                     background: '#fff'
                   }}
                 >
-                  <option value="">All Job Types</option>
-                  <option value="Full-time">Full-time</option>
-                  <option value="Part-time">Part-time</option>
-                  <option value="Contract">Contract</option>
-                  <option value="Internship">Internship</option>
+                  <option value="">{t('jobs.filterByType')}</option>
+                  <option value="Full-time">{t('postJob.jobType.fulltime')}</option>
+                  <option value="Part-time">{t('postJob.jobType.parttime')}</option>
+                  <option value="Contract">{t('postJob.jobType.contract')}</option>
+                  <option value="Internship">{t('postJob.jobType.internship')}</option>
                   <option value="Freelance">Freelance</option>
                 </select>
                 <select
@@ -187,7 +189,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                     background: '#fff'
                   }}
                 >
-                  <option value="">All Experience Levels</option>
+                  <option value="">{t('common.experience')}</option>
                   <option value="Entry">Entry Level</option>
                   <option value="Mid">Mid Level</option>
                   <option value="Senior">Senior Level</option>
@@ -208,7 +210,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
         }}>
           <div style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '2rem', color: '#333' }}>
-              Ready to take the next step?
+              {t('home.readyToTakeNextStep')}
             </h3>
             <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button
@@ -228,7 +230,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                 onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
                 onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
               >
-                Create Account
+                {t('home.createAccount')}
               </button>
               <Link
                 to="/login"
@@ -252,7 +254,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   e.target.style.color = 'var(--primary)'
                 }}
               >
-                Sign In
+                {t('home.signIn')}
               </Link>
               <button
                 onClick={() => navigate('/employer')}
@@ -270,7 +272,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                 onMouseOver={(e) => e.target.style.transform = 'translateY(-2px)'}
                 onMouseOut={(e) => e.target.style.transform = 'translateY(0)'}
               >
-                Post a Job
+                {t('home.postJob')}
               </button>
             </div>
           </div>
@@ -282,16 +284,16 @@ const Home = ({ onlyActive = false, minimal = false }) => {
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
             <h2 style={{ fontSize: '2rem', color: '#333', margin: 0 }}>
-              Latest Job Opportunities
+              {t('home.latestJobOpportunities')}
             </h2>
             <span style={{ color: '#666', fontSize: '1.1rem' }}>
-              {filteredJobs.length} jobs found
+              {filteredJobs.length} {t('common.jobsFound')}
             </span>
           </div>
 
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem' }}>
-              <div style={{ fontSize: '1.2rem', color: '#666' }}>Loading jobs...</div>
+              <div style={{ fontSize: '1.2rem', color: '#666' }}>{t('common.loadingJobs')}</div>
             </div>
           ) : filteredJobs.length === 0 ? (
             <div style={{ 
@@ -301,11 +303,11 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               borderRadius: '8px', 
               boxShadow: '0 2px 8px #eee' 
             }}>
-              <h3 style={{ color: '#666', marginBottom: '1rem' }}>No jobs found</h3>
+              <h3 style={{ color: '#666', marginBottom: '1rem' }}>{t('common.noJobsFound')}</h3>
               <p style={{ color: '#999' }}>
                 {searchTerm || locationFilter || jobTypeFilter || experienceFilter 
-                  ? 'Try adjusting your search criteria.' 
-                  : 'No jobs are currently available. Check back later!'}
+                  ? t('common.tryAdjustingSearchCriteria') 
+                  : t('common.noJobsAvailable')}
               </p>
             </div>
           ) : (
@@ -379,7 +381,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         fontSize: '1.1rem',
                         fontWeight: '500'
                       }}>
-                        🏢 {job.company_name || 'Company Name'}
+                        🏢 {job.company_name || t('common.companyName')}
                       </p>
                     </div>
 
@@ -497,11 +499,11 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                     }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                         <span style={{ color: '#999', fontSize: '0.8rem' }}>
-                          📅 Posted: {new Date(job.created_at).toLocaleDateString()}
+                          📅 {t('common.postedOn')}: {new Date(job.created_at).toLocaleDateString()}
                         </span>
                         {job.application_deadline && (
                           <span style={{ color: '#ff9800', fontSize: '0.8rem', fontWeight: '500' }}>
-                            ⏰ Deadline: {new Date(job.application_deadline).toLocaleDateString()}
+                            ⏰ {t('common.deadline')}: {new Date(job.application_deadline).toLocaleDateString()}
                           </span>
                         )}
                       </div>
@@ -536,7 +538,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                           e.target.style.boxShadow = '0 2px 8px rgba(76, 175, 80, 0.3)'
                         }}
                       >
-                        🚀 Apply Now
+                        🚀 {t('home.applyNow')}
                       </button>
                       <button
                         onClick={(e) => {
@@ -563,7 +565,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                           e.target.style.color = 'var(--primary)'
                         }}
                       >
-                        👁️ View Details
+                        👁️ {t('home.viewDetails')}
                       </button>
                     </div>
                   </div>
@@ -588,7 +590,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               color: '#333',
               marginBottom: '3rem'
             }}>
-              Why Choose AmharaJobs?
+              {t('home.whyChooseAmharaJobs')}
             </h2>
             
             <div style={{ 
@@ -612,10 +614,10 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   🔍
                 </div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
-                  Easy Job Search
+                  {t('home.easyJobSearch')}
                 </h3>
                 <p style={{ color: '#666', lineHeight: '1.6' }}>
-                  Find the perfect job with our advanced search and filtering options. Browse by location, job type, and experience level.
+                  {t('home.easyJobSearchDescription')}
                 </p>
               </div>
 
@@ -635,10 +637,10 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   🚀
                 </div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
-                  Quick Applications
+                  {t('home.quickApplications')}
                 </h3>
                 <p style={{ color: '#666', lineHeight: '1.6' }}>
-                  Apply to multiple jobs with just a few clicks. Save your resume and cover letter for faster applications.
+                  {t('home.quickApplicationsDescription')}
                 </p>
               </div>
 
@@ -658,10 +660,10 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   📊
                 </div>
                 <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#333' }}>
-                  Track Progress
+                  {t('home.trackProgress')}
                 </h3>
                 <p style={{ color: '#666', lineHeight: '1.6' }}>
-                  Monitor your application status in real-time. Get notified when employers view your application.
+                  {t('home.trackProgressDescription')}
                 </p>
               </div>
             </div>

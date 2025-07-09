@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
+import LanguageSwitcher from './LanguageSwitcher'
 import logo from '../assets/AmharaJlogo.png'
 
 const Navbar = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [user, setUser] = useState(null)
+  const { t } = useLanguage()
 
   // Check for existing user data on initial load
   useEffect(() => {
@@ -117,13 +120,13 @@ const Navbar = () => {
           }}
         >
           <li>
-            <Link to="/" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-              Home
+            <Link to="/" style={{ color: '#111', textDecoration: 'none', fontSize: '1rem' }}>
+              {t('nav.home')}
             </Link>
           </li>
           <li>
-            <Link to="/jobs" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-              Jobs
+            <Link to="/jobs" style={{ color: '#111', textDecoration: 'none', fontSize: '1rem' }}>
+              {t('nav.jobs')}
             </Link>
           </li>
           
@@ -132,28 +135,28 @@ const Navbar = () => {
             <>
               {user.user_type === 'employer' ? (
                 <li>
-                  <Link to="/employer/dashboard" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                    Dashboard
+                  <Link to="/employer/dashboard" style={{ color: '#111', textDecoration: 'none', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                    {t('nav.dashboard')}
                   </Link>
                 </li>
               ) : (
                 // Job seeker menu
                 <>
                   <li>
-                    <Link to="/profile" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                      My Profile
+                    <Link to="/profile" style={{ color: '#111', textDecoration: 'none', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                      {t('nav.profile')}
                     </Link>
                   </li>
                   <li>
-                    <Link to="/my-applications" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                      My Applications
+                    <Link to="/my-applications" style={{ color: '#111', textDecoration: 'none', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                      {t('nav.applications')}
                     </Link>
                   </li>
                 </>
               )}
               <li>
-                <span style={{ color: 'var(--primary)', fontSize: '1rem', fontWeight: 600 }}>
-                  Welcome, {user.fullname}
+                <span style={{ color: 'var(--primary)', fontSize: '0.9rem', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                  {t('nav.welcome', { name: user.fullname })}
                 </span>
               </li>
               <li>
@@ -161,15 +164,16 @@ const Navbar = () => {
                   onClick={handleLogout}
                   style={{
                     background: 'none',
-                    color: '#fff',
-                    fontSize: '1rem',
+                    color: '#111',
+                    fontSize: '0.9rem',
                     cursor: 'pointer',
                     padding: '0.5rem 1rem',
                     borderRadius: '4px',
-                    border: '1px solid #fff'
+                    border: '1px solid var(--primary)',
+                    whiteSpace: 'nowrap'
                   }}
                 >
-                  Logout
+                  {t('nav.logout')}
                 </button>
               </li>
             </>
@@ -177,13 +181,13 @@ const Navbar = () => {
             // Not logged in menu
             <>
               <li>
-                <Link to="/login" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                  Login
+                <Link to="/login" style={{ color: '#111', textDecoration: 'none', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                  {t('nav.login')}
                 </Link>
               </li>
               <li>
-                <Link to="/register" style={{ color: '#fff', textDecoration: 'none', fontSize: '1rem' }}>
-                  Register
+                <Link to="/register" style={{ color: '#111', textDecoration: 'none', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
+                  {t('nav.register')}
                 </Link>
               </li>
               <li>
@@ -192,11 +196,12 @@ const Navbar = () => {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#fff',
-                    fontSize: '1rem',
+                    color: '#111',
+                    fontSize: '0.9rem',
                     fontWeight: 500,
                     cursor: 'pointer',
-                    padding: 0
+                    padding: 0,
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   Are you an Employer or Recruiter?
@@ -204,6 +209,11 @@ const Navbar = () => {
               </li>
             </>
           )}
+          
+          {/* Language Switcher */}
+          <li>
+            <LanguageSwitcher />
+          </li>
         </ul>
       </div>
     </nav>

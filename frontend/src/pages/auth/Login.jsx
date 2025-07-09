@@ -250,8 +250,8 @@ const Login = () => {
                     background: 'none',
                     border: 'none',
                     fontSize: '1.2rem',
-                    cursor: 'pointer',
                     color: '#666',
+                    cursor: 'pointer',
                     padding: '0.25rem'
                   }}
                 >

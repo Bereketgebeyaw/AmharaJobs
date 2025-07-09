@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import './App.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react';
+import { LanguageProvider } from './context/LanguageContext'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
 import EmployerRegister from './pages/employer/EmployerRegister'
@@ -25,7 +26,7 @@ import AdminJobsManagement from './pages/admin/AdminJobsManagement'
 import AdminApplicationsManagement from './pages/admin/AdminApplicationsManagement'
 import AdminReports from './pages/admin/AdminReports'
 
-function App() {
+function AppContent() {
   const location = useLocation();
   const isEmployerPortal = location.pathname.startsWith('/employer');
   const isAdminPortal = location.pathname.startsWith('/admin');
@@ -88,6 +89,14 @@ function App() {
       </main>
       {!isEmployerPortal && !isAdminPortal && <Footer />}
     </>
+  )
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   )
 }
 
