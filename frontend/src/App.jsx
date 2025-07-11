@@ -3,7 +3,7 @@ import EmployerNavbar from './components/EmployerNavbar'
 import Footer from './components/Footer'
 import './App.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { LanguageProvider } from './context/LanguageContext'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
@@ -25,6 +25,8 @@ import AdminUsers from './pages/admin/AdminUsers'
 import AdminJobsManagement from './pages/admin/AdminJobsManagement'
 import AdminApplicationsManagement from './pages/admin/AdminApplicationsManagement'
 import AdminReports from './pages/admin/AdminReports'
+import About from './pages/About';
+import ChatWidget from './components/ChatWidget';
 
 function AppContent() {
   const location = useLocation();
@@ -59,6 +61,8 @@ function AppContent() {
     }
   }, []);
 
+  const showChatWidget = !isEmployerPortal && !isAdminPortal;
+
   return (
     <>
       {!isEmployerPortal && !isAdminPortal && <Navbar />}
@@ -85,8 +89,11 @@ function AppContent() {
           <Route path="/admin/jobs" element={<AdminJobsManagement />} />
           <Route path="/admin/applications" element={<AdminApplicationsManagement />} />
           <Route path="/admin/reports" element={<AdminReports />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
+      {/* Chat Widget */}
+      {showChatWidget && <ChatWidget />}
       {!isEmployerPortal && !isAdminPortal && <Footer />}
     </>
   )

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/AmharaJlogo.png';
 import Footer from '../../components/Footer';
+import ChatWidget from '../../components/ChatWidget';
 
 const EmployerPortal = () => {
   const navigate = useNavigate();
@@ -324,6 +325,8 @@ const EmployerPortal = () => {
         </div>
       </div>
 
+      {/* Chat Widget for Employer Portal */}
+      <ChatWidget />
       {/* Footer */}
       <Footer />
     </div>
