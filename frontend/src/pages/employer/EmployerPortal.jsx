@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/AmharaJlogo.png';
+import Footer from '../../components/Footer';
 
 const EmployerPortal = () => {
   const navigate = useNavigate();
@@ -324,27 +325,7 @@ const EmployerPortal = () => {
       </div>
 
       {/* Footer */}
-      <footer style={{ 
-        background: '#333', 
-        color: '#fff', 
-        padding: '2rem',
-        textAlign: 'center'
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <p>&copy; 2024 AmharaJobs - Employer Portal. All rights reserved.</p>
-          <div style={{ marginTop: '1rem' }}>
-            <Link to="/" style={{ color: '#fff', textDecoration: 'none', margin: '0 1rem' }}>
-              Job Seeker Portal
-            </Link>
-            <Link to="/employer/login" style={{ color: '#fff', textDecoration: 'none', margin: '0 1rem' }}>
-              Employer Login
-            </Link>
-            <Link to="/employer/register" style={{ color: '#fff', textDecoration: 'none', margin: '0 1rem' }}>
-              Employer Sign Up
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
