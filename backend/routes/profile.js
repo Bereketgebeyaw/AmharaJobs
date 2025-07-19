@@ -93,6 +93,9 @@ router.put('/:userId', authenticateUser, async (req, res) => {
       .where('user_id', userId)
       .first();
 
+    // Sanitize date_of_birth
+    const sanitizedDateOfBirth = date_of_birth === '' ? null : date_of_birth;
+
     if (existingProfile) {
       // Update existing profile
       await knex('user_profiles')
@@ -102,7 +105,7 @@ router.put('/:userId', authenticateUser, async (req, res) => {
           email,
           phone,
           address,
-          date_of_birth,
+          date_of_birth: sanitizedDateOfBirth,
           gender,
           skills,
           experience,
@@ -120,7 +123,7 @@ router.put('/:userId', authenticateUser, async (req, res) => {
         email,
         phone,
         address,
-        date_of_birth,
+        date_of_birth: sanitizedDateOfBirth,
         gender,
         skills,
         experience,
