@@ -5,7 +5,7 @@ const JobsManagement = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [filter, setFilter] = useState('all'); // all, active, inactive
+  const [filter, setFilter] = useState('all'); 
 
   useEffect(() => {
     fetchJobs();

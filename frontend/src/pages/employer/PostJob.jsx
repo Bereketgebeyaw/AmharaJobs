@@ -51,7 +51,7 @@ const PostJob = () => {
         });
 
         if (response.ok) {
-          alert('Job posted successfully!');
+          alert('Your job application has been sent to the admin and is waiting for approval. You will get an email when it is approved.');
           navigate('/employer/dashboard');
         } else {
           const errorData = await response.json();

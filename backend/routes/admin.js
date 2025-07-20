@@ -3,6 +3,7 @@ const router = express.Router();
 const knex = require('knex')(require('../knexfile').development);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { sendEmail } = require('../utils/mailer');
 
 // Middleware to verify admin token
 const authenticateAdminToken = async (req, res, next) => {
@@ -282,14 +283,58 @@ router.get('/jobs', authenticateAdminToken, async (req, res) => {
 router.patch('/jobs/:id/status', authenticateAdminToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, denial_reason } = req.body;
 
     const job = await knex('jobs').where('id', id).first();
     if (!job) {
       return res.status(404).json({ error: 'Job not found' });
     }
 
+    // Only send emails if approving a pending job
+    const wasPending = job.status === 'pending';
     await knex('jobs').where('id', id).update({ status });
+
+    if (wasPending && status === 'active') {
+      // Get employer info
+      const employer = await knex('employers').where('id', job.employer_id).first();
+      const employerUser = await knex('users').where('id', employer.user_id).first();
+      // Send email to employer
+      await sendEmail({
+        to: employerUser.email,
+        subject: 'Your job has been approved!',
+        html: `<h2>Your job posting "${job.title}" has been approved and is now live on AmharaJobs.</h2><p>Thank you for using our platform!</p>`
+      });
+      // Send email to all jobseekers
+      const jobSeekers = await knex('users').where({ user_type: 'jobseeker', is_verified: true });
+      const jobUrl = `http://localhost:5173/job/${job.id}`;
+      const subject = `New Job Posted: ${job.title} (${job.location})`;
+      const html = `
+        <h2>New Job Opportunity: ${job.title}</h2>
+        <p><strong>Company:</strong> ${employer.company_name || 'A top employer'}</p>
+        <p><strong>Location:</strong> ${job.location}</p>
+        <p><strong>Type:</strong> ${job.job_type} | <strong>Experience:</strong> ${job.experience_level}</p>
+        <p><strong>Description:</strong> ${job.description.substring(0, 200)}...</p>
+        <p><a href="${jobUrl}" style="background:#4caf50;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;">View & Apply</a></p>
+        <p style="color:#888;font-size:0.9em;">You are receiving this because you have an account on AmharaJobs.</p>
+      `;
+      for (const seeker of jobSeekers) {
+        await sendEmail({
+          to: seeker.email,
+          subject,
+          html
+        });
+      }
+    } else if (wasPending && status === 'inactive' && denial_reason) {
+      // Send denial email to employer
+      const employer = await knex('employers').where('id', job.employer_id).first();
+      const employerUser = await knex('users').where('id', employer.user_id).first();
+      await sendEmail({
+        to: employerUser.email,
+        subject: 'Your job posting was denied',
+        html: `<h2>Your job posting "${job.title}" was denied by the admin.</h2><p>Reason: ${denial_reason}</p><p>If you have questions, please contact support.</p>`
+      });
+    }
+
     res.json({ message: 'Job status updated successfully' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to update job status' });
