@@ -129,13 +129,24 @@ router.post('/employer/register', async (req, res) => {
       })
       .returning(['id', 'fullname', 'email', 'phone', 'created_at']);
     // Create employer record with business-specific data only
-    await knex('employers').insert({
+    const [employer] = await knex('employers').insert({
       user_id: user.id,
       company_type,
       contact_person,
       address,
       created_at: new Date()
-    });
+    }).returning('*');
+
+    // Assign default package (New User Plan) to employer
+    const newUserPackage = await knex('packages').where({ name: 'New User Plan' }).first();
+    if (newUserPackage) {
+      await knex('employer_packages').insert({
+        employer_id: employer.id,
+        package_id: newUserPackage.id,
+        start_date: new Date(),
+        is_active: true
+      });
+    }
     await sendVerificationEmail(email, verification_token);
     res.status(201).json({ user, message: 'Registration successful. Please check your email to verify your account.' });
   } catch (err) {

@@ -352,4 +352,14 @@ router.get('/applications', authenticateToken, verifyEmployer, async (req, res) 
   }
 });
 
+// Public endpoint to get all packages (pricing plans)
+router.get('/packages', async (req, res) => {
+  try {
+    const packages = await knex('packages').select('*').orderBy('price', 'asc');
+    res.json({ packages });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load packages' });
+  }
+});
+
 module.exports = router; 

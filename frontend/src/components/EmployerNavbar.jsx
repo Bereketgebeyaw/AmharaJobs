@@ -56,11 +56,12 @@ const EmployerNavbar = () => {
         <ul
           style={{
             display: 'flex',
-            gap: '2rem',
+            gap: '2rem', // reverted to original gap
             listStyle: 'none',
             margin: 0,
             padding: 0,
             alignItems: 'center'
+            // removed flexWrap
           }}
         >
           <li>
@@ -83,14 +84,14 @@ const EmployerNavbar = () => {
               Applications
             </Link>
           </li>
+          <li>
+            <Link to="/employer/pricing" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+              Pricing
+            </Link>
+          </li>
           
           {user ? (
             <>
-              <li>
-                <span style={{ color: 'var(--primary)', fontSize: '1rem' }}>
-                  Welcome, {user.company_name || user.fullname}
-                </span>
-              </li>
               <li>
                 <button
                   onClick={handleLogout}

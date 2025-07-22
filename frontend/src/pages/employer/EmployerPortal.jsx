@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/AmharaJlogo.png';
 import Footer from '../../components/Footer';
@@ -6,6 +6,23 @@ import ChatWidget from '../../components/ChatWidget';
 
 const EmployerPortal = () => {
   const navigate = useNavigate();
+  const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/employer/packages')
+      .then(res => res.json())
+      .then(data => {
+        setPackages(data.packages || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Failed to load pricing packages.');
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(120deg, #e6f4ea 0%, #fff 100%)' }}>
       {/* Employer Portal Navbar */}
@@ -47,6 +64,21 @@ const EmployerPortal = () => {
             AmharaJobs - Employer Portal
           </Link>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+            <Link 
+              to="/employer/pricing" 
+              style={{ 
+                color: 'var(--primary)', 
+                textDecoration: 'none', 
+                fontSize: '1rem',
+                padding: '0.5rem 1rem',
+                borderRadius: '4px',
+                border: '1px solid var(--primary)',
+                background: '#fff',
+                fontWeight: 500
+              }}
+            >
+              Pricing
+            </Link>
             <Link 
               to="/employer/login" 
               style={{ 
@@ -292,6 +324,78 @@ const EmployerPortal = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Pricing Packages Section */}
+      <div style={{
+        padding: '4rem 2rem',
+        background: '#fff',
+        maxWidth: 1200,
+        margin: '0 auto'
+      }}>
+        <h2 style={{
+          textAlign: 'center',
+          fontSize: '2.5rem',
+          color: '#333',
+          marginBottom: '3rem'
+        }}>
+          Employer Pricing Packages
+        </h2>
+        {loading ? (
+          <div style={{ textAlign: 'center', color: '#888', fontSize: '1.2rem' }}>Loading packages...</div>
+        ) : error ? (
+          <div style={{ textAlign: 'center', color: 'red', fontSize: '1.2rem' }}>{error}</div>
+        ) : (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '2rem',
+            marginTop: '2rem'
+          }}>
+            {packages.map((pkg, idx) => (
+              <div key={pkg.id} style={{
+                border: '1.5px solid #e0e0e0',
+                borderRadius: '16px',
+                boxShadow: '0 4px 16px rgba(44, 62, 80, 0.08)',
+                padding: '2rem 1.5rem',
+                background: '#fafbfc',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                minHeight: 420
+              }}>
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#00732f', marginBottom: 8 }}>{pkg.name}</h3>
+                <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#222', marginBottom: 4 }}>{pkg.price.toLocaleString()} birr <span style={{ fontSize: '1rem', color: '#888', fontWeight: 400 }}>/ year</span></div>
+                <div style={{ fontSize: '1.1rem', color: '#444', marginBottom: 12 }}>Job Post Limit: <b>{pkg.job_post_limit}</b></div>
+                <div style={{ marginBottom: 16, color: '#666', fontSize: '1rem', textAlign: 'center' }}>{pkg.description}</div>
+                <ul style={{ textAlign: 'left', color: '#333', fontSize: '1rem', marginBottom: 18, paddingLeft: 18 }}>
+                  {Array.isArray(pkg.features)
+                    ? pkg.features.map((f, i) => (
+                        <li key={i} style={{ marginBottom: 4 }}>✔️ {f}</li>
+                      ))
+                    : pkg.features && JSON.parse(pkg.features).map((f, i) => (
+                        <li key={i} style={{ marginBottom: 4 }}>✔️ {f}</li>
+                      ))
+                  }
+                </ul>
+                <button style={{
+                  background: '#00732f',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.7rem 2.2rem',
+                  fontSize: '1.1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  marginTop: 'auto',
+                  boxShadow: '0 2px 8px rgba(0,115,47,0.10)'
+                }}>
+                  Buy Now
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* CTA Section */}

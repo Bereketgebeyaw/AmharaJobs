@@ -27,6 +27,7 @@ import AdminApplicationsManagement from './pages/admin/AdminApplicationsManageme
 import AdminReports from './pages/admin/AdminReports'
 import About from './pages/About';
 import ChatWidget from './components/ChatWidget';
+import Pricing from './pages/employer/Pricing';
 
 function AppContent() {
   const location = useLocation();
@@ -79,6 +80,7 @@ function AppContent() {
           <Route path="/employer/post-job" element={<PostJob />} />
           <Route path="/employer/jobs" element={<JobsManagement />} />
           <Route path="/employer/applications" element={<ApplicationsManagement />} />
+          <Route path="/employer/pricing" element={<Pricing />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/my-applications" element={<MyApplications />} />
           <Route path="/job/:id" element={<Job />} />
