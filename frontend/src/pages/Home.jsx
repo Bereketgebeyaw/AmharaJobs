@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import logo from '../assets/AmharaJlogo.png'
 import JobApplicationModal from '../components/JobApplicationModal'
+import AmharaLocationAutocomplete from '../components/AmharaLocationAutocomplete';
 
 const Home = ({ onlyActive = false, minimal = false }) => {
   const navigate = useNavigate()
@@ -145,18 +146,9 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                     fontSize: '1rem'
                   }}
                 />
-                <input
-                  type="text"
-                  placeholder={t('common.location')}
+                <AmharaLocationAutocomplete
                   value={locationFilter}
-                  onChange={(e) => setLocationFilter(e.target.value)}
-                  style={{
-                    minWidth: '150px',
-                    padding: '1rem',
-                    borderRadius: '8px',
-                    border: '1px solid #ddd',
-                    fontSize: '1rem'
-                  }}
+                  onChange={setLocationFilter}
                 />
               </div>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
