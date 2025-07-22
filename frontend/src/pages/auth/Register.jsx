@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import logo from '../../assets/AmharaJlogo.png'
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+
+const GOOGLE_CLIENT_ID = '586868703290-u7ekfv7b2sovpopf4106tlep95kirf5s.apps.googleusercontent.com';
 
 const Register = () => {
   const navigate = useNavigate()
@@ -54,6 +57,32 @@ const Register = () => {
       }
     }
   }
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    if (!credentialResponse.credential) return;
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: credentialResponse.credential })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('userId', data.user.id);
+        window.dispatchEvent(new CustomEvent('userLogin', { detail: data.user }));
+        navigate('/');
+      } else {
+        setErrors({ api: data.error || 'Google signup failed.' });
+      }
+    } catch (err) {
+      setErrors({ api: 'Google signup failed. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={{ 
@@ -521,6 +550,19 @@ const Register = () => {
                 <div style={{ flex: 1, height: '1px', background: '#e1e5e9' }}></div>
                 <span style={{ padding: '0 1rem', fontSize: '0.9rem' }}>or</span>
                 <div style={{ flex: 1, height: '1px', background: '#e1e5e9' }}></div>
+              </div>
+              {/* Google Sign Up Button */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => setErrors({ api: 'Google signup failed.' })}
+                    width="100%"
+                    text="signup_with"
+                    shape="pill"
+                    theme="outline"
+                  />
+                </GoogleOAuthProvider>
               </div>
 
               {/* Login Link */}
