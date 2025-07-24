@@ -362,4 +362,105 @@ router.get('/packages', async (req, res) => {
   }
 });
 
+// Chapa payment integration
+const axios = require('axios');
+
+// Create a payment session for Chapa
+router.post('/pay', authenticateToken, verifyEmployer, async (req, res) => {
+  const { package_id } = req.body;
+  if (!package_id) return res.status(400).json({ error: 'Package ID is required' });
+
+  try {
+    const employer = await knex('employers').where({ user_id: req.user.id }).first();
+    const pkg = await knex('packages').where({ id: package_id }).first();
+    if (!pkg) return res.status(404).json({ error: 'Package not found' });
+
+    // Prepare Chapa payment payload
+    const tx_ref = `amhara_${Date.now()}_${employer.id}`;
+    const chapaPayload = {
+      amount: pkg.price,
+      currency: 'ETB',
+      email: employer.email, // replace if req.employerUser.email is undefined
+      first_name: employer.company_name || 'Employer',
+      last_name: employer.contact_person || 'Contact',
+      tx_ref,
+      callback_url: `${process.env.BASE_URL || 'http://localhost:5000'}/api/employer/chapa-callback`,
+      return_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/employer/payment-success?tx_ref=${tx_ref}`,
+      customization: {
+        title: 'AmharaJobs Plan', // ✅ short title
+        description: `Payment for ${pkg.name}`
+      }
+    };
+    
+
+    // Call Chapa API to create payment
+    const chapaRes = await axios.post('https://api.chapa.co/v1/transaction/initialize', chapaPayload, {
+      headers: {
+        Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (chapaRes.data && chapaRes.data.status === 'success') {
+      // Optionally, store tx_ref and pending payment in DB
+      await knex('employer_packages').insert({
+        employer_id: employer.id,
+        package_id: pkg.id,
+        start_date: new Date(),
+        is_active: false, // Activate after payment
+        tx_ref
+      });
+      return res.json({ checkout_url: chapaRes.data.data.checkout_url });
+    } else {
+      return res.status(500).json({ error: 'Failed to initialize payment' });
+    }
+  } catch (err) {
+    console.error('Chapa payment error:', err.response?.data || err.message);
+    res.status(500).json({ error: 'Payment initialization failed' });
+  }
+});
+
+// Chapa webhook/callback endpoint
+router.post('/chapa-callback', async (req, res) => {
+  // Chapa will send tx_ref and status
+  const { tx_ref, status } = req.body;
+  if (!tx_ref || !status) return res.status(400).json({ error: 'Invalid callback' });
+
+  try {
+    // Find the pending employer_package by tx_ref
+    const employerPackage = await knex('employer_packages').where({ tx_ref }).first();
+    if (!employerPackage) return res.status(404).json({ error: 'Transaction not found' });
+
+    if (status === 'success') {
+      // Activate the package
+      await knex('employer_packages').where({ id: employerPackage.id }).update({ is_active: true, end_date: null });
+      // Optionally, send confirmation email
+    } else {
+      // Optionally, handle failed payment
+      await knex('employer_packages').where({ id: employerPackage.id }).update({ is_active: false });
+    }
+    res.json({ message: 'Callback processed' });
+  } catch (err) {
+    console.error('Chapa callback error:', err.message);
+    res.status(500).json({ error: 'Callback processing failed' });
+  }
+});
+
+// Verify payment status for frontend
+router.post('/verify-payment', async (req, res) => {
+  const { tx_ref } = req.body;
+  if (!tx_ref) return res.status(400).json({ status: 'error', message: 'Missing tx_ref' });
+  try {
+    const employerPackage = await knex('employer_packages').where({ tx_ref }).first();
+    if (!employerPackage) return res.status(404).json({ status: 'error', message: 'Transaction not found' });
+    if (employerPackage.is_active) {
+      return res.json({ status: 'success', message: 'Payment verified and package activated.' });
+    } else {
+      return res.json({ status: 'error', message: 'Payment not completed or package not activated.' });
+    }
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: 'Failed to verify payment.' });
+  }
+});
+
 module.exports = router; 

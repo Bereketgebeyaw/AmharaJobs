@@ -52,6 +52,33 @@ const Pricing = () => {
     outline: 'none',
   };
 
+  // Handle Chapa payment
+  const handleBuyNow = async (packageId) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('You must be logged in as an employer to purchase a package.');
+      return;
+    }
+    try {
+      const res = await fetch('http://localhost:5000/api/employer/pay', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ package_id: packageId })
+      });
+      const data = await res.json();
+      if (res.ok && data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert(data.error || 'Failed to initiate payment.');
+      }
+    } catch (err) {
+      alert('Network error. Please try again.');
+    }
+  };
+
   return (
     <>
       <div style={{ minHeight: '100vh', background: 'linear-gradient(120deg, #e6f4ea 0%, #f7f9fb 100%)', padding: '4rem 2rem' }}>
@@ -112,22 +139,7 @@ const Pricing = () => {
                 </ul>
                 <button
                   style={buttonStyle}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = '#00732f';
-                    e.currentTarget.style.color = '#fff';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = '#fff';
-                    e.currentTarget.style.color = '#00732f';
-                  }}
-                  onFocus={e => {
-                    e.currentTarget.style.background = '#00732f';
-                    e.currentTarget.style.color = '#fff';
-                  }}
-                  onBlur={e => {
-                    e.currentTarget.style.background = '#fff';
-                    e.currentTarget.style.color = '#00732f';
-                  }}
+                  onClick={() => handleBuyNow(pkg.id)}
                 >
                   Buy Now
                 </button>
