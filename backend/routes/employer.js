@@ -362,6 +362,31 @@ router.get('/packages', async (req, res) => {
   }
 });
 
+// Get employer's active packages
+router.get('/my-packages', authenticateToken, verifyEmployer, async (req, res) => {
+  try {
+    const employer = await knex('employers').where({ user_id: req.user.id }).first();
+    
+    const activePackages = await knex('employer_packages')
+      .join('packages', 'employer_packages.package_id', 'packages.id')
+      .where({ 
+        'employer_packages.employer_id': employer.id, 
+        'employer_packages.is_active': true 
+      })
+      .select(
+        'employer_packages.*',
+        'packages.name as package_name',
+        'packages.description as package_description',
+        'packages.price as package_price',
+        'packages.job_post_limit'
+      );
+    
+    res.json({ activePackages });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load active packages' });
+  }
+});
+
 // Chapa payment integration
 const axios = require('axios');
 
@@ -374,6 +399,20 @@ router.post('/pay', authenticateToken, verifyEmployer, async (req, res) => {
     const employer = await knex('employers').where({ user_id: req.user.id }).first();
     const pkg = await knex('packages').where({ id: package_id }).first();
     if (!pkg) return res.status(404).json({ error: 'Package not found' });
+
+    // Check if employer already has an active package of the same type
+    const existingActive = await knex('employer_packages')
+      .where({ employer_id: employer.id, package_id: pkg.id, is_active: true })
+      .first();
+    
+    if (existingActive) {
+      return res.status(400).json({ 
+        error: 'You already have an active subscription for this package.',
+        message: `You have already purchased the ${pkg.name} package and it is still active. You can purchase a different package or wait until your current subscription expires.`,
+        packageName: pkg.name,
+        existingPackage: existingActive
+      });
+    }
 
     // Prepare Chapa payment payload
     const tx_ref = `amhara_${Date.now()}_${employer.id}`;
