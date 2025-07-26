@@ -71,7 +71,7 @@ function AppContent() {
       {!isEmployerPortal && !isAdminPortal && <Navbar />}
       {isEmployerLoggedIn && <EmployerNavbar />}
       {isEmployerPublic && <PublicEmployerNavbar />}
-      <main style={isEmployerPortal ? { paddingTop: '80px', minHeight: 'calc(100vh - 80px)' } : { minHeight: '70vh', padding: '2rem 1rem' }}>
+      <main style={isEmployerPortal ? { paddingTop: '1rem', minHeight: 'calc(100vh - 80px)' } : { minHeight: '70vh', padding: '2rem 1rem' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />

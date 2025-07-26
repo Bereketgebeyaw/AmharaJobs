@@ -25,9 +25,9 @@ const EmployerPortal = () => {
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(120deg, #e6f4ea 0%, #fff 100%)' }}>
-      {/* Hero Section */}
+      
       <div style={{ 
-        padding: '4rem 2rem', 
+        padding: '1rem 2rem 4rem 2rem', 
         textAlign: 'center',
         maxWidth: 1200,
         margin: '0 auto'
