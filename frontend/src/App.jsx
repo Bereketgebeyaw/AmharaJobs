@@ -1,15 +1,14 @@
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { LanguageProvider } from './context/LanguageContext'
 import Navbar from './components/Navbar'
 import EmployerNavbar from './components/EmployerNavbar'
-import Footer from './components/Footer'
-import './App.css'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react';
-import { LanguageProvider } from './context/LanguageContext'
+import PublicEmployerNavbar from './components/PublicEmployerNavbar'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
-import EmployerRegister from './pages/employer/EmployerRegister'
-import EmployerLogin from './pages/employer/EmployerLogin'
 import EmployerPortal from './pages/employer/EmployerPortal'
+import EmployerLogin from './pages/employer/EmployerLogin'
+import EmployerRegister from './pages/employer/EmployerRegister'
 import Dashboard from './pages/employer/Dashboard'
 import PostJob from './pages/employer/PostJob'
 import JobsManagement from './pages/employer/JobsManagement'
@@ -29,12 +28,14 @@ import About from './pages/About';
 import ChatWidget from './components/ChatWidget';
 import Pricing from './pages/employer/Pricing';
 import PaymentSuccess from './pages/employer/PaymentSuccess';
+import Footer from './components/Footer';
 
 function AppContent() {
   const location = useLocation();
   const isEmployerPortal = location.pathname.startsWith('/employer');
   const isAdminPortal = location.pathname.startsWith('/admin');
-  const isEmployerLoggedIn = location.pathname.startsWith('/employer/dashboard') || location.pathname.startsWith('/employer/post-job') || location.pathname.startsWith('/employer/jobs') || location.pathname.startsWith('/employer/applications');
+  const isEmployerLoggedIn = location.pathname.startsWith('/employer/dashboard') || location.pathname.startsWith('/employer/post-job') || location.pathname.startsWith('/employer/jobs') || location.pathname.startsWith('/employer/applications') || location.pathname.startsWith('/employer/pricing') || location.pathname.startsWith('/employer/payment-success');
+  const isEmployerPublic = location.pathname === '/employer' || location.pathname === '/employer/login' || location.pathname === '/employer/register';
 
   useEffect(() => {
     if (isEmployerPortal || isAdminPortal) {
@@ -69,7 +70,8 @@ function AppContent() {
     <>
       {!isEmployerPortal && !isAdminPortal && <Navbar />}
       {isEmployerLoggedIn && <EmployerNavbar />}
-      <main style={isEmployerLoggedIn ? { paddingTop: '80px', minHeight: 'calc(100vh - 80px)' } : { minHeight: '70vh', padding: '2rem 1rem' }}>
+      {isEmployerPublic && <PublicEmployerNavbar />}
+      <main style={isEmployerPortal ? { paddingTop: '80px', minHeight: 'calc(100vh - 80px)' } : { minHeight: '70vh', padding: '2rem 1rem' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />

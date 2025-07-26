@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/AmharaJlogo.png';
 
 const EmployerLogin = () => {
   const navigate = useNavigate();
@@ -9,6 +10,10 @@ const EmployerLogin = () => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Clear error when user starts typing
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: '' });
+    }
   };
 
   const validate = () => {
@@ -55,228 +60,340 @@ const EmployerLogin = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(120deg, #e6f4ea 0%, #fff 100%)' }}>
-      {/* Employer Portal Navbar */}
-      <nav
-        style={{
-          background: 'var(--primary)',
-          color: '#fff',
-          padding: '1rem 2rem',
-          boxShadow: '0 2px 8px #e3e3e3',
-          position: 'sticky',
-          top: 0,
-          left: 0,
-          right: 0,
-          width: '100vw',
-          margin: 0,
-          zIndex: 100
-        }}
-      >
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          maxWidth: 1200,
-          margin: '0 auto'
-        }}>
-          <Link
-            to="/employer"
-            style={{
-              fontWeight: 'bold',
-              fontSize: '1.5rem',
-              color: '#fff',
-              textDecoration: 'none',
-              letterSpacing: 1
-            }}
-          >
-            AmharaJobs - Employer Portal
-          </Link>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <Link 
-              to="/employer/register" 
-              style={{ 
-                color: '#fff', 
-                textDecoration: 'none', 
-                fontSize: '1rem',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                border: '1px solid #fff'
-              }}
-            >
-              Sign Up
-            </Link>
-            <Link 
-              to="/" 
-              style={{ 
-                color: '#fff', 
-                textDecoration: 'none', 
-                fontSize: '1rem',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                border: '1px solid rgba(255,255,255,0.3)'
-              }}
-            >
-              Are you a Job Seeker?
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* Login Form */}
+    <div style={{ 
+      minHeight: '100vh',
+      background: '#f7f9fb',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem'
+    }}>
       <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        minHeight: 'calc(100vh - 80px)',
-        padding: '2rem'
+        width: '100%', 
+        maxWidth: 450, 
+        background: '#fff', 
+        borderRadius: '20px', 
+        boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+        overflow: 'hidden',
+        position: 'relative'
       }}>
-        <div style={{ 
-          background: '#fff', 
-          padding: '3rem', 
-          borderRadius: '12px', 
-          boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
-          width: '100%',
-          maxWidth: 450
+        {/* Header Section */}
+        <div style={{
+          background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+          color: '#fff',
+          padding: '2rem',
+          textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
-          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <h1 style={{ 
-              color: 'var(--primary)', 
-              fontSize: '2rem', 
-              marginBottom: '0.5rem',
-              fontWeight: '600'
-            }}>
-              Welcome Back
-            </h1>
-            <p style={{ color: '#666', fontSize: '1.1rem' }}>
-              Sign in to your employer account
-            </p>
+          <div style={{
+            position: 'absolute',
+            top: '-50%',
+            right: '-50%',
+            width: '200%',
+            height: '200%',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+            animation: 'float 6s ease-in-out infinite'
+          }}></div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+            <img src={logo} alt="AmharaJobs Logo" style={{ height: 50, marginRight: 12 }} />
+            <h1 style={{ fontSize: '1.8rem', fontWeight: '700', margin: 0 }}>AmharaJobs</h1>
           </div>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            margin: '0 0 0.5rem 0',
+            opacity: 0.95
+          }}>
+            Welcome Back, Employer!
+          </h2>
+          <p style={{ 
+            fontSize: '1rem', 
+            margin: 0, 
+            opacity: 0.8,
+            fontWeight: '400'
+          }}>
+            Sign in to access your employer dashboard and manage your job postings
+          </p>
+        </div>
 
+        {/* Form Section */}
+        <div style={{ padding: '2rem' }}>
           <form onSubmit={handleSubmit}>
+            {/* Email Field */}
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ 
                 display: 'block', 
                 marginBottom: '0.5rem', 
-                fontWeight: '500',
-                color: '#333'
+                color: '#333', 
+                fontSize: '0.95rem',
+                fontWeight: '600'
               }}>
-                Company Email
+                📧 Company Email Address
               </label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                style={{ 
-                  width: '100%', 
-                  padding: '0.75rem', 
-                  borderRadius: '6px', 
-                  border: errors.email ? '1px solid #f44336' : '1px solid #ddd',
-                  fontSize: '1rem',
-                  boxSizing: 'border-box'
-                }}
-                placeholder="Enter your company email"
-              />
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type="email" 
+                  name="email" 
+                  value={form.email} 
+                  onChange={handleChange}
+                  placeholder="Enter your company email address"
+                  style={{ 
+                    width: '100%', 
+                    padding: '1rem 1rem 1rem 3rem', 
+                    borderRadius: '12px', 
+                    border: errors.email ? '2px solid #f44336' : '2px solid #e1e5e9',
+                    fontSize: '1rem',
+                    background: '#f8f9fa',
+                    transition: 'all 0.3s ease',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.background = '#fff'
+                    e.target.style.borderColor = 'var(--primary)'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.background = '#f8f9fa'
+                    e.target.style.borderColor = errors.email ? '#f44336' : '#e1e5e9'
+                    e.target.style.boxShadow = 'none'
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  left: '1rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#666',
+                  fontSize: '1.2rem'
+                }}>
+                  📧
+                </div>
+              </div>
               {errors.email && (
-                <div style={{ color: '#f44336', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                  {errors.email}
+                <div style={{ 
+                  color: '#f44336', 
+                  fontSize: '0.85rem', 
+                  marginTop: '0.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem'
+                }}>
+                  ⚠️ {errors.email}
                 </div>
               )}
             </div>
 
-            <div style={{ marginBottom: '2rem' }}>
+            {/* Password Field */}
+            <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ 
                 display: 'block', 
                 marginBottom: '0.5rem', 
-                fontWeight: '500',
-                color: '#333'
+                color: '#333', 
+                fontSize: '0.95rem',
+                fontWeight: '600'
               }}>
-                Password
+                🔒 Password
               </label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                style={{ 
-                  width: '100%', 
-                  padding: '0.75rem', 
-                  borderRadius: '6px', 
-                  border: errors.password ? '1px solid #f44336' : '1px solid #ddd',
-                  fontSize: '1rem',
-                  boxSizing: 'border-box'
-                }}
-                placeholder="Enter your password"
-              />
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type="password" 
+                  name="password" 
+                  value={form.password} 
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  style={{ 
+                    width: '100%', 
+                    padding: '1rem 1rem 1rem 3rem', 
+                    borderRadius: '12px', 
+                    border: errors.password ? '2px solid #f44336' : '2px solid #e1e5e9',
+                    fontSize: '1rem',
+                    background: '#f8f9fa',
+                    transition: 'all 0.3s ease',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.background = '#fff'
+                    e.target.style.borderColor = 'var(--primary)'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.background = '#f8f9fa'
+                    e.target.style.borderColor = errors.password ? '#f44336' : '#e1e5e9'
+                    e.target.style.boxShadow = 'none'
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  left: '1rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#666',
+                  fontSize: '1.2rem'
+                }}>
+                  🔒
+                </div>
+              </div>
               {errors.password && (
-                <div style={{ color: '#f44336', fontSize: '0.875rem', marginTop: '0.25rem' }}>
-                  {errors.password}
+                <div style={{ 
+                  color: '#f44336', 
+                  fontSize: '0.85rem', 
+                  marginTop: '0.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem'
+                }}>
+                  ⚠️ {errors.password}
                 </div>
               )}
             </div>
 
+            {/* API Error */}
             {errors.api && (
               <div style={{ 
-                color: '#f44336', 
                 background: '#ffebee', 
-                padding: '0.75rem', 
-                borderRadius: '6px', 
+                color: '#c62828', 
+                padding: '1rem', 
+                borderRadius: '8px', 
                 marginBottom: '1.5rem',
-                fontSize: '0.875rem'
+                border: '1px solid #ffcdd2',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
               }}>
-                {errors.api}
+                ⚠️ {errors.api}
               </div>
             )}
 
-            <button
-              type="submit"
+            {/* Submit Button */}
+            <button 
+              type="submit" 
               disabled={loading}
-              style={{
-                width: '100%',
-                background: 'var(--primary)',
-                color: '#fff',
-                padding: '0.875rem',
-                borderRadius: '6px',
-                border: 'none',
-                fontSize: '1rem',
+              style={{ 
+                width: '100%', 
+                padding: '1rem', 
+                background: loading ? '#ccc' : 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: '12px', 
+                fontSize: '1.1rem',
                 fontWeight: '600',
                 cursor: loading ? 'not-allowed' : 'pointer',
-                opacity: loading ? 0.7 : 1,
-                marginBottom: '1.5rem'
+                transition: 'all 0.3s ease',
+                boxShadow: loading ? 'none' : '0 4px 15px rgba(0,115,47,0.3)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseOver={(e) => {
+                if (!loading) {
+                  e.target.style.transform = 'translateY(-2px)'
+                  e.target.style.boxShadow = '0 6px 20px rgba(0,115,47,0.4)'
+                }
+              }}
+              onMouseOut={(e) => {
+                if (!loading) {
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.boxShadow = '0 4px 15px rgba(0,115,47,0.3)'
+                }
               }}
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {loading ? (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                  <div style={{
+                    width: '20px',
+                    height: '20px',
+                    border: '2px solid #fff',
+                    borderTop: '2px solid transparent',
+                    borderRadius: '50%',
+                    animation: 'spin 1s linear infinite'
+                  }}></div>
+                  Signing In...
+                </div>
+              ) : (
+                '🚀 Sign In to Employer Portal'
+              )}
             </button>
 
-            <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-              <span style={{ color: '#666' }}>Don't have an account? </span>
-              <Link 
-                to="/employer/register" 
-                style={{ 
-                  color: 'var(--primary)', 
+            {/* Divider */}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              margin: '2rem 0',
+              color: '#666'
+            }}>
+              <div style={{ flex: 1, height: '1px', background: '#e1e5e9' }}></div>
+              <span style={{ padding: '0 1rem', fontSize: '0.9rem' }}>or</span>
+              <div style={{ flex: 1, height: '1px', background: '#e1e5e9' }}></div>
+            </div>
+
+            {/* Register Link */}
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ color: '#666', margin: '0 0 1rem 0', fontSize: '0.95rem' }}>
+                Don't have an employer account?
+              </p>
+              <Link
+                to="/employer/register"
+                style={{
+                  display: 'inline-block',
+                  padding: '0.75rem 2rem',
+                  background: 'transparent',
+                  color: 'var(--primary)',
+                  border: '2px solid var(--primary)',
+                  borderRadius: '8px',
                   textDecoration: 'none',
-                  fontWeight: '500'
+                  fontWeight: '600',
+                  fontSize: '1rem',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = 'var(--primary)'
+                  e.target.style.color = '#fff'
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = 'transparent'
+                  e.target.style.color = 'var(--primary)'
                 }}
               >
-                Sign up here
+                🏢 Register as Employer
               </Link>
             </div>
 
-            <div style={{ textAlign: 'center' }}>
-              <Link 
-                to="/" 
-                style={{ 
-                  color: '#666', 
+            {/* Job Seeker Link */}
+            <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+              <p style={{ color: '#666', margin: '0 0 0.5rem 0', fontSize: '0.9rem' }}>
+                Are you a job seeker?
+              </p>
+              <Link
+                to="/login"
+                style={{
+                  color: '#2196f3',
                   textDecoration: 'none',
-                  fontSize: '0.9rem'
+                  fontSize: '0.9rem',
+                  fontWeight: '500',
+                  transition: 'color 0.3s ease'
                 }}
+                onMouseOver={(e) => e.target.style.color = '#1976d2'}
+                onMouseOut={(e) => e.target.style.color = '#2196f3'}
               >
-                ← Back to Job Seeker Portal
+                👤 Sign in to Job Seeker Portal
               </Link>
             </div>
           </form>
         </div>
       </div>
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+      `}</style>
     </div>
   );
 };
