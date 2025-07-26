@@ -17,9 +17,14 @@ const Home = ({ onlyActive = false, minimal = false }) => {
   const [filteredJobs, setFilteredJobs] = useState([])
   const [selectedJob, setSelectedJob] = useState(null)
   const [showApplicationModal, setShowApplicationModal] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     fetchJobs()
+    // Check if user is logged in
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!(userId || token));
   }, [])
 
   useEffect(() => {
@@ -194,7 +199,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
       )}
 
       {/* Quick Actions */}
-      {!minimal && (
+      {!minimal && !isLoggedIn && (
         <div style={{
           padding: '3rem 2rem',
           background: '#fff',
