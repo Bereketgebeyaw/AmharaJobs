@@ -421,10 +421,16 @@ router.post('/pay', authenticateToken, verifyEmployer, async (req, res) => {
 });
 
 // Chapa webhook/callback endpoint
-router.post('/chapa-callback', async (req, res) => {
-  // Chapa will send tx_ref and status
-  const { tx_ref, status } = req.body;
-  if (!tx_ref || !status) return res.status(400).json({ error: 'Invalid callback' });
+router.all('/chapa-callback', async (req, res) => {
+  console.log('Chapa callback received:', req.method, req.body, req.query);
+  const tx_ref =
+    (req.body && (req.body.tx_ref || req.body.trx_ref)) ||
+    (req.query && (req.query.tx_ref || req.query.trx_ref));
+  const status = (req.body && req.body.status) || (req.query && req.query.status);
+  if (!tx_ref || !status) {
+    console.log('Callback missing tx_ref or status:', req.method, req.body, req.query);
+    return res.status(400).json({ error: 'Invalid callback' });
+  }
 
   try {
     // Find the pending employer_package by tx_ref
@@ -432,6 +438,11 @@ router.post('/chapa-callback', async (req, res) => {
     if (!employerPackage) return res.status(404).json({ error: 'Transaction not found' });
 
     if (status === 'success') {
+      // Deactivate all other active packages for this employer and package type
+      await knex('employer_packages')
+        .where({ employer_id: employerPackage.employer_id, package_id: employerPackage.package_id, is_active: true })
+        .whereNot({ id: employerPackage.id })
+        .update({ is_active: false, end_date: new Date() });
       // Activate the package
       await knex('employer_packages').where({ id: employerPackage.id }).update({ is_active: true, end_date: null });
       // Optionally, send confirmation email
