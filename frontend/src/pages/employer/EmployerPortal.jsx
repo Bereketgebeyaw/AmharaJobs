@@ -64,21 +64,7 @@ const EmployerPortal = () => {
             AmharaJobs - Employer Portal
           </Link>
           <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <Link 
-              to="/employer/pricing" 
-              style={{ 
-                color: 'var(--primary)', 
-                textDecoration: 'none', 
-                fontSize: '1rem',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-                border: '1px solid var(--primary)',
-                background: '#fff',
-                fontWeight: 500
-              }}
-            >
-              Pricing
-            </Link>
+            
             <Link 
               to="/employer/login" 
               style={{ 
