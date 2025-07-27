@@ -29,6 +29,9 @@ const UserProfile = () => {
     description: '',
     is_default: false
   });
+  const [modalType, setModalType] = useState(''); // 'success', 'error', 'info'
+  const [modalMessage, setModalMessage] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -132,14 +135,20 @@ const UserProfile = () => {
       });
 
       if (response.ok) {
-        alert('Profile updated successfully!');
+        setModalType('success');
+        setModalMessage('Profile updated successfully!');
+        setShowModal(true);
         setIsEditing(false);
       } else {
-        alert('Failed to update profile');
+        setModalType('error');
+        setModalMessage('Failed to update profile');
+        setShowModal(true);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Failed to update profile');
+      setModalType('error');
+      setModalMessage('Failed to update profile');
+      setShowModal(true);
     } finally {
       setSaving(false);
     }
@@ -152,7 +161,9 @@ const UserProfile = () => {
   const handleUpload = async (e) => {
     e.preventDefault();
     if (!selectedFile) {
-      alert('Please select a file');
+      setModalType('info');
+      setModalMessage('Please select a file');
+      setShowModal(true);
       return;
     }
 
@@ -184,14 +195,20 @@ const UserProfile = () => {
           description: '',
           is_default: false
         });
-        alert('Document uploaded successfully!');
+        setModalType('success');
+        setModalMessage('Document uploaded successfully!');
+        setShowModal(true);
       } else {
         const error = await response.json();
-        alert(error.error || 'Upload failed');
+        setModalType('error');
+        setModalMessage(error.error || 'Upload failed');
+        setShowModal(true);
       }
     } catch (error) {
       console.error('Error uploading document:', error);
-      alert('Upload failed');
+      setModalType('error');
+      setModalMessage('Upload failed');
+      setShowModal(true);
     } finally {
       setUploading(false);
     }
@@ -213,13 +230,19 @@ const UserProfile = () => {
 
       if (response.ok) {
         setDocuments(documents.filter(doc => doc.id !== documentId));
-        alert('Document deleted successfully!');
+        setModalType('success');
+        setModalMessage('Document deleted successfully!');
+        setShowModal(true);
       } else {
-        alert('Failed to delete document');
+        setModalType('error');
+        setModalMessage('Failed to delete document');
+        setShowModal(true);
       }
     } catch (error) {
       console.error('Error deleting document:', error);
-      alert('Failed to delete document');
+      setModalType('error');
+      setModalMessage('Failed to delete document');
+      setShowModal(true);
     }
   };
 
@@ -758,6 +781,166 @@ const UserProfile = () => {
           </button>
         </div>
       </div>
+      {/* Consistent Modal for Feedback */}
+      {showModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000
+        }}>
+          <div style={{
+            background: '#fff',
+            borderRadius: '16px',
+            padding: '2.5rem',
+            maxWidth: '450px',
+            width: '90%',
+            textAlign: 'center',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.2)',
+            animation: 'slideIn 0.3s ease-out',
+            position: 'relative'
+          }}>
+            {/* Icon */}
+            <div style={{
+              width: '80px',
+              height: '80px',
+              background: modalType === 'success'
+                ? 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)'
+                : modalType === 'info'
+                ? 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)'
+                : 'linear-gradient(135deg, #f44336 0%, #b71c1c 100%)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.5rem',
+              fontSize: '2.5rem',
+              boxShadow: modalType === 'success'
+                ? '0 8px 25px rgba(76,175,80,0.3)'
+                : modalType === 'info'
+                ? '0 8px 25px rgba(33,150,243,0.3)'
+                : '0 8px 25px rgba(244,67,54,0.3)'
+            }}>
+              {modalType === 'success' && '✅'}
+              {modalType === 'info' && 'ℹ️'}
+              {modalType === 'error' && '❌'}
+            </div>
+            <h2 style={{
+              color: modalType === 'success'
+                ? '#388e3c'
+                : modalType === 'info'
+                ? '#1976d2'
+                : '#b71c1c',
+              margin: '0 0 1rem 0',
+              fontSize: '1.6rem',
+              fontWeight: '700'
+            }}>
+              {modalType === 'success' && 'Success'}
+              {modalType === 'info' && 'Info'}
+              {modalType === 'error' && 'Error'}
+            </h2>
+            <p style={{
+              color: '#666',
+              fontSize: '1.1rem',
+              lineHeight: '1.6',
+              margin: '0 0 2rem 0'
+            }}>
+              {modalMessage}
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => setShowModal(false)}
+                style={{
+                  padding: '0.75rem 2rem',
+                  background: modalType === 'success'
+                    ? 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)'
+                    : modalType === 'info'
+                    ? 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)'
+                    : 'linear-gradient(135deg, #f44336 0%, #b71c1c 100%)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: modalType === 'success'
+                    ? '0 4px 15px rgba(76,175,80,0.3)'
+                    : modalType === 'info'
+                    ? '0 4px 15px rgba(33,150,243,0.3)'
+                    : '0 4px 15px rgba(244,67,54,0.3)'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = modalType === 'success'
+                    ? '0 6px 20px rgba(76,175,80,0.4)'
+                    : modalType === 'info'
+                    ? '0 6px 20px rgba(33,150,243,0.4)'
+                    : '0 6px 20px rgba(244,67,54,0.4)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = modalType === 'success'
+                    ? '0 4px 15px rgba(76,175,80,0.3)'
+                    : modalType === 'info'
+                    ? '0 4px 15px rgba(33,150,243,0.3)'
+                    : '0 4px 15px rgba(244,67,54,0.3)';
+                }}
+              >
+                Close
+              </button>
+            </div>
+            <button
+              onClick={() => setShowModal(false)}
+              style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: 'none',
+                border: 'none',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                color: '#666',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = '#f5f5f5';
+                e.target.style.color = '#333';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'none';
+                e.target.style.color = '#666';
+              }}
+            >
+              ×
+            </button>
+          </div>
+          <style>{`
+            @keyframes slideIn {
+              from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+          `}</style>
+        </div>
+      )}
     </div>
   );
 };
