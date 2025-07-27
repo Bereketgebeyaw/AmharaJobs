@@ -9,6 +9,7 @@ const Navbar = () => {
   const location = useLocation()
   const [user, setUser] = useState(null)
   const { t } = useLanguage()
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Check for existing user data on initial load
   useEffect(() => {
@@ -93,7 +94,7 @@ const Navbar = () => {
         padding: 0
       }}
     >
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 64 }}>
+      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 64, position: 'relative' }}>
         <Link
           to="/"
           style={{
@@ -109,14 +110,65 @@ const Navbar = () => {
           <img src={logo} alt="AmharaJobs Logo" style={{ height: 52, marginRight: 12 }} />
           AmharaJobs
         </Link>
+        {/* Hamburger Icon for Mobile */}
+        <button
+          className="navbar-hamburger"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="navbar-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+          style={{
+            display: 'none',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 8,
+            marginLeft: 8,
+            zIndex: 201
+          }}
+        >
+          <span style={{
+            display: 'block',
+            width: 28,
+            height: 3,
+            background: 'var(--primary)',
+            borderRadius: 2,
+            marginBottom: 6,
+            transition: 'all 0.3s',
+            transform: menuOpen ? 'rotate(45deg) translateY(9px)' : 'none'
+          }} />
+          <span style={{
+            display: 'block',
+            width: 28,
+            height: 3,
+            background: 'var(--primary)',
+            borderRadius: 2,
+            marginBottom: 6,
+            opacity: menuOpen ? 0 : 1,
+            transition: 'all 0.3s'
+          }} />
+          <span style={{
+            display: 'block',
+            width: 28,
+            height: 3,
+            background: 'var(--primary)',
+            borderRadius: 2,
+            transition: 'all 0.3s',
+            transform: menuOpen ? 'rotate(-45deg) translateY(-9px)' : 'none'
+          }} />
+        </button>
+        {/* Main Nav Links */}
         <ul
+          id="navbar-menu"
+          className={menuOpen ? 'navbar-menu open' : 'navbar-menu'}
           style={{
             display: 'flex',
             gap: '2rem',
             listStyle: 'none',
             margin: 0,
             padding: 0,
-            alignItems: 'center'
+            alignItems: 'center',
+            transition: 'all 0.3s',
           }}
         >
           <li>
@@ -216,6 +268,52 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
+      {/* Responsive Navbar CSS */}
+      <style>{`
+        @media (max-width: 900px) {
+          .navbar-hamburger {
+            display: block !important;
+          }
+          .navbar-menu {
+            position: fixed;
+            top: 64px;
+            right: 0;
+            left: 0;
+            background: #fff;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            width: 100vw;
+            max-width: 100vw;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            padding: 0.5rem 0 1.5rem 0;
+            z-index: 200;
+            transform: translateY(-120%);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(.4,0,.2,1);
+          }
+          .navbar-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+          }
+          .navbar-menu > li {
+            width: 100%;
+            padding: 0.7rem 2rem;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: left;
+          }
+          .navbar-menu > li:last-child {
+            border-bottom: none;
+          }
+        }
+        @media (max-width: 600px) {
+          .navbar-menu > li {
+            padding: 0.7rem 1rem;
+          }
+        }
+      `}</style>
     </nav>
   )
 }

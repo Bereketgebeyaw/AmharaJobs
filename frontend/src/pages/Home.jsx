@@ -840,6 +840,28 @@ const Home = ({ onlyActive = false, minimal = false }) => {
             transform: translateY(0) scale(1);
           }
         }
+        /* Responsive styles */
+        @media (max-width: 900px) {
+          .home-hero-title { font-size: 2.2rem !important; }
+          .home-hero-subtitle { font-size: 1.3rem !important; }
+          .home-hero-logo { height: 56px !important; }
+          .home-section { padding: 2rem 1rem !important; }
+        }
+        @media (max-width: 600px) {
+          .home-hero-title { font-size: 1.5rem !important; }
+          .home-hero-subtitle { font-size: 1rem !important; }
+          .home-hero-logo { height: 40px !important; }
+          .home-section { padding: 1.2rem 0.5rem !important; }
+          .home-searchbar, .home-quick-actions, .home-features { padding: 1.2rem 0.5rem !important; }
+          .home-job-card-grid { grid-template-columns: 1fr !important; }
+          .home-job-card { min-width: 0 !important; }
+          .home-btn, .home-input, .home-select { width: 100% !important; min-width: 0 !important; }
+        }
+        @media (max-width: 400px) {
+          .home-hero-title { font-size: 1.1rem !important; }
+          .home-hero-subtitle { font-size: 0.9rem !important; }
+          .home-section, .home-searchbar, .home-quick-actions, .home-features { padding: 0.5rem 0.2rem !important; }
+        }
       `}</style>
     </div>
   )
