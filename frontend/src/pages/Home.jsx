@@ -17,6 +17,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
   const [filteredJobs, setFilteredJobs] = useState([])
   const [selectedJob, setSelectedJob] = useState(null)
   const [showApplicationModal, setShowApplicationModal] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -74,8 +75,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
   const handleApplyForJob = (job) => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
-      alert('Please log in to apply for jobs');
-      navigate('/login');
+      setShowLoginModal(true);
       return;
     }
     setSelectedJob(job);
@@ -680,6 +680,167 @@ const Home = ({ onlyActive = false, minimal = false }) => {
           onSuccess={handleApplicationSuccess}
         />
       )}
+
+      {/* Login Required Modal */}
+      {showLoginModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000
+        }}>
+          <div style={{
+            background: '#fff',
+            borderRadius: '16px',
+            padding: '2.5rem',
+            maxWidth: '450px',
+            width: '90%',
+            textAlign: 'center',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.2)',
+            animation: 'slideIn 0.3s ease-out',
+            position: 'relative'
+          }}>
+            {/* Login Icon */}
+            <div style={{
+              width: '80px',
+              height: '80px',
+              background: 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.5rem',
+              fontSize: '2.5rem',
+              boxShadow: '0 8px 25px rgba(33,150,243,0.3)'
+            }}>
+              🔐
+            </div>
+            <h2 style={{
+              color: '#1976d2',
+              margin: '0 0 1rem 0',
+              fontSize: '1.8rem',
+              fontWeight: '700'
+            }}>
+              Login Required
+            </h2>
+            <p style={{
+              color: '#666',
+              fontSize: '1.1rem',
+              lineHeight: '1.6',
+              margin: '0 0 2rem 0'
+            }}>
+              You need to be logged in to apply for jobs. Please sign in to your account or create a new one to continue.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/login');
+                }}
+                style={{
+                  padding: '0.75rem 2rem',
+                  background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 15px rgba(0,115,47,0.3)'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(0,115,47,0.4)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 4px 15px rgba(0,115,47,0.3)';
+                }}
+              >
+                🔑 Sign In
+              </button>
+              <button
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/register');
+                }}
+                style={{
+                  padding: '0.75rem 2rem',
+                  background: 'transparent',
+                  color: '#2196f3',
+                  border: '2px solid #2196f3',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.background = '#2196f3';
+                  e.target.style.color = '#fff';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.color = '#2196f3';
+                }}
+              >
+                👤 Create Account
+              </button>
+            </div>
+            <button
+              onClick={() => setShowLoginModal(false)}
+              style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: 'none',
+                border: 'none',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                color: '#666',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = '#f5f5f5';
+                e.target.style.color = '#333';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'none';
+                e.target.style.color = '#666';
+              }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      `}</style>
     </div>
   )
 }
