@@ -9,6 +9,9 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
     cover_letter_document_id: '',
     application_notes: ''
   });
+  const [modalType, setModalType] = useState(''); // 'success', 'info', 'error'
+  const [modalMessage, setModalMessage] = useState('');
+  const [showStatusModal, setShowStatusModal] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -49,7 +52,9 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
     e.preventDefault();
     
     if (!formData.resume_document_id) {
-      alert('Please select a resume');
+      setModalType('error');
+      setModalMessage('Please select a resume.');
+      setShowStatusModal(true);
       return;
     }
 
@@ -70,18 +75,35 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
 
       if (response.ok) {
         const data = await response.json();
-        alert('Application submitted successfully!');
+        setModalType('success');
+        setModalMessage('Application submitted successfully!');
+        setShowStatusModal(true);
         onSuccess(data.application);
-        onClose();
       } else {
         const error = await response.json();
-        alert(error.error || 'Failed to submit application');
+        if (error.error && /applied/i.test(error.error)) {
+          setModalType('info');
+          setModalMessage('You have already applied for this job.');
+        } else {
+          setModalType('error');
+          setModalMessage(error.error || 'Failed to submit application');
+        }
+        setShowStatusModal(true);
       }
     } catch (error) {
       console.error('Error submitting application:', error);
-      alert('Failed to submit application');
+      setModalType('error');
+      setModalMessage('Failed to submit application. Please try again.');
+      setShowStatusModal(true);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const closeStatusModal = () => {
+    setShowStatusModal(false);
+    if (modalType === 'success') {
+      onClose();
     }
   };
 
@@ -157,15 +179,14 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
               Select Resume * <span style={{ color: '#f44336' }}>*</span>
             </label>
-            {loading ? (
-              <div style={{ color: '#666' }}>Loading documents...</div>
-            ) : getResumes().length === 0 ? (
+            {getResumes().length === 0 ? (
               <div style={{ 
                 background: '#fff3cd', 
                 border: '1px solid #ffeaa7', 
                 padding: '1rem', 
                 borderRadius: '4px',
-                color: '#856404'
+                color: '#856404',
+                marginBottom: '0.5rem'
               }}>
                 <p style={{ margin: '0 0 0.5rem 0' }}>
                   No resumes found. Please upload a resume to your profile first.
@@ -191,21 +212,30 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
             ) : (
               <select
                 value={formData.resume_document_id}
-                onChange={(e) => setFormData({...formData, resume_document_id: e.target.value})}
-                required
+                onChange={(e) => setFormData({ ...formData, resume_document_id: e.target.value })}
                 style={{
                   width: '100%',
                   padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px'
+                  borderRadius: '8px',
+                  border: '2px solid #e1e5e9',
+                  fontSize: '1rem',
+                  transition: 'all 0.3s ease'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--primary)';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(0,115,47,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e1e5e9';
+                  e.target.style.boxShadow = 'none';
                 }}
               >
-                <option value="">Select a resume...</option>
-                {getResumes().map(resume => (
-                  <option key={resume.id} value={resume.id}>
-                    {resume.title} {resume.is_default && '(Default)'}
-                  </option>
-                ))}
+                <option value="">Select a resume</option>
+                {getResumes().map(doc => (
+                    <option key={doc.id} value={doc.id}>
+                      {(doc.title || doc.original_name || doc.filename)} {doc.is_default ? '(Default)' : ''}
+                    </option>
+                  ))}
               </select>
             )}
           </div>
@@ -295,6 +325,96 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
           </div>
         </form>
       </div>
+      {showStatusModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000
+        }}>
+          <div style={{
+            background: '#fff',
+            borderRadius: '20px',
+            padding: '2.5rem 2rem',
+            maxWidth: '400px',
+            width: '90%',
+            textAlign: 'center',
+            boxShadow: '0 25px 80px rgba(0,0,0,0.2)',
+            position: 'relative'
+          }}>
+            {/* Icon */}
+            <div style={{
+              width: '80px',
+              height: '80px',
+              margin: '0 auto 1.5rem',
+              fontSize: '3rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '50%',
+              background: modalType === 'success'
+                ? 'linear-gradient(135deg, #e0f7e9 0%, #b2f2dd 100%)'
+                : 'linear-gradient(135deg, #e3f0fd 0%, #b3d8fd 100%)'
+            }}>
+              {modalType === 'success' ? '✅' : 'ℹ️'}
+            </div>
+            <h2 style={{
+              color: modalType === 'success' ? '#00732F' : '#1976d2',
+              fontWeight: 700,
+              fontSize: '1.6rem',
+              margin: '0 0 1rem 0'
+            }}>
+              {modalType === 'success' ? 'Application Submitted!' : 'Already Applied'}
+            </h2>
+            <p style={{
+              color: '#444',
+              fontSize: '1.1rem',
+              margin: '0 0 2rem 0'
+            }}>
+              {modalMessage}
+            </p>
+            <button
+              onClick={closeStatusModal}
+              style={{
+                width: '100%',
+                padding: '0.9rem',
+                background: 'linear-gradient(135deg, #00732F 0%, #2e7d32 100%)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '10px',
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                marginBottom: '0.5rem'
+              }}
+            >
+              {modalType === 'success' ? '🎉 Continue Browsing' : 'OK'}
+            </button>
+            <button
+              onClick={closeStatusModal}
+              style={{
+                position: 'absolute',
+                top: '1rem',
+                right: '1rem',
+                background: 'none',
+                border: 'none',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                color: '#888'
+              }}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
