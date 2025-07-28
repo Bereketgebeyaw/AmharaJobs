@@ -1,91 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/AmharaJlogo.png';
+import './Navbar.css';
 
 const PublicEmployerNavbar = () => {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav
-      style={{
-        background: '#f7f9fb',
-        color: 'var(--primary)',
-        padding: '1rem 2rem',
-        boxShadow: '0 2px 8px #e3e3e3',
-        position: 'sticky',
-        top: 0,
-        left: 0,
-        right: 0,
-        width: '100vw',
-        margin: 0,
-        zIndex: 100
-      }}
-    >
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        maxWidth: 1200,
-        margin: '0 auto'
-      }}>
-        <Link
-          to="/employer"
-          style={{
-            fontWeight: 'bold',
-            fontSize: '1.5rem',
-            color: 'var(--primary)',
-            textDecoration: 'none',
-            letterSpacing: 1,
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          <img src={logo} alt="AmharaJobs Logo" style={{ height: 52, marginRight: 12 }} />
+    <nav className="navbar" style={{ background: 'linear-gradient(135deg, var(--primary) 0%, #2e7d32 100%)', color: '#fff' }}>
+      <div className="navbar-container">
+        <Link to="/employer" className="navbar-brand" style={{ color: '#fff' }}>
+          <img src={logo} alt="AmharaJobs Logo" className="navbar-logo" />
           AmharaJobs - Employer Portal
         </Link>
-        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <Link 
-            to="/employer/login" 
-            style={{ 
-              color: '#fff', 
-              textDecoration: 'none', 
-              fontSize: '1rem',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              border: '1px solid #fff'
-            }}
-          >
-            Login
-          </Link>
-          <button
-            onClick={() => navigate('/employer/register')}
-            style={{ 
-              background: '#fff',
-              color: 'var(--primary)', 
-              textDecoration: 'none', 
-              fontSize: '1rem',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              fontWeight: '500',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-          >
-            Sign Up
-          </button>
-          <Link 
-            to="/" 
-            style={{ 
-              color: '#fff', 
-              textDecoration: 'none', 
-              fontSize: '1rem',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              border: '1px solid rgba(255,255,255,0.3)'
-            }}
-          >
-            Are you a Job Seeker?
-          </Link>
+        
+        {/* Hamburger Icon for Mobile */}
+        <button
+          className={`navbar-hamburger ${menuOpen ? 'open' : ''}`}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="public-employer-navbar-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+          style={{ color: '#fff' }}
+        >
+          <span className="navbar-hamburger-line" style={{ background: '#fff' }} />
+          <span className="navbar-hamburger-line" style={{ background: '#fff' }} />
+          <span className="navbar-hamburger-line" style={{ background: '#fff' }} />
+        </button>
+        
+        <div className={`navbar-menu ${menuOpen ? 'open' : ''}`} id="public-employer-navbar-menu">
+          <div className="navbar-menu-item">
+            <Link 
+              to="/employer/login" 
+              className="navbar-button-outline"
+            >
+              Login
+            </Link>
+          </div>
+          <div className="navbar-menu-item">
+            <button
+              onClick={() => navigate('/employer/register')}
+              className="navbar-button-primary"
+            >
+              Sign Up
+            </button>
+          </div>
+          <div className="navbar-menu-item">
+            <Link 
+              to="/" 
+              className="navbar-button-secondary"
+            >
+              Are you a Job Seeker?
+            </Link>
+          </div>
         </div>
       </div>
     </nav>

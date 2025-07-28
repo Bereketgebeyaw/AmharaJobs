@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../assets/AmharaJlogo.png'
+import './Navbar.css'
 
 const EmployerNavbar = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const userData = localStorage.getItem('user')
@@ -21,97 +23,68 @@ const EmployerNavbar = () => {
   }
 
   return (
-    <nav
-      aria-label="Employer navigation"
-      style={{
-        background: '#f7f9fb',
-        color: 'var(--primary)',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        zIndex: 100,
-        width: '100%',
-        boxShadow: '0 2px 8px #e3e3e3',
-        minHeight: 64,
-        margin: 0,
-        padding: 0
-      }}
-    >
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 64 }}>
-        <Link
-          to="/employer/dashboard"
-          style={{
-            fontWeight: 'bold',
-            fontSize: '1.5rem',
-            color: 'var(--primary)',
-            textDecoration: 'none',
-            letterSpacing: 1,
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          <img src={logo} alt="AmharaJobs Logo" style={{ height: 52, marginRight: 12 }} />
+    <nav className="navbar" aria-label="Employer navigation">
+      <div className="navbar-container">
+        <Link to="/employer/dashboard" className="navbar-brand">
+          <img src={logo} alt="AmharaJobs Logo" className="navbar-logo" />
           AmharaJobs - Employer Portal
         </Link>
-        <ul
-          style={{
-            display: 'flex',
-            gap: '2rem', // reverted to original gap
-            listStyle: 'none',
-            margin: 0,
-            padding: 0,
-            alignItems: 'center'
-            // removed flexWrap
-          }}
+        
+        {/* Hamburger Icon for Mobile */}
+        <button
+          className={`navbar-hamburger ${menuOpen ? 'open' : ''}`}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="employer-navbar-menu"
+          onClick={() => setMenuOpen((open) => !open)}
         >
-          <li>
-            <Link to="/employer/dashboard" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+          <span className="navbar-hamburger-line" />
+          <span className="navbar-hamburger-line" />
+          <span className="navbar-hamburger-line" />
+        </button>
+        
+        <ul
+          id="employer-navbar-menu"
+          className={`navbar-menu ${menuOpen ? 'open' : ''}`}
+        >
+          <li className="navbar-menu-item">
+            <Link to="/employer/dashboard" className="navbar-link">
               Dashboard
             </Link>
           </li>
-          <li>
-            <Link to="/employer/post-job" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+          <li className="navbar-menu-item">
+            <Link to="/employer/post-job" className="navbar-link">
               Post Job
             </Link>
           </li>
-          <li>
-            <Link to="/employer/jobs" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+          <li className="navbar-menu-item">
+            <Link to="/employer/jobs" className="navbar-link">
               My Jobs
             </Link>
           </li>
-          <li>
-            <Link to="/employer/applications" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+          <li className="navbar-menu-item">
+            <Link to="/employer/applications" className="navbar-link">
               Applications
             </Link>
           </li>
-          <li>
-            <Link to="/employer/pricing" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+          <li className="navbar-menu-item">
+            <Link to="/employer/pricing" className="navbar-link">
               Pricing
             </Link>
           </li>
           
           {user ? (
-            <>
-              <li>
-                <button
-                  onClick={handleLogout}
-                  style={{
-                    background: 'none',
-                    color: 'var(--primary)',
-                    fontSize: '1rem',
-                    cursor: 'pointer',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '4px',
-                    border: '1px solid var(--primary)'
-                  }}
-                >
-                  Logout
-                </button>
-              </li>
-            </>
+            <li className="navbar-menu-item">
+              <button
+                onClick={handleLogout}
+                className="navbar-button"
+              >
+                Logout
+              </button>
+            </li>
           ) : (
-            <li>
-              <Link to="/employer/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '1rem' }}>
+            <li className="navbar-menu-item">
+              <Link to="/employer/login" className="navbar-link">
                 Login
               </Link>
             </li>
