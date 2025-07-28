@@ -1,0 +1,684 @@
+/* Jobs Management Page Styles */
+.jobsmanagement-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f7f9fb;
+}
+
+.jobsmanagement-header {
+  margin-bottom: 2rem;
+}
+
+.jobsmanagement-title {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.jobsmanagement-subtitle {
+  color: #666;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Actions Bar */
+.jobsmanagement-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.jobsmanagement-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.jobsmanagement-filter-select {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.jobsmanagement-filter-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.jobsmanagement-new-job-btn {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.jobsmanagement-new-job-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 115, 47, 0.3);
+}
+
+/* Empty State */
+.jobsmanagement-empty {
+  text-align: center;
+  padding: 3rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.jobsmanagement-empty-title {
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.jobsmanagement-empty-message {
+  color: #999;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.jobsmanagement-empty-btn {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.jobsmanagement-empty-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 115, 47, 0.3);
+}
+
+/* Jobs List */
+.jobsmanagement-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.jobsmanagement-item {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+.jobsmanagement-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.jobsmanagement-item.active {
+  border-left-color: #4caf50;
+}
+
+.jobsmanagement-item.inactive {
+  border-left-color: #f44336;
+}
+
+.jobsmanagement-item.draft {
+  border-left-color: #ff9800;
+}
+
+.jobsmanagement-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.jobsmanagement-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.jobsmanagement-item-title {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.jobsmanagement-item-details {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.jobsmanagement-item-detail {
+  color: #666;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.jobsmanagement-item-description {
+  color: #666;
+  margin: 0 0 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.jobsmanagement-item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+  min-width: 120px;
+}
+
+.jobsmanagement-status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.jobsmanagement-status-badge.active {
+  background: #e8f5e8;
+  color: #4caf50;
+}
+
+.jobsmanagement-status-badge.inactive {
+  background: #ffebee;
+  color: #f44336;
+}
+
+.jobsmanagement-status-badge.draft {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+.jobsmanagement-controls {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.jobsmanagement-status-select {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 0.8rem;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.jobsmanagement-status-select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.jobsmanagement-delete-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.jobsmanagement-delete-btn:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+}
+
+.jobsmanagement-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.jobsmanagement-item-date {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.jobsmanagement-applications-link {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.jobsmanagement-applications-link:hover {
+  color: #0056b3;
+}
+
+/* Loading and Error States */
+.jobsmanagement-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.jobsmanagement-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.jobsmanagement-error-message {
+  color: #f44336;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.jobsmanagement-error-link {
+  color: var(--primary);
+  text-decoration: none;
+  margin-top: 1rem;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.jobsmanagement-error-link:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* Modal Styles */
+.jobsmanagement-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.jobsmanagement-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease-out;
+  position: relative;
+}
+
+.jobsmanagement-modal-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+}
+
+.jobsmanagement-modal-icon.success {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  box-shadow: 0 8px 25px rgba(76,175,80,0.3);
+}
+
+.jobsmanagement-modal-icon.info {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  box-shadow: 0 8px 25px rgba(33,150,243,0.3);
+}
+
+.jobsmanagement-modal-icon.error {
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  box-shadow: 0 8px 25px rgba(244,67,54,0.3);
+}
+
+.jobsmanagement-modal-icon.confirm {
+  background: linear-gradient(135deg, #ff9800 0%, #ffb300 100%);
+  box-shadow: 0 8px 25px rgba(255,193,7,0.3);
+}
+
+.jobsmanagement-modal-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.jobsmanagement-modal-title.success {
+  color: #388e3c;
+}
+
+.jobsmanagement-modal-title.info {
+  color: #1976d2;
+}
+
+.jobsmanagement-modal-title.error {
+  color: #b71c1c;
+}
+
+.jobsmanagement-modal-title.confirm {
+  color: #ff9800;
+}
+
+.jobsmanagement-modal-message {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.jobsmanagement-modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.jobsmanagement-modal-btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.jobsmanagement-modal-btn.success {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+}
+
+.jobsmanagement-modal-btn.info {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(33,150,243,0.3);
+}
+
+.jobsmanagement-modal-btn.error {
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(244,67,54,0.3);
+}
+
+.jobsmanagement-modal-btn.confirm {
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(244,67,54,0.3);
+}
+
+.jobsmanagement-modal-btn.cancel {
+  background: #eee;
+  color: #333;
+  box-shadow: 0 4px 15px #eee;
+}
+
+.jobsmanagement-modal-btn:hover {
+  transform: translateY(-2px);
+}
+
+.jobsmanagement-modal-btn.success:hover {
+  box-shadow: 0 6px 20px rgba(76,175,80,0.4);
+}
+
+.jobsmanagement-modal-btn.info:hover {
+  box-shadow: 0 6px 20px rgba(33,150,243,0.4);
+}
+
+.jobsmanagement-modal-btn.error:hover,
+.jobsmanagement-modal-btn.confirm:hover {
+  box-shadow: 0 6px 20px rgba(244,67,54,0.4);
+}
+
+.jobsmanagement-modal-btn.cancel:hover {
+  box-shadow: 0 6px 20px #ddd;
+}
+
+.jobsmanagement-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.jobsmanagement-modal-close:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .jobsmanagement-container {
+    padding: 2rem;
+  }
+  
+  .jobsmanagement-title {
+    font-size: 2.2rem;
+  }
+  
+  .jobsmanagement-actions {
+    gap: 1.5rem;
+  }
+  
+  .jobsmanagement-item-content {
+    gap: 2rem;
+  }
+  
+  .jobsmanagement-item-details {
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .jobsmanagement-actions {
+    gap: 2rem;
+  }
+  
+  .jobsmanagement-new-job-btn {
+    padding: 0.875rem 2rem;
+    font-size: 1.1rem;
+  }
+  
+  .jobsmanagement-filter-select {
+    padding: 0.75rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .jobsmanagement-container {
+    padding: 2.5rem;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 767px) {
+  .jobsmanagement-container {
+    padding: 0.75rem;
+  }
+  
+  .jobsmanagement-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .jobsmanagement-title {
+    font-size: 1.5rem;
+  }
+  
+  .jobsmanagement-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .jobsmanagement-filters {
+    justify-content: center;
+  }
+  
+  .jobsmanagement-filter-select {
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .jobsmanagement-new-job-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .jobsmanagement-item {
+    padding: 1.25rem;
+  }
+  
+  .jobsmanagement-item-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .jobsmanagement-item-actions {
+    align-items: stretch;
+    min-width: auto;
+  }
+  
+  .jobsmanagement-controls {
+    justify-content: center;
+  }
+  
+  .jobsmanagement-item-details {
+    gap: 1rem;
+    flex-direction: column;
+  }
+  
+  .jobsmanagement-item-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .jobsmanagement-applications-link {
+    justify-content: center;
+  }
+  
+  .jobsmanagement-modal {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  .jobsmanagement-modal-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .jobsmanagement-modal-title {
+    font-size: 1.4rem;
+  }
+  
+  .jobsmanagement-modal-message {
+    font-size: 1rem;
+  }
+  
+  .jobsmanagement-modal-buttons {
+    flex-direction: column;
+  }
+  
+  .jobsmanagement-modal-btn {
+    width: 100%;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .jobsmanagement-item,
+  .jobsmanagement-new-job-btn,
+  .jobsmanagement-delete-btn,
+  .jobsmanagement-modal-btn {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .jobsmanagement-item {
+    border: 2px solid #000;
+  }
+  
+  .jobsmanagement-filter-select,
+  .jobsmanagement-status-select {
+    border: 2px solid #000;
+  }
+} 

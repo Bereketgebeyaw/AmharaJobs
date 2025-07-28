@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
@@ -54,7 +55,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <div className="dashboard-loading">
         <div>Loading dashboard...</div>
       </div>
     );
@@ -62,10 +63,10 @@ const Dashboard = () => {
 
   if (error) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <div style={{ color: 'red', textAlign: 'center' }}>
-          <div>{error}</div>
-          <Link to="/login" style={{ color: 'var(--primary)', textDecoration: 'none', marginTop: '1rem', display: 'inline-block' }}>
+      <div className="dashboard-error">
+        <div>
+          <div className="dashboard-error-message">{error}</div>
+          <Link to="/login" className="dashboard-error-link">
             Go to Login
           </Link>
         </div>
@@ -75,170 +76,94 @@ const Dashboard = () => {
 
   if (!dashboardData) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <div className="dashboard-loading">
         <div>No data available</div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '1rem', maxWidth: 1200, margin: '0 auto' }}>
+    <div className="dashboard-container">
       {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">
           Welcome back, {dashboardData.employer.company_name}!
         </h1>
-        <p style={{ color: '#666' }}>Manage your job postings and applications</p>
+        <p className="dashboard-subtitle">Manage your job postings and applications</p>
       </div>
 
       {/* Statistics Cards */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-        gap: '1.5rem', 
-        marginBottom: '2rem' 
-      }}>
-        <div style={{ 
-          background: '#fff', 
-          padding: '1.5rem', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 8px #eee',
-          borderLeft: '4px solid var(--primary)'
-        }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>Total Jobs</h3>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--primary)' }}>
+      <div className="dashboard-stats">
+        <div className="dashboard-stat-card">
+          <h3 className="dashboard-stat-title">Total Jobs</h3>
+          <div className="dashboard-stat-value">
             {dashboardData.stats.totalJobs}
           </div>
         </div>
 
-        <div style={{ 
-          background: '#fff', 
-          padding: '1.5rem', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 8px #eee',
-          borderLeft: '4px solid #4caf50'
-        }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>Active Jobs</h3>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#4caf50' }}>
+        <div className="dashboard-stat-card active">
+          <h3 className="dashboard-stat-title">Active Jobs</h3>
+          <div className="dashboard-stat-value">
             {dashboardData.stats.activeJobs}
           </div>
         </div>
 
-        <div style={{ 
-          background: '#fff', 
-          padding: '1.5rem', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 8px #eee',
-          borderLeft: '4px solid #2196f3'
-        }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>Total Applications</h3>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2196f3' }}>
+        <div className="dashboard-stat-card applications">
+          <h3 className="dashboard-stat-title">Total Applications</h3>
+          <div className="dashboard-stat-value">
             {dashboardData.stats.totalApplications}
           </div>
         </div>
 
-        <div style={{ 
-          background: '#fff', 
-          padding: '1.5rem', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 8px #eee',
-          borderLeft: '4px solid #ff9800'
-        }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>Pending Applications</h3>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#ff9800' }}>
+        <div className="dashboard-stat-card pending">
+          <h3 className="dashboard-stat-title">Pending Applications</h3>
+          <div className="dashboard-stat-value">
             {dashboardData.stats.pendingApplications}
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div style={{ 
-        background: '#fff', 
-        padding: '1.5rem', 
-        borderRadius: '8px', 
-        boxShadow: '0 2px 8px #eee',
-        marginBottom: '2rem'
-      }}>
-        <h3 style={{ margin: '0 0 1rem 0', color: '#333' }}>Quick Actions</h3>
-        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-          <Link to="/employer/post-job" style={{
-            background: 'var(--primary)',
-            color: '#fff',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '4px',
-            textDecoration: 'none',
-            fontWeight: '500'
-          }}>
+      <div className="dashboard-actions">
+        <h3 className="dashboard-actions-title">Quick Actions</h3>
+        <div className="dashboard-actions-buttons">
+          <Link to="/employer/post-job" className="dashboard-action-btn">
             Post New Job
           </Link>
-          <Link to="/employer/jobs" style={{
-            background: '#2196f3',
-            color: '#fff',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '4px',
-            textDecoration: 'none',
-            fontWeight: '500'
-          }}>
+          <Link to="/employer/jobs" className="dashboard-action-btn blue">
             View All Jobs
           </Link>
-          <Link to="/employer/applications" style={{
-            background: '#ff9800',
-            color: '#fff',
-            padding: '0.75rem 1.5rem',
-            borderRadius: '4px',
-            textDecoration: 'none',
-            fontWeight: '500'
-          }}>
+          <Link to="/employer/applications" className="dashboard-action-btn orange">
             View Applications
           </Link>
         </div>
       </div>
 
       {/* Recent Jobs and Applications */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-        gap: '2rem' 
-      }}>
+      <div className="dashboard-content">
         {/* Recent Jobs */}
-        <div style={{ 
-          background: '#fff', 
-          padding: '1.5rem', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 8px #eee'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h3 style={{ margin: 0, color: '#333' }}>Recent Jobs</h3>
-            <Link to="/employer/jobs" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '0.9rem' }}>
+        <div className="dashboard-card">
+          <div className="dashboard-card-header">
+            <h3 className="dashboard-card-title">Recent Jobs</h3>
+            <Link to="/employer/jobs" className="dashboard-card-link">
               View All
             </Link>
           </div>
           {dashboardData.recentJobs.length === 0 ? (
-            <p style={{ color: '#666', fontStyle: 'italic' }}>No jobs posted yet</p>
+            <p className="dashboard-empty">No jobs posted yet</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
               {dashboardData.recentJobs.map(job => (
-                <div key={job.id} style={{ 
-                  padding: '1rem', 
-                  border: '1px solid #eee', 
-                  borderRadius: '4px',
-                  background: job.is_active ? '#f9f9f9' : '#f5f5f5'
-                }}>
-                  <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>{job.title}</h4>
-                  <p style={{ margin: '0 0 0.5rem 0', color: '#666', fontSize: '0.9rem' }}>
+                <div key={job.id} className={`dashboard-item ${job.is_active ? 'active' : 'inactive'}`}>
+                  <h4 className="dashboard-item-title">{job.title}</h4>
+                  <p className="dashboard-item-subtitle">
                     {job.location} • {job.job_type}
                   </p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ 
-                      fontSize: '0.8rem', 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '12px',
-                      background: job.is_active ? '#e8f5e8' : '#f0f0f0',
-                      color: job.is_active ? '#2e7d32' : '#666'
-                    }}>
+                  <div className="dashboard-item-footer">
+                    <span className={`dashboard-status ${job.is_active ? 'active' : 'inactive'}`}>
                       {job.is_active ? 'Active' : 'Inactive'}
                     </span>
-                    <span style={{ fontSize: '0.8rem', color: '#666' }}>
+                    <span className="dashboard-date">
                       {new Date(job.created_at).toLocaleDateString()}
                     </span>
                   </div>
@@ -249,43 +174,28 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Applications */}
-        <div style={{ 
-          background: '#fff', 
-          padding: '1.5rem', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 8px #eee'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h3 style={{ margin: 0, color: '#333' }}>Recent Applications</h3>
-            <Link to="/employer/applications" style={{ color: 'var(--primary)', textDecoration: 'none', fontSize: '0.9rem' }}>
+        <div className="dashboard-card">
+          <div className="dashboard-card-header">
+            <h3 className="dashboard-card-title">Recent Applications</h3>
+            <Link to="/employer/applications" className="dashboard-card-link">
               View All
             </Link>
           </div>
           {dashboardData.recentApplications.length === 0 ? (
-            <p style={{ color: '#666', fontStyle: 'italic' }}>No applications yet</p>
+            <p className="dashboard-empty">No applications yet</p>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div>
               {dashboardData.recentApplications.map(application => (
-                <div key={application.id} style={{ 
-                  padding: '1rem', 
-                  border: '1px solid #eee', 
-                  borderRadius: '4px'
-                }}>
-                  <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>{application.applicant_name}</h4>
-                  <p style={{ margin: '0 0 0.5rem 0', color: '#666', fontSize: '0.9rem' }}>
+                <div key={application.id} className="dashboard-item">
+                  <h4 className="dashboard-item-title">{application.applicant_name}</h4>
+                  <p className="dashboard-item-subtitle">
                     Applied for: {application.job_title}
                   </p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ 
-                      fontSize: '0.8rem', 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: '12px',
-                      background: '#e3f2fd',
-                      color: getStatusColor(application.status)
-                    }}>
+                  <div className="dashboard-item-footer">
+                    <span className={`dashboard-status ${application.status}`}>
                       {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
                     </span>
-                    <span style={{ fontSize: '0.8rem', color: '#666' }}>
+                    <span className="dashboard-date">
                       {new Date(application.applied_at).toLocaleDateString()}
                     </span>
                   </div>

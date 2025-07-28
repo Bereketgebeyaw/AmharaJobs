@@ -1,0 +1,476 @@
+/* Post Job Page Styles */
+.postjob-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postjob-card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+  background: #fff;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+  max-width: 1100px;
+  width: 100%;
+}
+
+.postjob-card.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.postjob-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.postjob-title {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.5px;
+}
+
+.postjob-subtitle {
+  color: #666;
+  text-align: center;
+  margin: 0;
+}
+
+/* Form Sections */
+.postjob-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.postjob-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2rem;
+}
+
+.postjob-section-title {
+  color: var(--primary);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.postjob-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+}
+
+.postjob-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.postjob-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  color: #222;
+}
+
+.postjob-label .required {
+  color: #f44336;
+}
+
+.postjob-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #ddd;
+  font-size: 1rem;
+  background: #fafbfc;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+.postjob-input:focus {
+  border: 1.5px solid var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.08);
+}
+
+.postjob-input.error {
+  border: 1.5px solid #f44336;
+}
+
+.postjob-input.error:focus {
+  border: 1.5px solid #f44336;
+  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.08);
+}
+
+.postjob-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.postjob-error {
+  color: #f44336;
+  font-size: 0.92rem;
+  margin-top: 0.2rem;
+}
+
+.postjob-api-error {
+  color: #f44336;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #ffebee;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* Buttons */
+.postjob-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.postjob-btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.85rem 2.2rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #eee;
+  transition: background 0.2s, transform 0.15s;
+  font-family: inherit;
+}
+
+.postjob-btn-primary:hover:not(:disabled) {
+  background: #0056b3;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.postjob-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.postjob-btn-secondary {
+  background: #f5f5f5;
+  color: #333;
+  padding: 0.85rem 2.2rem;
+  border-radius: 6px;
+  border: 1.5px solid #ddd;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postjob-btn-secondary:hover {
+  background: #e3e3e3;
+  color: var(--primary);
+}
+
+/* Modal Styles */
+.postjob-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.postjob-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease-out;
+  position: relative;
+}
+
+.postjob-modal-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+}
+
+.postjob-modal-icon.success {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  box-shadow: 0 8px 25px rgba(76,175,80,0.3);
+}
+
+.postjob-modal-icon.info {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  box-shadow: 0 8px 25px rgba(33,150,243,0.3);
+}
+
+.postjob-modal-icon.error {
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  box-shadow: 0 8px 25px rgba(244,67,54,0.3);
+}
+
+.postjob-modal-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.postjob-modal-title.success {
+  color: #388e3c;
+}
+
+.postjob-modal-title.info {
+  color: #1976d2;
+}
+
+.postjob-modal-title.error {
+  color: #b71c1c;
+}
+
+.postjob-modal-message {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.postjob-modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.postjob-modal-btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.postjob-modal-btn.success {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+}
+
+.postjob-modal-btn.info {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(33,150,243,0.3);
+}
+
+.postjob-modal-btn.error {
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(244,67,54,0.3);
+}
+
+.postjob-modal-btn:hover {
+  transform: translateY(-2px);
+}
+
+.postjob-modal-btn.success:hover {
+  box-shadow: 0 6px 20px rgba(76,175,80,0.4);
+}
+
+.postjob-modal-btn.info:hover {
+  box-shadow: 0 6px 20px rgba(33,150,243,0.4);
+}
+
+.postjob-modal-btn.error:hover {
+  box-shadow: 0 6px 20px rgba(244,67,54,0.4);
+}
+
+.postjob-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.postjob-modal-close:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .postjob-container {
+    padding: 2rem;
+  }
+  
+  .postjob-card {
+    padding: 3rem;
+  }
+  
+  .postjob-title {
+    font-size: 2rem;
+  }
+  
+  .postjob-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .postjob-form-group.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .postjob-card {
+    padding: 3.5rem;
+  }
+  
+  .postjob-buttons {
+    gap: 1.5rem;
+  }
+  
+  .postjob-btn-primary,
+  .postjob-btn-secondary {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .postjob-container {
+    padding: 2.5rem;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 767px) {
+  .postjob-container {
+    padding: 0.5rem;
+  }
+  
+  .postjob-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+  
+  .postjob-title {
+    font-size: 1.5rem;
+  }
+  
+  .postjob-section-title {
+    font-size: 1.1rem;
+  }
+  
+  .postjob-buttons {
+    flex-direction: column;
+  }
+  
+  .postjob-btn-primary,
+  .postjob-btn-secondary {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .postjob-modal {
+    padding: 2rem;
+    margin: 1rem;
+  }
+  
+  .postjob-modal-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .postjob-modal-title {
+    font-size: 1.4rem;
+  }
+  
+  .postjob-modal-message {
+    font-size: 1rem;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .postjob-card,
+  .postjob-btn-primary,
+  .postjob-btn-secondary,
+  .postjob-modal-btn {
+    transition: none;
+  }
+  
+  .postjob-card {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .postjob-card {
+    border: 2px solid #000;
+  }
+  
+  .postjob-input {
+    border: 2px solid #000;
+  }
+  
+  .postjob-input:focus {
+    border: 2px solid var(--primary);
+  }
+} 

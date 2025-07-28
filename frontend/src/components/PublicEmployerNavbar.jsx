@@ -24,9 +24,9 @@ const PublicEmployerNavbar = () => {
           onClick={() => setMenuOpen((open) => !open)}
           style={{ color: '#fff' }}
         >
-          <span className="navbar-hamburger-line" style={{ background: '#fff' }} />
-          <span className="navbar-hamburger-line" style={{ background: '#fff' }} />
-          <span className="navbar-hamburger-line" style={{ background: '#fff' }} />
+          <span className="navbar-hamburger-line" style={{ background: '#1a5f1a' }} />
+          <span className="navbar-hamburger-line" style={{ background: '#1a5f1a' }} />
+          <span className="navbar-hamburger-line" style={{ background: '#1a5f1a' }} />
         </button>
         
         <div className={`navbar-menu ${menuOpen ? 'open' : ''}`} id="public-employer-navbar-menu">

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './PostJob.css';
 
 const PostJob = () => {
   const navigate = useNavigate();
@@ -70,96 +71,77 @@ const PostJob = () => {
   };
 
   // Animation for card fade-in
-  React.useEffect(() => {
+  useEffect(() => {
     const card = document.getElementById('post-job-card');
     if (card) {
-      card.style.opacity = 1;
-      card.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        card.classList.add('loaded');
+      }, 100);
     }
   }, []);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      padding: '2rem 0',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
+    <div className="postjob-container">
       <div
         id="post-job-card"
-        style={{
-          opacity: 0,
-          transform: 'translateY(40px)',
-          transition: 'opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1)',
-          background: '#fff',
-          padding: '3.5rem 3.5rem',
-          borderRadius: '18px',
-          boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.12)',
-          maxWidth: 1100,
-          width: '100%',
-        }}
+        className="postjob-card"
       >
-        <h1 style={{
-          color: 'var(--primary)',
-          fontWeight: 700,
-          fontSize: '2rem',
-          marginBottom: '0.5rem',
-          textAlign: 'center',
-          letterSpacing: '0.5px',
-        }}>
-          Post a New Job
-        </h1>
-        <p style={{ color: '#666', textAlign: 'center', marginBottom: '2rem' }}>
-          Create a new job posting to attract qualified candidates
-        </p>
+        <div className="postjob-header">
+          <h1 className="postjob-title">
+            Post a New Job
+          </h1>
+          <p className="postjob-subtitle">
+            Create a new job posting to attract qualified candidates
+          </p>
+        </div>
+        
         <form onSubmit={handleSubmit}>
           {/* Job Details Section */}
-          <div style={{
-            marginBottom: '1.5rem',
-            paddingBottom: '1rem',
-            borderBottom: '1px solid #eee',
-          }}>
-            <h2 style={{ color: 'var(--primary)', fontSize: '1.15rem', fontWeight: 600, marginBottom: '1rem' }}>Job Details</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.2rem' }}>
+          <div className="postjob-section">
+            <h2 className="postjob-section-title">Job Details</h2>
+            <div className="postjob-form-grid">
               {/* Job Title */}
-              <div>
-                <label className="postjob-label">Job Title <span style={{color:'#f44336'}}>*</span></label>
+              <div className="postjob-form-group">
+                <label className="postjob-label">
+                  Job Title <span className="required">*</span>
+                </label>
                 <input
                   type="text"
                   name="title"
                   value={form.title}
                   onChange={handleChange}
-                  className="postjob-input"
+                  className={`postjob-input ${errors.title ? 'error' : ''}`}
                   placeholder="e.g., Software Engineer, Marketing Manager"
-                  style={{ border: errors.title ? '1.5px solid #f44336' : undefined }}
                 />
                 {errors.title && <div className="postjob-error">{errors.title}</div>}
               </div>
+              
               {/* Location */}
-              <div>
-                <label className="postjob-label">Location <span style={{color:'#f44336'}}>*</span></label>
+              <div className="postjob-form-group">
+                <label className="postjob-label">
+                  Location <span className="required">*</span>
+                </label>
                 <input
                   type="text"
                   name="location"
                   value={form.location}
                   onChange={handleChange}
-                  className="postjob-input"
+                  className={`postjob-input ${errors.location ? 'error' : ''}`}
                   placeholder="e.g., Addis Ababa, Bahir Dar"
-                  style={{ border: errors.location ? '1.5px solid #f44336' : undefined }}
                 />
                 {errors.location && <div className="postjob-error">{errors.location}</div>}
               </div>
+              
               {/* Job Type */}
-              <div>
-                <label className="postjob-label">Job Type <span style={{color:'#f44336'}}>*</span></label>
+              <div className="postjob-form-group">
+                <label className="postjob-label">
+                  Job Type <span className="required">*</span>
+                </label>
                 <select
                   name="job_type"
                   value={form.job_type}
                   onChange={handleChange}
-                  className="postjob-input"
-                  style={{ border: errors.job_type ? '1.5px solid #f44336' : undefined }}
+                  className={`postjob-input ${errors.job_type ? 'error' : ''}`}
                 >
                   <option value="">Select job type</option>
                   <option value="Full-time">Full-time</option>
@@ -170,15 +152,17 @@ const PostJob = () => {
                 </select>
                 {errors.job_type && <div className="postjob-error">{errors.job_type}</div>}
               </div>
+              
               {/* Experience Level */}
-              <div>
-                <label className="postjob-label">Experience Level <span style={{color:'#f44336'}}>*</span></label>
+              <div className="postjob-form-group">
+                <label className="postjob-label">
+                  Experience Level <span className="required">*</span>
+                </label>
                 <select
                   name="experience_level"
                   value={form.experience_level}
                   onChange={handleChange}
-                  className="postjob-input"
-                  style={{ border: errors.experience_level ? '1.5px solid #f44336' : undefined }}
+                  className={`postjob-input ${errors.experience_level ? 'error' : ''}`}
                 >
                   <option value="">Select experience level</option>
                   <option value="Entry">Entry Level (0-2 years)</option>
@@ -188,8 +172,9 @@ const PostJob = () => {
                 </select>
                 {errors.experience_level && <div className="postjob-error">{errors.experience_level}</div>}
               </div>
+              
               {/* Salary Range */}
-              <div>
+              <div className="postjob-form-group">
                 <label className="postjob-label">Salary Range or Status</label>
                 <input
                   type="text"
@@ -200,8 +185,9 @@ const PostJob = () => {
                   placeholder="e.g., 15,000 - 25,000 ETB, Negotiable, To be discussed, Not specified"
                 />
               </div>
+              
               {/* Application Deadline */}
-              <div>
+              <div className="postjob-form-group">
                 <label className="postjob-label">Application Deadline</label>
                 <input
                   type="date"
@@ -215,63 +201,70 @@ const PostJob = () => {
           </div>
 
           {/* Description Section */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ color: 'var(--primary)', fontSize: '1.15rem', fontWeight: 600, marginBottom: '1rem' }}>Description</h2>
-            <label className="postjob-label">Job Description <span style={{color:'#f44336'}}>*</span></label>
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              rows={5}
-              className="postjob-input"
-              placeholder="Describe the role, responsibilities, and what the candidate will be doing..."
-              style={{ border: errors.description ? '1.5px solid #f44336' : undefined }}
-            />
-            {errors.description && <div className="postjob-error">{errors.description}</div>}
+          <div className="postjob-section">
+            <h2 className="postjob-section-title">Description</h2>
+            <div className="postjob-form-group full-width">
+              <label className="postjob-label">
+                Job Description <span className="required">*</span>
+              </label>
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                rows={5}
+                className={`postjob-input postjob-textarea ${errors.description ? 'error' : ''}`}
+                placeholder="Describe the role, responsibilities, and what the candidate will be doing..."
+              />
+              {errors.description && <div className="postjob-error">{errors.description}</div>}
+            </div>
           </div>
 
           {/* Requirements Section */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ color: 'var(--primary)', fontSize: '1.15rem', fontWeight: 600, marginBottom: '1rem' }}>Requirements</h2>
-            <label className="postjob-label">Job Requirements <span style={{color:'#f44336'}}>*</span></label>
-            <textarea
-              name="requirements"
-              value={form.requirements}
-              onChange={handleChange}
-              rows={5}
-              className="postjob-input"
-              placeholder="List the required skills, qualifications, and experience..."
-              style={{ border: errors.requirements ? '1.5px solid #f44336' : undefined }}
-            />
-            {errors.requirements && <div className="postjob-error">{errors.requirements}</div>}
+          <div className="postjob-section">
+            <h2 className="postjob-section-title">Requirements</h2>
+            <div className="postjob-form-group full-width">
+              <label className="postjob-label">
+                Job Requirements <span className="required">*</span>
+              </label>
+              <textarea
+                name="requirements"
+                value={form.requirements}
+                onChange={handleChange}
+                rows={5}
+                className={`postjob-input postjob-textarea ${errors.requirements ? 'error' : ''}`}
+                placeholder="List the required skills, qualifications, and experience..."
+              />
+              {errors.requirements && <div className="postjob-error">{errors.requirements}</div>}
+            </div>
           </div>
 
           {/* Benefits Section */}
-          <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ color: 'var(--primary)', fontSize: '1.15rem', fontWeight: 600, marginBottom: '1rem' }}>Benefits & Perks</h2>
-            <label className="postjob-label">Benefits</label>
-            <textarea
-              name="benefits"
-              value={form.benefits}
-              onChange={handleChange}
-              rows={3}
-              className="postjob-input"
-              placeholder="List the benefits and perks offered (health insurance, flexible hours, etc.)..."
-            />
+          <div className="postjob-section">
+            <h2 className="postjob-section-title">Benefits & Perks</h2>
+            <div className="postjob-form-group full-width">
+              <label className="postjob-label">Benefits</label>
+              <textarea
+                name="benefits"
+                value={form.benefits}
+                onChange={handleChange}
+                rows={3}
+                className="postjob-input postjob-textarea"
+                placeholder="List the benefits and perks offered (health insurance, flexible hours, etc.)..."
+              />
+            </div>
           </div>
 
           {errors.api && (
-            <div style={{ color: '#f44336', marginTop: '1rem', padding: '0.75rem', background: '#ffebee', borderRadius: '4px', textAlign: 'center' }}>
+            <div className="postjob-api-error">
               {errors.api}
             </div>
           )}
 
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="postjob-buttons">
             <button
               type="submit"
               disabled={loading}
               className="postjob-btn-primary"
-              style={{ opacity: loading ? 0.7 : 1 }}
             >
               {loading ? 'Posting Job...' : 'Post Job'}
             </button>
@@ -285,238 +278,43 @@ const PostJob = () => {
           </div>
         </form>
       </div>
-      {/* Inline styles for custom classes */}
-      <style>{`
-        .postjob-label {
-          display: block;
-          margin-bottom: 0.4rem;
-          font-weight: 500;
-          color: #222;
-        }
-        .postjob-input {
-          width: 100%;
-          padding: 0.85rem 1rem;
-          border-radius: 6px;
-          border: 1.5px solid #ddd;
-          font-size: 1rem;
-          background: #fafbfc;
-          transition: border 0.2s, box-shadow 0.2s;
-          outline: none;
-        }
-        .postjob-input:focus {
-          border: 1.5px solid var(--primary);
-          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.08);
-        }
-        .postjob-error {
-          color: #f44336;
-          font-size: 0.92rem;
-          margin-top: 0.2rem;
-        }
-        .postjob-btn-primary {
-          background: var(--primary);
-          color: #fff;
-          padding: 0.85rem 2.2rem;
-          border-radius: 6px;
-          border: none;
-          font-size: 1.08rem;
-          font-weight: 600;
-          cursor: pointer;
-          box-shadow: 0 2px 8px #eee;
-          transition: background 0.2s, transform 0.15s;
-        }
-        .postjob-btn-primary:hover:not(:disabled) {
-          background: #0056b3;
-          transform: translateY(-2px) scale(1.03);
-        }
-        .postjob-btn-secondary {
-          background: #f5f5f5;
-          color: #333;
-          padding: 0.85rem 2.2rem;
-          border-radius: 6px;
-          border: 1.5px solid #ddd;
-          font-size: 1.08rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background 0.2s, color 0.2s;
-        }
-        .postjob-btn-secondary:hover {
-          background: #e3e3e3;
-          color: var(--primary);
-        }
-        @media (max-width: 1200px) {
-          #post-job-card {
-            padding: 1.5rem 0.7rem !important;
-            max-width: 98vw !important;
-          }
-        }
-        @media (max-width: 500px) {
-          .postjob-btn-primary, .postjob-btn-secondary {
-            width: 100%;
-            padding: 0.85rem 0;
-          }
-        }
-      `}</style>
-      {/* Consistent Modal for Feedback */}
+      
+      {/* Modal for Feedback */}
       {showModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.6)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 2000
-        }}>
-          <div style={{
-            background: '#fff',
-            borderRadius: '16px',
-            padding: '2.5rem',
-            maxWidth: '450px',
-            width: '90%',
-            textAlign: 'center',
-            boxShadow: '0 25px 80px rgba(0,0,0,0.2)',
-            animation: 'slideIn 0.3s ease-out',
-            position: 'relative'
-          }}>
+        <div className="postjob-modal-overlay">
+          <div className="postjob-modal">
             {/* Icon */}
-            <div style={{
-              width: '80px',
-              height: '80px',
-              background: modalType === 'success'
-                ? 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)'
-                : modalType === 'info'
-                ? 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)'
-                : 'linear-gradient(135deg, #f44336 0%, #b71c1c 100%)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1.5rem',
-              fontSize: '2.5rem',
-              boxShadow: modalType === 'success'
-                ? '0 8px 25px rgba(76,175,80,0.3)'
-                : modalType === 'info'
-                ? '0 8px 25px rgba(33,150,243,0.3)'
-                : '0 8px 25px rgba(244,67,54,0.3)'
-            }}>
+            <div className={`postjob-modal-icon ${modalType}`}>
               {modalType === 'success' && '✅'}
               {modalType === 'info' && 'ℹ️'}
               {modalType === 'error' && '❌'}
             </div>
-            <h2 style={{
-              color: modalType === 'success'
-                ? '#388e3c'
-                : modalType === 'info'
-                ? '#1976d2'
-                : '#b71c1c',
-              margin: '0 0 1rem 0',
-              fontSize: '1.6rem',
-              fontWeight: '700'
-            }}>
+            <h2 className={`postjob-modal-title ${modalType}`}>
               {modalType === 'success' && 'Success'}
               {modalType === 'info' && 'Info'}
               {modalType === 'error' && 'Error'}
             </h2>
-            <p style={{
-              color: '#666',
-              fontSize: '1.1rem',
-              lineHeight: '1.6',
-              margin: '0 0 2rem 0'
-            }}>
+            <p className="postjob-modal-message">
               {modalMessage}
             </p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div className="postjob-modal-buttons">
               <button
                 onClick={() => {
                   setShowModal(false);
                   if (modalType === 'success') navigate('/employer/dashboard');
                 }}
-                style={{
-                  padding: '0.75rem 2rem',
-                  background: modalType === 'success'
-                    ? 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)'
-                    : modalType === 'info'
-                    ? 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)'
-                    : 'linear-gradient(135deg, #f44336 0%, #b71c1c 100%)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: modalType === 'success'
-                    ? '0 4px 15px rgba(76,175,80,0.3)'
-                    : modalType === 'info'
-                    ? '0 4px 15px rgba(33,150,243,0.3)'
-                    : '0 4px 15px rgba(244,67,54,0.3)'
-                }}
-                onMouseOver={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = modalType === 'success'
-                    ? '0 6px 20px rgba(76,175,80,0.4)'
-                    : modalType === 'info'
-                    ? '0 6px 20px rgba(33,150,243,0.4)'
-                    : '0 6px 20px rgba(244,67,54,0.4)';
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = modalType === 'success'
-                    ? '0 4px 15px rgba(76,175,80,0.3)'
-                    : modalType === 'info'
-                    ? '0 4px 15px rgba(33,150,243,0.3)'
-                    : '0 4px 15px rgba(244,67,54,0.3)';
-                }}
+                className={`postjob-modal-btn ${modalType}`}
               >
                 {modalType === 'success' ? 'Go to Dashboard' : 'Close'}
               </button>
             </div>
             <button
               onClick={() => setShowModal(false)}
-              style={{
-                position: 'absolute',
-                top: '1rem',
-                right: '1rem',
-                background: 'none',
-                border: 'none',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                color: '#666',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = '#f5f5f5';
-                e.target.style.color = '#333';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = 'none';
-                e.target.style.color = '#666';
-              }}
+              className="postjob-modal-close"
             >
               ×
             </button>
           </div>
-          <style>{`
-            @keyframes slideIn {
-              from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-              }
-            }
-          `}</style>
         </div>
       )}
     </div>
