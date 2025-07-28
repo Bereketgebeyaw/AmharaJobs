@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './UserProfile.css';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -265,162 +266,99 @@ const UserProfile = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f7f9fb', padding: '2rem' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <div className="userprofile-container">
+      <div className="userprofile-inner">
         {/* Header */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '0.5rem' }}>
-            My Profile
-          </h1>
-          <p style={{ color: '#666', fontSize: '1.1rem' }}>
-            Manage your personal information and documents
-          </p>
+        <div className="userprofile-header">
+          <h1>My Profile</h1>
+          <p>Manage your personal information and documents</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div className="userprofile-grid">
           {/* Profile Information */}
-          <div style={{ background: '#fff', padding: '2rem', borderRadius: '8px', boxShadow: '0 2px 8px #eee' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2 style={{ fontSize: '1.5rem', color: '#333', margin: 0 }}>
-                Personal Information
-              </h2>
+          <div className="userprofile-card">
+            <div className="userprofile-card-header">
+              <h2 className="userprofile-card-title">Personal Information</h2>
               <button
                 onClick={() => setIsEditing(!isEditing)}
-                style={{
-                  background: isEditing ? '#666' : 'var(--primary)',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '0.9rem'
-                }}
+                className={`userprofile-button ${isEditing ? 'userprofile-button-secondary' : 'userprofile-button-primary'}`}
               >
                 {isEditing ? 'Cancel' : 'Edit Profile'}
               </button>
             </div>
 
             <form>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Full Name *
-                  </label>
+              <div className="userprofile-form-grid">
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Full Name *</label>
                   <input
                     type="text"
                     name="fullname"
                     value={profile.fullname}
                     onChange={handleInputChange}
                     disabled={!isEditing}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      background: isEditing ? '#fff' : '#f9f9f9'
-                    }}
+                    className="userprofile-input"
                   />
                 </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Email *
-                  </label>
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={profile.email}
                     onChange={handleInputChange}
                     disabled={!isEditing}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      background: isEditing ? '#fff' : '#f9f9f9'
-                    }}
+                    className="userprofile-input"
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Phone *
-                  </label>
+              <div className="userprofile-form-grid">
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Phone *</label>
                   <input
                     type="text"
                     name="phone"
                     value={profile.phone}
                     onChange={handleInputChange}
                     disabled={!isEditing}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      background: isEditing ? '#fff' : '#f9f9f9'
-                    }}
+                    className="userprofile-input"
                   />
                 </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Date of Birth
-                  </label>
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Date of Birth</label>
                   <input
                     type="date"
                     name="date_of_birth"
                     value={profile.date_of_birth}
                     onChange={handleInputChange}
                     disabled={!isEditing}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      background: isEditing ? '#fff' : '#f9f9f9'
-                    }}
+                    className="userprofile-input"
                   />
                 </div>
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  Address
-                </label>
+              <div className="userprofile-form-group">
+                <label className="userprofile-label">Address</label>
                 <textarea
                   name="address"
                   value={profile.address}
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   rows="3"
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    background: isEditing ? '#fff' : '#f9f9f9',
-                    resize: 'vertical'
-                  }}
+                  className="userprofile-textarea"
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Gender
-                  </label>
+              <div className="userprofile-form-grid">
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Gender</label>
                   <select
                     name="gender"
                     value={profile.gender}
                     onChange={handleInputChange}
                     disabled={!isEditing}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      background: isEditing ? '#fff' : '#f9f9f9'
-                    }}
+                    className="userprofile-select"
                   >
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
@@ -428,10 +366,8 @@ const UserProfile = () => {
                     <option value="other">Other</option>
                   </select>
                 </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    LinkedIn URL
-                  </label>
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">LinkedIn URL</label>
                   <input
                     type="url"
                     name="linkedin_url"
@@ -439,21 +375,13 @@ const UserProfile = () => {
                     onChange={handleInputChange}
                     disabled={!isEditing}
                     placeholder="https://linkedin.com/in/yourprofile"
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      background: isEditing ? '#fff' : '#f9f9f9'
-                    }}
+                    className="userprofile-input"
                   />
                 </div>
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  Bio
-                </label>
+              <div className="userprofile-form-group">
+                <label className="userprofile-label">Bio</label>
                 <textarea
                   name="bio"
                   value={profile.bio}
@@ -461,21 +389,12 @@ const UserProfile = () => {
                   disabled={!isEditing}
                   rows="4"
                   placeholder="Tell us about yourself..."
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    background: isEditing ? '#fff' : '#f9f9f9',
-                    resize: 'vertical'
-                  }}
+                  className="userprofile-textarea"
                 />
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  Skills
-                </label>
+              <div className="userprofile-form-group">
+                <label className="userprofile-label">Skills</label>
                 <textarea
                   name="skills"
                   value={profile.skills}
@@ -483,21 +402,12 @@ const UserProfile = () => {
                   disabled={!isEditing}
                   rows="3"
                   placeholder="e.g., JavaScript, React, Node.js, Project Management"
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    background: isEditing ? '#fff' : '#f9f9f9',
-                    resize: 'vertical'
-                  }}
+                  className="userprofile-textarea"
                 />
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  Experience
-                </label>
+              <div className="userprofile-form-group">
+                <label className="userprofile-label">Experience</label>
                 <textarea
                   name="experience"
                   value={profile.experience}
@@ -505,21 +415,12 @@ const UserProfile = () => {
                   disabled={!isEditing}
                   rows="4"
                   placeholder="Describe your work experience..."
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    background: isEditing ? '#fff' : '#f9f9f9',
-                    resize: 'vertical'
-                  }}
+                  className="userprofile-textarea"
                 />
               </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  Education
-                </label>
+              <div className="userprofile-form-group">
+                <label className="userprofile-label">Education</label>
                 <textarea
                   name="education"
                   value={profile.education}
@@ -527,30 +428,16 @@ const UserProfile = () => {
                   disabled={!isEditing}
                   rows="3"
                   placeholder="Your educational background..."
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    background: isEditing ? '#fff' : '#f9f9f9',
-                    resize: 'vertical'
-                  }}
+                  className="userprofile-textarea"
                 />
               </div>
 
               {isEditing && (
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+                <div className="userprofile-form-grid">
                   <button
                     type="button"
                     onClick={() => setIsEditing(false)}
-                    style={{
-                      background: '#666',
-                      color: '#fff',
-                      border: 'none',
-                      padding: '0.75rem 1.5rem',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
+                    className="userprofile-button userprofile-button-secondary"
                   >
                     Cancel
                   </button>
@@ -558,15 +445,7 @@ const UserProfile = () => {
                     type="button"
                     onClick={handleSaveProfile}
                     disabled={saving}
-                    style={{
-                      background: saving ? '#ccc' : 'var(--primary)',
-                      color: '#fff',
-                      border: 'none',
-                      padding: '0.75rem 1.5rem',
-                      borderRadius: '4px',
-                      cursor: saving ? 'not-allowed' : 'pointer',
-                      fontWeight: '500'
-                    }}
+                    className="userprofile-button userprofile-button-primary"
                   >
                     {saving ? 'Saving...' : 'Save Profile'}
                   </button>
@@ -576,30 +455,19 @@ const UserProfile = () => {
           </div>
 
           {/* Document Management */}
-          <div style={{ background: '#fff', padding: '2rem', borderRadius: '8px', boxShadow: '0 2px 8px #eee' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: '#333' }}>
-              Document Management
-            </h2>
+          <div className="userprofile-card">
+            <h2 className="userprofile-card-title">Document Management</h2>
 
             {/* Upload Form */}
-            <div style={{ marginBottom: '2rem', padding: '1rem', background: '#f8f9fa', borderRadius: '4px' }}>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#333' }}>
-                Upload New Document
-              </h3>
+            <div className="userprofile-upload-section">
+              <h3 className="userprofile-upload-title">Upload New Document</h3>
               <form onSubmit={handleUpload}>
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Document Type
-                  </label>
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Document Type</label>
                   <select
                     value={uploadForm.document_type}
                     onChange={(e) => setUploadForm({...uploadForm, document_type: e.target.value})}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px'
-                    }}
+                    className="userprofile-select"
                   >
                     <option value="resume">Resume/CV</option>
                     <option value="certificate">Certificate</option>
@@ -608,65 +476,41 @@ const UserProfile = () => {
                   </select>
                 </div>
 
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    Title (Optional)
-                  </label>
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">Title (Optional)</label>
                   <input
                     type="text"
                     placeholder="e.g., Software Engineer Resume"
                     value={uploadForm.title}
                     onChange={(e) => setUploadForm({...uploadForm, title: e.target.value})}
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px'
-                    }}
+                    className="userprofile-input"
                   />
                 </div>
 
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    File
-                  </label>
+                <div className="userprofile-form-group">
+                  <label className="userprofile-label">File</label>
                   <input
                     type="file"
                     onChange={handleFileSelect}
                     accept="*/*"
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px'
-                    }}
+                    className="userprofile-file-input"
                   />
                 </div>
 
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <input
-                      type="checkbox"
-                      checked={uploadForm.is_default}
-                      onChange={(e) => setUploadForm({...uploadForm, is_default: e.target.checked})}
-                    />
-                    Set as default for this document type
-                  </label>
+                <div className="userprofile-checkbox-group">
+                  <input
+                    type="checkbox"
+                    checked={uploadForm.is_default}
+                    onChange={(e) => setUploadForm({...uploadForm, is_default: e.target.checked})}
+                    className="userprofile-checkbox"
+                  />
+                  <label>Set as default for this document type</label>
                 </div>
 
                 <button
                   type="submit"
                   disabled={uploading || !selectedFile}
-                  style={{
-                    background: uploading ? '#ccc' : 'var(--primary)',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '0.75rem 1rem',
-                    borderRadius: '4px',
-                    cursor: uploading ? 'not-allowed' : 'pointer',
-                    fontWeight: '500',
-                    width: '100%'
-                  }}
+                  className="userprofile-button userprofile-button-primary"
                 >
                   {uploading ? 'Uploading...' : 'Upload Document'}
                 </button>
@@ -675,54 +519,36 @@ const UserProfile = () => {
 
             {/* Documents List */}
             <div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#333' }}>
-                My Documents
-              </h3>
+              <h3 className="userprofile-upload-title">My Documents</h3>
 
               {loading ? (
-                <div style={{ textAlign: 'center', padding: '2rem' }}>
-                  <div style={{ fontSize: '1.2rem', color: '#666' }}>Loading documents...</div>
+                <div className="userprofile-loading">
+                  <div className="userprofile-loading-text">Loading documents...</div>
                 </div>
               ) : documents.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                <div className="userprofile-empty">
                   <p>No documents uploaded yet.</p>
                   <p>Upload your first document to get started!</p>
                 </div>
               ) : (
-                <div style={{ display: 'grid', gap: '1rem' }}>
+                <div className="userprofile-documents-list">
                   {documents.map(doc => (
-                    <div key={doc.id} style={{
-                      border: '1px solid #eee',
-                      borderRadius: '8px',
-                      padding: '1rem',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <span style={{ fontSize: '1.5rem' }}>
+                    <div key={doc.id} className="userprofile-document-item">
+                      <div className="userprofile-document-info">
+                        <span className="userprofile-document-icon">
                           {getDocumentTypeIcon(doc.document_type)}
                         </span>
-                        <div>
-                          <h4 style={{ margin: '0 0 0.25rem 0', fontSize: '1rem' }}>
+                        <div className="userprofile-document-details">
+                          <h4>
                             {doc.title}
                             {doc.is_default && (
-                              <span style={{
-                                background: 'var(--primary)',
-                                color: '#fff',
-                                padding: '0.25rem 0.5rem',
-                                borderRadius: '12px',
-                                fontSize: '0.8rem',
-                                marginLeft: '0.5rem'
-                              }}>
-                                Default
-                              </span>
+                              <span className="userprofile-badge">Default</span>
                             )}
                           </h4>
-                          <p style={{ margin: 0, color: '#666', fontSize: '0.9rem' }}>
+                          <p>
                             {doc.original_name} • {formatFileSize(doc.file_size)} • {doc.document_type}
                           </p>
-                          <p style={{ margin: '0.25rem 0 0 0', color: '#999', fontSize: '0.8rem' }}>
+                          <p className="userprofile-document-meta">
                             Uploaded: {new Date(doc.uploaded_at).toLocaleDateString()}
                           </p>
                         </div>
@@ -730,15 +556,7 @@ const UserProfile = () => {
 
                       <button
                         onClick={() => handleDeleteDocument(doc.id)}
-                        style={{
-                          background: '#f44336',
-                          color: '#fff',
-                          border: 'none',
-                          padding: '0.5rem 1rem',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          fontSize: '0.9rem'
-                        }}
+                        className="userprofile-button userprofile-button-danger"
                       >
                         Delete
                       </button>
@@ -751,194 +569,52 @@ const UserProfile = () => {
         </div>
 
         {/* Navigation */}
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+        <div className="userprofile-navigation">
           <button
             onClick={() => navigate('/')}
-            style={{
-              background: '#666',
-              color: '#fff',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              marginRight: '1rem'
-            }}
+            className="userprofile-button userprofile-button-secondary"
           >
             Back to Jobs
           </button>
           <button
             onClick={() => navigate('/my-applications')}
-            style={{
-              background: 'var(--primary)',
-              color: '#fff',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
+            className="userprofile-button userprofile-button-primary"
           >
             View My Applications
           </button>
         </div>
       </div>
-      {/* Consistent Modal for Feedback */}
+
+      {/* Modal for Feedback */}
       {showModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.6)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 2000
-        }}>
-          <div style={{
-            background: '#fff',
-            borderRadius: '16px',
-            padding: '2.5rem',
-            maxWidth: '450px',
-            width: '90%',
-            textAlign: 'center',
-            boxShadow: '0 25px 80px rgba(0,0,0,0.2)',
-            animation: 'slideIn 0.3s ease-out',
-            position: 'relative'
-          }}>
-            {/* Icon */}
-            <div style={{
-              width: '80px',
-              height: '80px',
-              background: modalType === 'success'
-                ? 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)'
-                : modalType === 'info'
-                ? 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)'
-                : 'linear-gradient(135deg, #f44336 0%, #b71c1c 100%)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1.5rem',
-              fontSize: '2.5rem',
-              boxShadow: modalType === 'success'
-                ? '0 8px 25px rgba(76,175,80,0.3)'
-                : modalType === 'info'
-                ? '0 8px 25px rgba(33,150,243,0.3)'
-                : '0 8px 25px rgba(244,67,54,0.3)'
-            }}>
+        <div className="userprofile-modal">
+          <div className="userprofile-modal-content">
+            <div className={`userprofile-modal-icon ${modalType}`}>
               {modalType === 'success' && '✅'}
               {modalType === 'info' && 'ℹ️'}
               {modalType === 'error' && '❌'}
             </div>
-            <h2 style={{
-              color: modalType === 'success'
-                ? '#388e3c'
-                : modalType === 'info'
-                ? '#1976d2'
-                : '#b71c1c',
-              margin: '0 0 1rem 0',
-              fontSize: '1.6rem',
-              fontWeight: '700'
-            }}>
+            <h2 className={`userprofile-modal-title ${modalType}`}>
               {modalType === 'success' && 'Success'}
               {modalType === 'info' && 'Info'}
               {modalType === 'error' && 'Error'}
             </h2>
-            <p style={{
-              color: '#666',
-              fontSize: '1.1rem',
-              lineHeight: '1.6',
-              margin: '0 0 2rem 0'
-            }}>
+            <p className="userprofile-modal-message">
               {modalMessage}
             </p>
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <button
-                onClick={() => setShowModal(false)}
-                style={{
-                  padding: '0.75rem 2rem',
-                  background: modalType === 'success'
-                    ? 'linear-gradient(135deg, #4caf50 0%, #388e3c 100%)'
-                    : modalType === 'info'
-                    ? 'linear-gradient(135deg, #2196f3 0%, #1976d2 100%)'
-                    : 'linear-gradient(135deg, #f44336 0%, #b71c1c 100%)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: modalType === 'success'
-                    ? '0 4px 15px rgba(76,175,80,0.3)'
-                    : modalType === 'info'
-                    ? '0 4px 15px rgba(33,150,243,0.3)'
-                    : '0 4px 15px rgba(244,67,54,0.3)'
-                }}
-                onMouseOver={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = modalType === 'success'
-                    ? '0 6px 20px rgba(76,175,80,0.4)'
-                    : modalType === 'info'
-                    ? '0 6px 20px rgba(33,150,243,0.4)'
-                    : '0 6px 20px rgba(244,67,54,0.4)';
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = modalType === 'success'
-                    ? '0 4px 15px rgba(76,175,80,0.3)'
-                    : modalType === 'info'
-                    ? '0 4px 15px rgba(33,150,243,0.3)'
-                    : '0 4px 15px rgba(244,67,54,0.3)';
-                }}
-              >
-                Close
-              </button>
-            </div>
             <button
               onClick={() => setShowModal(false)}
-              style={{
-                position: 'absolute',
-                top: '1rem',
-                right: '1rem',
-                background: 'none',
-                border: 'none',
-                fontSize: '1.5rem',
-                cursor: 'pointer',
-                color: '#666',
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = '#f5f5f5';
-                e.target.style.color = '#333';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = 'none';
-                e.target.style.color = '#666';
-              }}
+              className="userprofile-button userprofile-button-primary"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => setShowModal(false)}
+              className="userprofile-modal-close"
             >
               ×
             </button>
           </div>
-          <style>{`
-            @keyframes slideIn {
-              from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-              }
-            }
-          `}</style>
         </div>
       )}
     </div>

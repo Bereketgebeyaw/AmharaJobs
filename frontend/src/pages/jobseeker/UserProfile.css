@@ -1,0 +1,465 @@
+/* UserProfile Responsive Styles */
+.userprofile-container {
+  min-height: 100vh;
+  background: #f7f9fb;
+  padding: 1rem;
+}
+
+.userprofile-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.userprofile-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.userprofile-header h1 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.userprofile-header p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.userprofile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.userprofile-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userprofile-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.userprofile-card-title {
+  font-size: 1.3rem;
+  color: #333;
+  margin: 0;
+  font-weight: 600;
+}
+
+.userprofile-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.userprofile-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.userprofile-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.userprofile-input,
+.userprofile-select,
+.userprofile-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.userprofile-input:focus,
+.userprofile-select:focus,
+.userprofile-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.userprofile-input:disabled,
+.userprofile-select:disabled,
+.userprofile-textarea:disabled {
+  background: #f9f9f9;
+  cursor: not-allowed;
+}
+
+.userprofile-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.userprofile-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.userprofile-button-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.userprofile-button-primary:hover:not(:disabled) {
+  background: #0056b3;
+  transform: translateY(-1px);
+}
+
+.userprofile-button-secondary {
+  background: #666;
+  color: #fff;
+}
+
+.userprofile-button-secondary:hover {
+  background: #555;
+}
+
+.userprofile-button-danger {
+  background: #f44336;
+  color: #fff;
+}
+
+.userprofile-button-danger:hover {
+  background: #d32f2f;
+}
+
+.userprofile-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.userprofile-upload-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
+}
+
+.userprofile-upload-title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.userprofile-file-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.userprofile-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.userprofile-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+.userprofile-documents-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.userprofile-document-item {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  transition: box-shadow 0.3s ease;
+}
+
+.userprofile-document-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userprofile-document-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.userprofile-document-icon {
+  font-size: 1.5rem;
+}
+
+.userprofile-document-details h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.userprofile-document-details p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.userprofile-document-meta {
+  margin: 0.25rem 0 0 0;
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.userprofile-badge {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+.userprofile-navigation {
+  margin-top: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.userprofile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.userprofile-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 450px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.3s ease-out;
+  position: relative;
+}
+
+.userprofile-modal-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 2.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.userprofile-modal-icon.success {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+}
+
+.userprofile-modal-icon.info {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+  box-shadow: 0 8px 25px rgba(33, 150, 243, 0.3);
+}
+
+.userprofile-modal-icon.error {
+  background: linear-gradient(135deg, #f44336 0%, #b71c1c 100%);
+  box-shadow: 0 8px 25px rgba(244, 67, 54, 0.3);
+}
+
+.userprofile-modal-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.userprofile-modal-title.success {
+  color: #388e3c;
+}
+
+.userprofile-modal-title.info {
+  color: #1976d2;
+}
+
+.userprofile-modal-title.error {
+  color: #b71c1c;
+}
+
+.userprofile-modal-message {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem 0;
+}
+
+.userprofile-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.userprofile-modal-close:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.userprofile-loading {
+  text-align: center;
+  padding: 2rem;
+}
+
+.userprofile-loading-text {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.userprofile-empty {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.userprofile-empty p {
+  margin: 0.5rem 0;
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+  .userprofile-container {
+    padding: 1.5rem;
+  }
+  
+  .userprofile-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .userprofile-header p {
+    font-size: 1.1rem;
+  }
+  
+  .userprofile-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  
+  .userprofile-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .userprofile-navigation {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  .userprofile-container {
+    padding: 2rem;
+  }
+  
+  .userprofile-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .userprofile-card {
+    padding: 2rem;
+  }
+  
+  .userprofile-card-title {
+    font-size: 1.5rem;
+  }
+  
+  .userprofile-upload-section {
+    padding: 2rem;
+  }
+}
+
+/* Large Desktop Styles */
+@media (min-width: 1200px) {
+  .userprofile-inner {
+    max-width: 1400px;
+  }
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .userprofile-container {
+    background: white;
+    padding: 0;
+  }
+  
+  .userprofile-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+  
+  .userprofile-button,
+  .userprofile-modal {
+    display: none;
+  }
+} 

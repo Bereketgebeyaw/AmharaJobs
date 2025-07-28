@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './MyApplications.css';
 
 const MyApplications = () => {
   const navigate = useNavigate();
@@ -65,114 +66,75 @@ const MyApplications = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f7f9fb', padding: '2rem' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <div className="myapplications-container">
+      <div className="myapplications-inner">
         {/* Header */}
-        <div style={{ marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2.5rem', color: '#333', marginBottom: '0.5rem' }}>
-            My Applications
-          </h1>
-          <p style={{ color: '#666', fontSize: '1.1rem' }}>
-            Track the status of your job applications
-          </p>
+        <div className="myapplications-header">
+          <h1>My Applications</h1>
+          <p>Track the status of your job applications</p>
         </div>
 
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '3rem' }}>
-            <div style={{ fontSize: '1.2rem', color: '#666' }}>Loading applications...</div>
+          <div className="myapplications-loading">
+            <div className="myapplications-loading-text">Loading applications...</div>
           </div>
         ) : applications.length === 0 ? (
-          <div style={{ 
-            textAlign: 'center', 
-            padding: '3rem', 
-            background: '#fff', 
-            borderRadius: '8px', 
-            boxShadow: '0 2px 8px #eee' 
-          }}>
-            <h3 style={{ color: '#666', marginBottom: '1rem' }}>No applications yet</h3>
-            <p style={{ color: '#999', marginBottom: '2rem' }}>
-              Start applying to jobs to see your applications here.
-            </p>
+          <div className="myapplications-empty">
+            <h3>No applications yet</h3>
+            <p>Start applying to jobs to see your applications here.</p>
             <button
               onClick={() => navigate('/')}
-              style={{
-                background: 'var(--primary)',
-                color: '#fff',
-                border: 'none',
-                padding: '0.75rem 1.5rem',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: '500'
-              }}
+              className="myapplications-button myapplications-button-primary"
             >
               Browse Jobs
             </button>
           </div>
         ) : (
-          <div style={{ display: 'grid', gap: '1rem' }}>
+          <div className="myapplications-list">
             {applications.map(application => (
-              <div key={application.id} style={{
-                background: '#fff',
-                padding: '1.5rem',
-                borderRadius: '8px',
-                boxShadow: '0 2px 8px #eee',
-                borderLeft: `4px solid ${getStatusColor(application.status)}`
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                  <div style={{ flex: 1 }}>
-                    <h3 style={{ 
-                      margin: '0 0 0.5rem 0', 
-                      color: '#333', 
-                      fontSize: '1.25rem'
-                    }}>
+              <div 
+                key={application.id} 
+                className="myapplications-item"
+                style={{ borderLeftColor: getStatusColor(application.status) }}
+              >
+                <div className="myapplications-item-content">
+                  <div className="myapplications-job-info">
+                    <h3 className="myapplications-job-title">
                       {application.job_title}
                     </h3>
-                    <p style={{ color: '#666', margin: '0 0 1rem 0', fontSize: '1.1rem' }}>
+                    <p className="myapplications-company">
                       {application.company_name}
                     </p>
                     
-                    <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                      <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                        📍 {application.job_location}
+                    <div className="myapplications-details">
+                      <span className="myapplications-detail-item">
+                        <span className="myapplications-detail-icon">📍</span>
+                        {application.job_location}
                       </span>
-                      <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                        💼 {application.job_type}
+                      <span className="myapplications-detail-item">
+                        <span className="myapplications-detail-icon">💼</span>
+                        {application.job_type}
                       </span>
                       {application.resume_title && (
-                        <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                          📄 {application.resume_title}
+                        <span className="myapplications-detail-item">
+                          <span className="myapplications-detail-icon">📄</span>
+                          {application.resume_title}
                         </span>
                       )}
                       {application.cover_letter_title && (
-                        <span style={{ color: '#666', fontSize: '0.9rem' }}>
-                          ✉️ {application.cover_letter_title}
+                        <span className="myapplications-detail-item">
+                          <span className="myapplications-detail-icon">✉️</span>
+                          {application.cover_letter_title}
                         </span>
                       )}
                     </div>
-                    
-                    <div style={{ 
-                      display: 'flex', 
-                      justifyContent: 'space-between', 
-                      alignItems: 'center',
-                      paddingTop: '1rem',
-                      borderTop: '1px solid #eee'
-                    }}>
-                      <span style={{ color: '#999', fontSize: '0.9rem' }}>
-                        Applied: {formatDate(application.applied_at)}
-                      </span>
-                    </div>
                   </div>
                   
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
-                    <span style={{ 
-                      padding: '0.25rem 0.75rem', 
-                      borderRadius: '12px', 
-                      fontSize: '0.8rem', 
-                      fontWeight: '500',
-                      textTransform: 'uppercase',
-                      background: `${getStatusColor(application.status)}20`,
-                      color: getStatusColor(application.status)
-                    }}>
+                  <div className="myapplications-footer">
+                    <span className="myapplications-date">
+                      Applied: {formatDate(application.applied_at)}
+                    </span>
+                    <span className={`myapplications-status ${application.status}`}>
                       {getStatusText(application.status)}
                     </span>
                   </div>
@@ -183,31 +145,16 @@ const MyApplications = () => {
         )}
 
         {/* Navigation */}
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+        <div className="myapplications-navigation">
           <button
             onClick={() => navigate('/')}
-            style={{
-              background: '#666',
-              color: '#fff',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              marginRight: '1rem'
-            }}
+            className="myapplications-button myapplications-button-secondary"
           >
             Back to Jobs
           </button>
           <button
             onClick={() => navigate('/profile')}
-            style={{
-              background: 'var(--primary)',
-              color: '#fff',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
+            className="myapplications-button myapplications-button-primary"
           >
             Manage Profile
           </button>
