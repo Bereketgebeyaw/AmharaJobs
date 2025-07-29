@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
@@ -20,7 +21,7 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/employer/dashboard', {
+      const response = await fetch('API_ENDPOINTS.EMPLOYER_DASHBOARD', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { useSearchParams } from 'react-router-dom';
 
 const ApplicationsManagement = () => {
@@ -17,7 +18,7 @@ const ApplicationsManagement = () => {
   const fetchJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/employer/jobs', {
+      const response = await fetch('API_ENDPOINTS.EMPLOYER_JOBS', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -37,8 +38,8 @@ const ApplicationsManagement = () => {
     try {
       const token = localStorage.getItem('token');
       const url = selectedJob === 'all' 
-        ? 'http://localhost:5000/api/employer/applications'
-        : `http://localhost:5000/api/employer/applications?job_id=${selectedJob}`;
+        ? 'API_ENDPOINTS.EMPLOYER_APPLICATIONS'
+        : `API_ENDPOINTS.EMPLOYER_APPLICATIONS?job_id=${selectedJob}`;
 
       const response = await fetch(url, {
         headers: {
@@ -70,7 +71,7 @@ const ApplicationsManagement = () => {
   const handleStatusUpdate = async (applicationId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/employer/applications/${applicationId}/status`, {
+      const response = await fetch(`API_ENDPOINTS.EMPLOYER_APPLICATIONS/${applicationId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -159,7 +160,7 @@ const ApplicationsManagement = () => {
     if (!filePath) return '#';
     const parts = filePath.split(/[/\\]/); // split on / or \
     const filename = parts[parts.length - 1];
-    return `http://localhost:5000/uploads/documents/${filename}`;
+    return `API_ENDPOINTS.UPLOADS_DOCUMENTS${filename}`;
   };
 
   if (loading) {

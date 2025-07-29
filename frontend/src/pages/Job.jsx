@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { useParams, useNavigate } from 'react-router-dom';
 import JobApplicationModal from '../components/JobApplicationModal';
 import logo from '../assets/AmharaJlogo.png';
@@ -20,7 +21,7 @@ const Job = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`http://localhost:5000/api/jobs/${id}`);
+      const response = await fetch(`API_ENDPOINTS.JOBS/${id}`);
       if (response.ok) {
         const data = await response.json();
         setJob(data.job);

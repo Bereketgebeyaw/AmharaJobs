@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/AmharaJlogo.png';
 import './EmployerAuth.css';
@@ -32,7 +33,7 @@ const EmployerLogin = () => {
     if (Object.keys(errs).length === 0) {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
+        const response = await fetch('API_ENDPOINTS.LOGIN', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form)

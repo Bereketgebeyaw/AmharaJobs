@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 
 const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
   const [documents, setDocuments] = useState([]);
@@ -23,7 +24,7 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
     try {
       setLoading(true);
       const userId = localStorage.getItem('userId');
-      const response = await fetch('http://localhost:5000/api/documents', {
+      const response = await fetch('API_ENDPOINTS.DOCUMENTS', {
         headers: {
           'user-id': userId
         }
@@ -61,7 +62,7 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
     setSubmitting(true);
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch('http://localhost:5000/api/applications', {
+      const response = await fetch('API_ENDPOINTS.APPLICATIONS', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 10;
@@ -33,7 +34,7 @@ const AdminUsers = () => {
         user_type: userType,
         status
       });
-      const response = await fetch(`http://localhost:5000/api/admin/users?${params.toString()}`, {
+      const response = await fetch(`API_ENDPOINTS.ADMIN_USERS?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -66,7 +67,7 @@ const AdminUsers = () => {
   const handleStatusChange = async (userId, newStatus) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/admin/users/${userId}/status`, {
+      const response = await fetch(`API_ENDPOINTS.ADMIN_USERS/${userId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -88,7 +89,7 @@ const AdminUsers = () => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+      const response = await fetch(`API_ENDPOINTS.ADMIN_USERS/${userId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

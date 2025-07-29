@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { useNavigate } from 'react-router-dom';
 import './UserProfile.css';
 
@@ -98,7 +99,7 @@ const UserProfile = () => {
   const fetchDocuments = async () => {
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch('http://localhost:5000/api/documents', {
+      const response = await fetch('API_ENDPOINTS.DOCUMENTS', {
         headers: {
           'user-id': userId
         }
@@ -178,7 +179,7 @@ const UserProfile = () => {
       formData.append('description', uploadForm.description);
       formData.append('is_default', uploadForm.is_default);
 
-      const response = await fetch('http://localhost:5000/api/documents/upload', {
+      const response = await fetch('API_ENDPOINTS.DOCUMENTS/upload', {
         method: 'POST',
         headers: {
           'user-id': userId
@@ -222,7 +223,7 @@ const UserProfile = () => {
 
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`http://localhost:5000/api/documents/${documentId}`, {
+      const response = await fetch(`API_ENDPOINTS.DOCUMENTS/${documentId}`, {
         method: 'DELETE',
         headers: {
           'user-id': userId

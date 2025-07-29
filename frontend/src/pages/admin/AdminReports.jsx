@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -44,7 +45,7 @@ const AdminReports = () => {
       if (customStart) params.append('start_date', customStart);
       if (customEnd) params.append('end_date', customEnd);
       params.append('type', 'monthly');
-      const response = await fetch(`http://localhost:5000/api/admin/reports?${params.toString()}`, {
+      const response = await fetch(`API_ENDPOINTS.ADMIN_REPORTS?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

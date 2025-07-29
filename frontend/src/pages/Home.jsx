@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext'
 import logo from '../assets/AmharaJlogo.png'
 import JobApplicationModal from '../components/JobApplicationModal'
 import AmharaLocationAutocomplete from '../components/AmharaLocationAutocomplete';
+import { API_ENDPOINTS } from '../config/api';
 
 const Home = ({ onlyActive = false, minimal = false }) => {
   const navigate = useNavigate()
@@ -34,15 +35,17 @@ const Home = ({ onlyActive = false, minimal = false }) => {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/jobs')
+      const response = await fetch(API_ENDPOINTS.JOBS);
       if (response.ok) {
-        const data = await response.json()
-        setJobs(data.jobs || [])
+        const data = await response.json();
+        setJobs(data.jobs || []);
+      } else {
+        setError('Failed to load jobs');
       }
     } catch (err) {
-      console.error('Failed to fetch jobs:', err)
+      setError('Network error. Please try again.');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 

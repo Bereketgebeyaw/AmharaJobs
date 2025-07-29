@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 import { useNavigate } from 'react-router-dom';
 import './PostJob.css';
 
@@ -45,7 +46,7 @@ const PostJob = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:5000/api/employer/jobs', {
+        const response = await fetch('API_ENDPOINTS.EMPLOYER_JOBS', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

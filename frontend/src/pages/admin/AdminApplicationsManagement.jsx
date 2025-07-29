@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_ENDPOINTS } from '../config/api';
 
 const AdminApplicationsManagement = () => {
   const [applications, setApplications] = useState([]);
@@ -27,7 +28,7 @@ const AdminApplicationsManagement = () => {
         applicant: search,
         job: search
       });
-      const response = await fetch(`http://localhost:5000/api/admin/applications?${params.toString()}`, {
+      const response = await fetch(`API_ENDPOINTS.ADMIN_APPLICATIONS?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
