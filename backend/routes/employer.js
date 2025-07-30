@@ -3,6 +3,7 @@ const router = express.Router();
 const knex = require('knex')(require('../knexfile').development);
 const jwt = require('jsonwebtoken');
 const { sendEmail } = require('../utils/mailer');
+const { expireJobs } = require('../utils/jobExpiration');
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
@@ -92,9 +93,12 @@ router.get('/dashboard', authenticateToken, verifyEmployer, async (req, res) => 
   }
 });
 
-// Get all jobs for employer
+// Get all jobs for employer - now with automatic expiration
 router.get('/jobs', authenticateToken, verifyEmployer, async (req, res) => {
   try {
+    // First, expire any jobs that have passed their deadline
+    await expireJobs();
+    
     const employer = await knex('employers').where({ user_id: req.user.id }).first();
     const jobs = await knex('jobs')
       .where({ employer_id: employer.id })
@@ -102,6 +106,7 @@ router.get('/jobs', authenticateToken, verifyEmployer, async (req, res) => {
     
     res.json({ jobs });
   } catch (err) {
+    console.error('Error fetching employer jobs:', err);
     res.status(500).json({ error: 'Failed to load jobs' });
   }
 });

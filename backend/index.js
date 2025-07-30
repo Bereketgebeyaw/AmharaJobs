@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const { expireJobs } = require('./utils/jobExpiration');
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,27 @@ app.use('/api/auth/profile', require('./routes/profile'));
 
 // Serve uploaded documents statically
 app.use('/uploads/documents', express.static(path.join(__dirname, 'uploads/documents')));
+
+// Scheduled job expiration - runs every hour
+setInterval(async () => {
+  try {
+    const expiredCount = await expireJobs();
+    if (expiredCount > 0) {
+      console.log(`Scheduled task: Expired ${expiredCount} jobs`);
+    }
+  } catch (error) {
+    console.error('Scheduled job expiration error:', error);
+  }
+}, 60 * 60 * 1000); // Run every hour
+
+// Also run once on server startup
+expireJobs().then(count => {
+  if (count > 0) {
+    console.log(`Server startup: Expired ${count} jobs`);
+  }
+}).catch(error => {
+  console.error('Startup job expiration error:', error);
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 

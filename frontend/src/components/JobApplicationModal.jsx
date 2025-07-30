@@ -24,7 +24,7 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
     try {
       setLoading(true);
       const userId = localStorage.getItem('userId');
-      const response = await fetch('API_ENDPOINTS.DOCUMENTS', {
+      const response = await fetch(API_ENDPOINTS.DOCUMENTS, {
         headers: {
           'user-id': userId
         }
@@ -62,7 +62,7 @@ const JobApplicationModal = ({ job, isOpen, onClose, onSuccess }) => {
     setSubmitting(true);
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch('API_ENDPOINTS.APPLICATIONS', {
+      const response = await fetch(API_ENDPOINTS.APPLICATIONS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

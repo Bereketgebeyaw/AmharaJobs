@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 
 const AdminApplicationsManagement = () => {
   const [applications, setApplications] = useState([]);

@@ -162,9 +162,10 @@
 }
 
 .navbar-button:hover {
-  background: var(--primary);
-  color: #fff;
+  background: rgba(0, 115, 47, 0.1);
+  color: var(--primary);
   transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 115, 47, 0.2);
 }
 
 .navbar-button-outline {

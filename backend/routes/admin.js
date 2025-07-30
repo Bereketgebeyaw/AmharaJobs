@@ -4,6 +4,7 @@ const knex = require('knex')(require('../knexfile').development);
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sendEmail } = require('../utils/mailer');
+const { expireJobs } = require('../utils/jobExpiration');
 
 // Middleware to verify admin token
 const authenticateAdminToken = async (req, res, next) => {
@@ -464,6 +465,21 @@ router.get('/reports', authenticateAdminToken, async (req, res) => {
   } catch (err) {
     console.error('Report generation error:', err);
     res.status(500).json({ error: 'Failed to generate report' });
+  }
+});
+
+// Manual job expiration endpoint (admin only)
+router.post('/expire-jobs', authenticateAdminToken, async (req, res) => {
+  try {
+    const expiredCount = await expireJobs();
+    
+    res.json({ 
+      message: `Successfully expired ${expiredCount} jobs`,
+      expiredCount 
+    });
+  } catch (error) {
+    console.error('Manual job expiration error:', error);
+    res.status(500).json({ error: 'Failed to expire jobs' });
   }
 });
 

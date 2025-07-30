@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import { useNavigate } from 'react-router-dom';
 
 const PAGE_SIZE = 10;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import { useNavigate } from 'react-router-dom';
 import './MyApplications.css';
 
@@ -15,7 +15,7 @@ const MyApplications = () => {
   const fetchApplications = async () => {
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch('API_ENDPOINTS.MY_APPLICATIONS', {
+      const response = await fetch(API_ENDPOINTS.MY_APPLICATIONS, {
         headers: {
           'user-id': userId
         }

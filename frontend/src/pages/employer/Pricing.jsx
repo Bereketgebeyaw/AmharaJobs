@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import Footer from '../../components/Footer';
 import ChatWidget from '../../components/ChatWidget';
 
@@ -18,7 +18,7 @@ const Pricing = () => {
     setIsLoggedIn(!!token);
 
     // Fetch packages
-    fetch('API_ENDPOINTS.EMPLOYER_PACKAGES')
+    fetch(API_ENDPOINTS.EMPLOYER_PACKAGES)
       .then(res => {
         if (!res.ok) throw new Error('Network response was not ok');
         return res.json();
@@ -34,7 +34,7 @@ const Pricing = () => {
 
     // Fetch user's active packages if logged in
     if (token) {
-      fetch('API_ENDPOINTS.EMPLOYER_MY_PACKAGES', {
+      fetch(API_ENDPOINTS.EMPLOYER_MY_PACKAGES, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -55,7 +55,7 @@ const Pricing = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const txRef = urlParams.get('tx_ref');
     if (txRef && token) {
-      fetch('API_ENDPOINTS.EMPLOYER_VERIFY_PAYMENT', {
+      fetch(API_ENDPOINTS.EMPLOYER_VERIFY_PAYMENT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const Pricing = () => {
     }
 
     try {
-      const res = await fetch('API_ENDPOINTS.EMPLOYER_PAY', {
+      const res = await fetch(API_ENDPOINTS.EMPLOYER_PAY, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

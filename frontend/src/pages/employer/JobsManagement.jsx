@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import { Link } from 'react-router-dom';
 import './JobsManagement.css';
 
@@ -26,7 +26,7 @@ const JobsManagement = () => {
         return;
       }
 
-      const response = await fetch('API_ENDPOINTS.EMPLOYER_JOBS', {
+      const response = await fetch(API_ENDPOINTS.EMPLOYER_JOBS, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ const JobsManagement = () => {
   const handleStatusChange = async (jobId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`API_ENDPOINTS.EMPLOYER_JOBS/${jobId}/status`, {
+      const response = await fetch(`API_ENDPOINTS.EMPLOYER_JOBS + "/${jobId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -82,7 +82,7 @@ const JobsManagement = () => {
     if (!jobToDelete) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`API_ENDPOINTS.EMPLOYER_JOBS/${jobToDelete}`, {
+      const response = await fetch(`API_ENDPOINTS.EMPLOYER_JOBS + "/${jobToDelete}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

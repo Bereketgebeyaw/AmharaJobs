@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import { useLocation } from 'react-router-dom';
 
 function useQuery() {
@@ -18,7 +18,7 @@ const PaymentSuccess = () => {
       setMessage('Missing payment information.');
       return;
     }
-    fetch('API_ENDPOINTS.EMPLOYER_VERIFY_PAYMENT', {
+    fetch(API_ENDPOINTS.EMPLOYER_VERIFY_PAYMENT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tx_ref })

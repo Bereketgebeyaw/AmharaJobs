@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import { useNavigate, Link } from 'react-router-dom'
 import logo from '../../assets/AmharaJlogo.png'
 
@@ -34,7 +34,7 @@ const Login = () => {
     if (Object.keys(errs).length === 0) {
       setLoading(true)
       try {
-        const res = await fetch('API_ENDPOINTS.LOGIN', {
+        const res = await fetch(API_ENDPOINTS.LOGIN, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form)

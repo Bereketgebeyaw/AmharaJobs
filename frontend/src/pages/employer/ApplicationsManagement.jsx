@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../../config/api';
 import { useSearchParams } from 'react-router-dom';
 
 const ApplicationsManagement = () => {
@@ -18,7 +18,7 @@ const ApplicationsManagement = () => {
   const fetchJobs = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('API_ENDPOINTS.EMPLOYER_JOBS', {
+      const response = await fetch(API_ENDPOINTS.EMPLOYER_JOBS, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ const ApplicationsManagement = () => {
     try {
       const token = localStorage.getItem('token');
       const url = selectedJob === 'all' 
-        ? 'API_ENDPOINTS.EMPLOYER_APPLICATIONS'
+        ? API_ENDPOINTS.EMPLOYER_APPLICATIONS
         : `API_ENDPOINTS.EMPLOYER_APPLICATIONS?job_id=${selectedJob}`;
 
       const response = await fetch(url, {
@@ -71,7 +71,7 @@ const ApplicationsManagement = () => {
   const handleStatusUpdate = async (applicationId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`API_ENDPOINTS.EMPLOYER_APPLICATIONS/${applicationId}/status`, {
+      const response = await fetch(`API_ENDPOINTS.EMPLOYER_APPLICATIONS + "/${applicationId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
