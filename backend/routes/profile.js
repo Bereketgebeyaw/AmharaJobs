@@ -1,6 +1,14 @@
+// Load environment variables based on NODE_ENV
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config({ path: '.env.local' });
+} else {
+  require('dotenv').config();
+}
+
 const express = require('express');
 const router = express.Router();
-const knex = require('knex')(require('../knexfile').development);
+const environment = process.env.NODE_ENV || 'development';
+const knex = require('knex')(require('../knexfile')[environment]);
 
 // Middleware to check if user is authenticated
 const authenticateUser = (req, res, next) => {

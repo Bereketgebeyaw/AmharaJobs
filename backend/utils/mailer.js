@@ -1,3 +1,10 @@
+// Load environment variables based on NODE_ENV
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config({ path: '.env.local' });
+} else {
+  require('dotenv').config();
+}
+
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
