@@ -1,8 +1,9 @@
 // Load environment variables based on NODE_ENV
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config({ path: '.env.local' });
-} else {
+if (process.env.NODE_ENV === 'production') {
   require('dotenv').config();
+} else {
+  // Default to development (load .env.local)
+  require('dotenv').config({ path: '.env.local' });
 }
 
 const environment = process.env.NODE_ENV || 'development';
