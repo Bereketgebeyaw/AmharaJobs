@@ -26,7 +26,12 @@ const transporter = nodemailer.createTransport({
 
 // Helper: send verification email
 async function sendVerificationEmail(email, token) {
-  const verifyUrl = `http://localhost:5000/api/auth/verify?token=${token}`;
+  // Use environment-specific base URL
+  const baseUrl = process.env.NODE_ENV === 'production' 
+    ? 'https://amharajobs.onrender.com' 
+    : 'http://localhost:5000';
+  const verifyUrl = `${baseUrl}/api/auth/verify?token=${token}`;
+  
   await transporter.sendMail({
     from: `AmharaJobs <${process.env.EMAIL_USER}>`,
     to: email,
