@@ -68,23 +68,38 @@ router.post('/register', async (req, res) => {
 // Email verification endpoint
 router.get('/verify', async (req, res) => {
   const { token } = req.query;
+  console.log('Verification attempt with token:', token ? token.substring(0, 10) + '...' : 'no token');
+  
   if (!token) return res.status(400).send('Invalid verification link.');
+  
   try {
     const user = await knex('users').where({ verification_token: token }).first();
+    console.log('User found:', user ? `User ID: ${user.id}, Email: ${user.email}` : 'No user found');
+    
     if (!user) return res.status(400).send('Invalid or expired verification token.');
+    
     await knex('users').where({ id: user.id }).update({ is_verified: true, verification_token: null });
+    console.log('User verified successfully:', user.email);
+    
+    // Use environment-specific frontend URL
+    const frontendUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://amharajobs-frontend-d30gy78x2-berekets-projects-2ce4c776.vercel.app/login'
+      : 'http://localhost:5173/login';
+    
     res.send(`
       <html>
         <head>
-          <meta http-equiv="refresh" content="2;url=http://localhost:5173/login" />
+          <meta http-equiv="refresh" content="3;url=${frontendUrl}" />
         </head>
         <body style="font-family:sans-serif;text-align:center;padding-top:40px;">
           <h2>Your account has been verified!</h2>
           <p>You will be redirected to the login page shortly.</p>
+          <p>If not redirected automatically, <a href="${frontendUrl}">click here</a>.</p>
         </body>
       </html>
     `);
   } catch (err) {
+    console.error('Verification error:', err);
     res.status(500).send('Verification failed.');
   }
 });
