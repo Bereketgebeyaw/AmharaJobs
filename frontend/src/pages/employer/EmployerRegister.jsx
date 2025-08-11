@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/AmharaJlogo.png'
+import { API_ENDPOINTS } from '../../config/api'
 import './EmployerAuth.css'
 
 const EmployerRegister = () => {
@@ -47,7 +48,7 @@ const EmployerRegister = () => {
 
     setLoading(true)
     try {
-      const response = await fetch('/api/auth/employer/register', {
+      const response = await fetch(API_ENDPOINTS.EMPLOYER_REGISTER, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,12 +1,21 @@
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const isDevelopment = import.meta.env.MODE === 'development';
+const API_BASE_URL = isDevelopment ? 'http://localhost:5000' : 'https://amharajobs.onrender.com';
+
+// Debug logging
+console.log('API_BASE_URL:', API_BASE_URL);
+console.log('Environment:', import.meta.env.MODE);
+console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
+console.log('isDevelopment:', isDevelopment);
 
 export const API_ENDPOINTS = {
   // Auth endpoints
   LOGIN: `${API_BASE_URL}/api/auth/login`,
   REGISTER: `${API_BASE_URL}/api/auth/register`,
+  EMPLOYER_REGISTER: `${API_BASE_URL}/api/auth/employer/register`,
   GOOGLE_AUTH: `${API_BASE_URL}/api/auth/google`,
   PROFILE: (userId) => `${API_BASE_URL}/api/auth/profile/${userId}`,
+  PROFILE_UPDATE: (userId) => `${API_BASE_URL}/api/auth/profile/${userId}`,
   
   // Admin endpoints
   ADMIN_LOGIN: `${API_BASE_URL}/api/admin/login`,
