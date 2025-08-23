@@ -36,7 +36,7 @@ const AdminJobsManagement = () => {
         search,
         status
       });
-      const response = await fetch(`API_ENDPOINTS.ADMIN_JOBS?${params.toString()}`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_JOBS}?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ const AdminJobsManagement = () => {
     if (!window.confirm(`Change job status to '${newStatus}'?`)) return;
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`API_ENDPOINTS.ADMIN_JOBS/${jobId}/status`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_JOBS}/${jobId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -91,7 +91,7 @@ const AdminJobsManagement = () => {
     }
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`API_ENDPOINTS.ADMIN_JOBS/${denyingJobId}/status`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_JOBS}/${denyingJobId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -115,7 +115,7 @@ const AdminJobsManagement = () => {
     if (!window.confirm('Are you sure you want to delete this job?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`API_ENDPOINTS.ADMIN_JOBS/${jobId}`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_JOBS}/${jobId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

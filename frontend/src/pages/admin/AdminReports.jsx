@@ -45,7 +45,7 @@ const AdminReports = () => {
       if (customStart) params.append('start_date', customStart);
       if (customEnd) params.append('end_date', customEnd);
       params.append('type', 'monthly');
-      const response = await fetch(`API_ENDPOINTS.ADMIN_REPORTS?${params.toString()}`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_REPORTS}?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

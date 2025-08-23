@@ -34,7 +34,7 @@ const AdminUsers = () => {
         user_type: userType,
         status
       });
-      const response = await fetch(`API_ENDPOINTS.ADMIN_USERS?${params.toString()}`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_USERS}?${params.toString()}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -67,7 +67,7 @@ const AdminUsers = () => {
   const handleStatusChange = async (userId, newStatus) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`API_ENDPOINTS.ADMIN_USERS/${userId}/status`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_USERS}/${userId}/status`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -89,7 +89,7 @@ const AdminUsers = () => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`API_ENDPOINTS.ADMIN_USERS/${userId}`, {
+      const response = await fetch(`${API_ENDPOINTS.ADMIN_USERS}/${userId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
