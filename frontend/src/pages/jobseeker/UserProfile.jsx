@@ -43,7 +43,7 @@ const UserProfile = () => {
   const fetchProfile = async () => {
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
+      const response = await fetch(`${API_ENDPOINTS.PROFILE(userId)}`, {
         headers: {
           'user-id': userId
         }
@@ -127,7 +127,7 @@ const UserProfile = () => {
     setSaving(true);
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`http://localhost:5000/api/auth/profile/${userId}`, {
+      const response = await fetch(`${API_ENDPOINTS.PROFILE_UPDATE(userId)}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
