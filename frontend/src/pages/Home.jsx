@@ -145,6 +145,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   placeholder={t('home.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="home-input"
                   style={{
                     flex: 1,
                     minWidth: '250px',
@@ -163,6 +164,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                 <select
                   value={jobTypeFilter}
                   onChange={(e) => setJobTypeFilter(e.target.value)}
+                  className="home-select"
                   style={{
                     padding: '0.75rem 1rem',
                     borderRadius: '8px',
@@ -181,6 +183,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                 <select
                   value={experienceFilter}
                   onChange={(e) => setExperienceFilter(e.target.value)}
+                  className="home-select"
                   style={{
                     padding: '0.75rem 1rem',
                     borderRadius: '8px',
@@ -215,6 +218,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
             <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <button
                 onClick={() => navigate('/register')}
+                className="home-btn"
                 style={{
                   padding: '1rem 2rem',
                   fontSize: '1.1rem',
@@ -234,6 +238,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               </button>
               <Link
                 to="/login"
+                className="home-btn"
                 style={{
                   padding: '1rem 2rem',
                   fontSize: '1.1rem',
@@ -258,6 +263,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               </Link>
               <button
                 onClick={() => navigate('/employer')}
+                className="home-btn"
                 style={{
                   padding: '1rem 2rem',
                   fontSize: '1.1rem',
@@ -311,9 +317,9 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               </p>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '1.5rem' }}>
+            <div className="home-job-card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1.5rem' }}>
               {filteredJobs.map((job, index) => (
-                <div key={job.id} style={{ 
+                <div key={job.id} className="home-job-card" style={{ 
                   background: '#fff', 
                   borderRadius: '16px', 
                   boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
@@ -844,11 +850,19 @@ const Home = ({ onlyActive = false, minimal = false }) => {
           }
         }
         /* Responsive styles */
+        @media (max-width: 1200px) {
+          .home-job-card-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important; }
+        }
         @media (max-width: 900px) {
           .home-hero-title { font-size: 2.2rem !important; }
           .home-hero-subtitle { font-size: 1.3rem !important; }
           .home-hero-logo { height: 56px !important; }
           .home-section { padding: 2rem 1rem !important; }
+          .home-job-card-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 1rem !important; }
+        }
+        @media (max-width: 768px) {
+          .home-job-card-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+          .home-job-card { margin: 0 0.5rem !important; }
         }
         @media (max-width: 600px) {
           .home-hero-title { font-size: 1.5rem !important; }
@@ -856,14 +870,15 @@ const Home = ({ onlyActive = false, minimal = false }) => {
           .home-hero-logo { height: 40px !important; }
           .home-section { padding: 1.2rem 0.5rem !important; }
           .home-searchbar, .home-quick-actions, .home-features { padding: 1.2rem 0.5rem !important; }
-          .home-job-card-grid { grid-template-columns: 1fr !important; }
-          .home-job-card { min-width: 0 !important; }
+          .home-job-card-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+          .home-job-card { min-width: 0 !important; margin: 0 !important; }
           .home-btn, .home-input, .home-select { width: 100% !important; min-width: 0 !important; }
         }
         @media (max-width: 400px) {
           .home-hero-title { font-size: 1.1rem !important; }
           .home-hero-subtitle { font-size: 0.9rem !important; }
           .home-section, .home-searchbar, .home-quick-actions, .home-features { padding: 0.5rem 0.2rem !important; }
+          .home-job-card-grid { gap: 0.5rem !important; }
         }
       `}</style>
     </div>
