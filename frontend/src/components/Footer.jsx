@@ -52,18 +52,18 @@ const Footer = () => {
         borderTop: '1px solid var(--primary-light)'
       }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 2rem' }}>
+      <div className="footer-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 2rem' }}>
         {/* Main Footer Content */}
-        <div style={{ 
+        <div className="footer-grid" style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
           gap: '2rem',
           marginBottom: '2rem'
         }}>
           
           {/* Company Info */}
           <div>
-            <h3 style={{ 
+            <h3 className="footer-title" style={{ 
               fontSize: '1.5rem', 
               fontWeight: 700, 
               marginBottom: '1rem',
@@ -71,7 +71,7 @@ const Footer = () => {
             }}>
               AmharaJobs
             </h3>
-            <p style={{ 
+            <p className="footer-subtitle" style={{ 
               fontSize: '1rem', 
               lineHeight: 1.6,
               opacity: 0.9,
@@ -195,12 +195,13 @@ const Footer = () => {
             }}>
               {t('footer.newsletterDesc')}
             </p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div className="footer-newsletter" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
               <input
                 type="email"
                 placeholder={t('footer.emailPlaceholder')}
                 style={{
                   flex: 1,
+                  minWidth: '200px',
                   padding: '0.75rem',
                   borderRadius: '4px',
                   border: 'none',
@@ -217,7 +218,8 @@ const Footer = () => {
                   cursor: 'pointer',
                   fontSize: '0.9rem',
                   fontWeight: 500,
-                  transition: 'background 0.2s ease'
+                  transition: 'background 0.2s ease',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={(e) => e.target.style.background = 'var(--primary-dark)'}
                 onMouseLeave={(e) => e.target.style.background = 'var(--primary)'}
@@ -234,7 +236,7 @@ const Footer = () => {
           paddingTop: '2rem',
           textAlign: 'center'
         }}>
-          <div style={{ 
+          <div className="footer-bottom" style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center',
@@ -250,6 +252,42 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      
+      {/* Responsive CSS */}
+      <style>{`
+        @media (max-width: 768px) {
+          .footer-container {
+            padding: 0 1rem !important;
+          }
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+          .footer-newsletter {
+            flex-direction: column !important;
+          }
+          .footer-newsletter input {
+            min-width: 100% !important;
+            margin-bottom: 0.5rem !important;
+          }
+          .footer-bottom {
+            flex-direction: column !important;
+            text-align: center !important;
+            gap: 1rem !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .footer-container {
+            padding: 0 0.5rem !important;
+          }
+          .footer-title {
+            font-size: 1.2rem !important;
+          }
+          .footer-subtitle {
+            font-size: 0.9rem !important;
+          }
+        }
+      `}</style>
     </footer>
   )
 }
