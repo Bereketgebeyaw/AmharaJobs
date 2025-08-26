@@ -317,7 +317,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               </p>
             </div>
           ) : (
-            <div className="home-job-card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1.5rem' }}>
+            <div className="home-job-card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
               {filteredJobs.map((job, index) => (
                 <div key={job.id} className="home-job-card" style={{ 
                   background: '#fff', 
@@ -370,14 +370,16 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   </div>
 
                   {/* Header Section */}
-                  <div style={{ padding: '1.5rem 1.5rem 1rem 1.5rem' }}>
+                  <div className="job-card-header" style={{ padding: '1.5rem 1.5rem 1rem 1.5rem' }}>
                     <div style={{ marginBottom: '1rem' }}>
                       <h3 style={{ 
                         margin: '0 0 0.5rem 0', 
                         color: '#1a1a1a', 
                         fontSize: '1.25rem',
                         fontWeight: '600',
-                        lineHeight: '1.3'
+                        lineHeight: '1.3',
+                        wordWrap: 'break-word',
+                        overflowWrap: 'break-word'
                       }}>
                         {job.title}
                       </h3>
@@ -385,14 +387,16 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         color: '#666', 
                         margin: '0 0 0.75rem 0', 
                         fontSize: '1.1rem',
-                        fontWeight: '500'
+                        fontWeight: '500',
+                        wordWrap: 'break-word',
+                        overflowWrap: 'break-word'
                       }}>
                         🏢 {job.company_name || t('common.companyName')}
                       </p>
                     </div>
 
                     {/* Job Details Grid */}
-                    <div style={{ 
+                    <div className="job-details-grid" style={{ 
                       display: 'grid', 
                       gridTemplateColumns: '1fr 1fr', 
                       gap: '0.75rem',
@@ -863,6 +867,8 @@ const Home = ({ onlyActive = false, minimal = false }) => {
         @media (max-width: 768px) {
           .home-job-card-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
           .home-job-card { margin: 0 0.5rem !important; }
+          .job-card-header { padding: 1rem !important; }
+          .job-details-grid { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
         }
         @media (max-width: 600px) {
           .home-hero-title { font-size: 1.5rem !important; }
@@ -872,6 +878,8 @@ const Home = ({ onlyActive = false, minimal = false }) => {
           .home-searchbar, .home-quick-actions, .home-features { padding: 1.2rem 0.5rem !important; }
           .home-job-card-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
           .home-job-card { min-width: 0 !important; margin: 0 !important; }
+          .job-card-header { padding: 0.75rem !important; }
+          .job-details-grid { grid-template-columns: 1fr !important; gap: 0.4rem !important; }
           .home-btn, .home-input, .home-select { width: 100% !important; min-width: 0 !important; }
         }
         @media (max-width: 400px) {
@@ -879,6 +887,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
           .home-hero-subtitle { font-size: 0.9rem !important; }
           .home-section, .home-searchbar, .home-quick-actions, .home-features { padding: 0.5rem 0.2rem !important; }
           .home-job-card-grid { gap: 0.5rem !important; }
+          .job-card-header { padding: 0.5rem !important; }
         }
       `}</style>
     </div>
