@@ -409,12 +409,12 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   </div>
 
                   {/* Header Section */}
-                  <div style={{ padding: '1.5rem 1.5rem 1rem 1.5rem' }}>
-                    <div style={{ marginBottom: '1rem' }}>
+                  <div style={{ padding: isMobile ? '1.25rem 1.25rem 1rem 1.25rem' : '1.5rem 1.5rem 1rem 1.5rem' }}>
+                    <div style={{ marginBottom: isMobile ? '0.75rem' : '1rem' }}>
                       <h3 style={{ 
                         margin: '0 0 0.5rem 0', 
                         color: '#1a1a1a', 
-                        fontSize: '1.25rem',
+                        fontSize: isMobile ? '1.1rem' : '1.25rem',
                         fontWeight: '600',
                         lineHeight: '1.3'
                       }}>
@@ -423,7 +423,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                       <p style={{ 
                         color: '#666', 
                         margin: '0 0 0.75rem 0', 
-                        fontSize: '1.1rem',
+                        fontSize: isMobile ? '1rem' : '1.1rem',
                         fontWeight: '500'
                       }}>
                         🏢 {job.company_name || t('common.companyName')}
@@ -434,19 +434,19 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                     <div style={{ 
                       display: 'grid', 
                       gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', 
-                      gap: isMobile ? '0.5rem' : '0.75rem',
+                      gap: isMobile ? '0.75rem' : '0.75rem',
                       marginBottom: '1rem'
                     }}>
                       <div style={{ 
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '0.5rem',
-                        padding: '0.5rem 0.75rem',
+                        padding: isMobile ? '0.75rem 1rem' : '0.5rem 0.75rem',
                         background: '#f8f9fa',
                         borderRadius: '8px'
                       }}>
-                        <span style={{ fontSize: '1.1rem' }}>📍</span>
-                        <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                        <span style={{ fontSize: isMobile ? '1.1rem' : '1.1rem' }}>📍</span>
+                        <span style={{ color: '#555', fontSize: isMobile ? '1rem' : '0.9rem', fontWeight: '500' }}>
                           {job.location}
                         </span>
                       </div>
@@ -455,12 +455,12 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '0.5rem',
-                        padding: '0.5rem 0.75rem',
+                        padding: isMobile ? '0.75rem 1rem' : '0.5rem 0.75rem',
                         background: '#f8f9fa',
                         borderRadius: '8px'
                       }}>
-                        <span style={{ fontSize: '1.1rem' }}>💼</span>
-                        <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                        <span style={{ fontSize: isMobile ? '1.1rem' : '1.1rem' }}>💼</span>
+                        <span style={{ color: '#555', fontSize: isMobile ? '1rem' : '0.9rem', fontWeight: '500' }}>
                           {job.job_type}
                         </span>
                       </div>
@@ -469,12 +469,12 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '0.5rem',
-                        padding: '0.5rem 0.75rem',
+                        padding: isMobile ? '0.75rem 1rem' : '0.5rem 0.75rem',
                         background: '#f8f9fa',
                         borderRadius: '8px'
                       }}>
-                        <span style={{ fontSize: '1.1rem' }}>⏰</span>
-                        <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                        <span style={{ fontSize: isMobile ? '1.1rem' : '1.1rem' }}>⏰</span>
+                        <span style={{ color: '#555', fontSize: isMobile ? '1rem' : '0.9rem', fontWeight: '500' }}>
                           {job.experience_level}
                         </span>
                       </div>
@@ -484,17 +484,56 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                           display: 'flex', 
                           alignItems: 'center', 
                           gap: '0.5rem',
-                          padding: '0.5rem 0.75rem',
-                          background: '#f8f9fa',
-                          borderRadius: '8px'
+                          padding: isMobile ? '0.75rem 1rem' : '0.5rem 0.75rem',
+                        background: '#f8f9fa',
+                        borderRadius: '8px'
                         }}>
-                          <span style={{ fontSize: '1.1rem' }}>💰</span>
-                          <span style={{ color: '#555', fontSize: '0.9rem', fontWeight: '500' }}>
+                          <span style={{ fontSize: isMobile ? '1.1rem' : '1.1rem' }}>💰</span>
+                          <span style={{ color: '#555', fontSize: isMobile ? '1rem' : '0.9rem', fontWeight: '500' }}>
                             {job.salary_range}
                           </span>
                         </div>
                       )}
                     </div>
+
+                    {/* Mobile Action Button - Similar to Job Detail Page */}
+                    {isMobile && (
+                      <div style={{ 
+                        display: 'flex', 
+                        gap: '1rem', 
+                        justifyContent: 'flex-end',
+                        marginTop: '1rem'
+                      }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/job/${job.id}`);
+                          }}
+                          style={{
+                            background: 'linear-gradient(135deg, #4caf50 0%, #45a049 100%)',
+                            color: '#fff',
+                            border: 'none',
+                            padding: '0.9rem 2rem',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            fontSize: '1.1rem',
+                            fontWeight: '600',
+                            boxShadow: '0 2px 8px rgba(76, 175, 80, 0.2)',
+                            transition: 'all 0.2s'
+                          }}
+                          onMouseOver={(e) => {
+                            e.target.style.transform = 'translateY(-2px)';
+                            e.target.style.boxShadow = '0 4px 16px rgba(76, 175, 80, 0.3)';
+                          }}
+                          onMouseOut={(e) => {
+                            e.target.style.transform = 'translateY(0)';
+                            e.target.style.boxShadow = '0 2px 8px rgba(76, 175, 80, 0.2)';
+                          }}
+                        >
+                          🚀 View Full Details
+                        </button>
+                      </div>
+                    )}
 
                     {/* Description Preview */}
                     <div style={{ marginBottom: '1rem' }}>
