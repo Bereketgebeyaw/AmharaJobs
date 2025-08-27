@@ -20,6 +20,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
   const [showApplicationModal, setShowApplicationModal] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     fetchJobs()
@@ -27,6 +28,17 @@ const Home = ({ onlyActive = false, minimal = false }) => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!(userId || token));
+    
+    // Check screen size
+    const checkScreenSize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, [])
 
   useEffect(() => {
@@ -286,15 +298,36 @@ const Home = ({ onlyActive = false, minimal = false }) => {
       )}
 
       {/* Job Listings Section */}
-      <div style={{ padding: '3rem 2rem' }}>
+      <div style={{ padding: isMobile ? '2rem 1rem' : '3rem 2rem' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '2rem', color: '#333', margin: 0 }}>
-              {t('home.latestJobOpportunities')}
-            </h2>
-            <span style={{ color: '#666', fontSize: '1.1rem' }}>
-              {filteredJobs.length} {t('common.jobsFound')}
-            </span>
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: isMobile ? 'center' : 'space-between', 
+            alignItems: isMobile ? 'center' : 'center', 
+            marginBottom: '2rem',
+            gap: isMobile ? '1rem' : '0'
+          }}>
+            {!isMobile && (
+              <h2 style={{ 
+                fontSize: '2rem', 
+                color: '#333', 
+                margin: 0,
+                lineHeight: '1.3'
+              }}>
+                {t('home.latestJobOpportunities')}
+              </h2>
+            )}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '1rem',
+              flexWrap: 'wrap'
+            }}>
+              <span style={{ color: '#666', fontSize: isMobile ? '0.9rem' : '1.1rem' }}>
+                {filteredJobs.length} {t('common.jobsFound')}
+              </span>
+            </div>
           </div>
 
           {loading ? (
@@ -302,12 +335,13 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               <div style={{ fontSize: '1.2rem', color: '#666' }}>{t('common.loadingJobs')}</div>
             </div>
           ) : filteredJobs.length === 0 ? (
-            <div style={{ 
+            <div className="no-jobs-card" style={{ 
               textAlign: 'center', 
               padding: '3rem', 
               background: '#fff', 
               borderRadius: '8px', 
-              boxShadow: '0 2px 8px #eee' 
+              boxShadow: '0 2px 8px #eee',
+              margin: '0 1rem'
             }}>
               <h3 style={{ color: '#666', marginBottom: '1rem' }}>{t('common.noJobsFound')}</h3>
               <p style={{ color: '#999' }}>
@@ -317,7 +351,11 @@ const Home = ({ onlyActive = false, minimal = false }) => {
               </p>
             </div>
           ) : (
-            <div className="home-job-card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fill, minmax(300px, 1fr))', 
+              gap: isMobile ? '1rem' : '1.5rem' 
+            }}>
               {filteredJobs.map((job, index) => (
                 <div key={job.id} className="home-job-card" style={{ 
                   background: '#fff', 
@@ -327,7 +365,8 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   overflow: 'hidden',
                   transition: 'all 0.3s ease',
                   position: 'relative',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  margin: isMobile ? '0 0.5rem' : '0'
                 }}
                 onMouseOver={(e) => {
                   e.target.style.transform = 'translateY(-4px)'
@@ -370,16 +409,14 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                   </div>
 
                   {/* Header Section */}
-                  <div className="job-card-header" style={{ padding: '1.5rem 1.5rem 1rem 1.5rem' }}>
+                  <div style={{ padding: '1.5rem 1.5rem 1rem 1.5rem' }}>
                     <div style={{ marginBottom: '1rem' }}>
                       <h3 style={{ 
                         margin: '0 0 0.5rem 0', 
                         color: '#1a1a1a', 
                         fontSize: '1.25rem',
                         fontWeight: '600',
-                        lineHeight: '1.3',
-                        wordWrap: 'break-word',
-                        overflowWrap: 'break-word'
+                        lineHeight: '1.3'
                       }}>
                         {job.title}
                       </h3>
@@ -387,19 +424,17 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         color: '#666', 
                         margin: '0 0 0.75rem 0', 
                         fontSize: '1.1rem',
-                        fontWeight: '500',
-                        wordWrap: 'break-word',
-                        overflowWrap: 'break-word'
+                        fontWeight: '500'
                       }}>
                         🏢 {job.company_name || t('common.companyName')}
                       </p>
                     </div>
 
                     {/* Job Details Grid */}
-                    <div className="job-details-grid" style={{ 
+                    <div style={{ 
                       display: 'grid', 
-                      gridTemplateColumns: '1fr 1fr', 
-                      gap: '0.75rem',
+                      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', 
+                      gap: isMobile ? '0.5rem' : '0.75rem',
                       marginBottom: '1rem'
                     }}>
                       <div style={{ 
@@ -416,7 +451,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         </span>
                       </div>
                       
-                      <div style={{ 
+                      <div className="job-detail-pill" style={{ 
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '0.5rem',
@@ -430,7 +465,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                         </span>
                       </div>
                       
-                      <div style={{ 
+                      <div className="job-detail-pill" style={{ 
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '0.5rem',
@@ -445,7 +480,7 @@ const Home = ({ onlyActive = false, minimal = false }) => {
                       </div>
                       
                       {job.salary_range && (
-                        <div style={{ 
+                        <div className="job-detail-pill" style={{ 
                           display: 'flex', 
                           alignItems: 'center', 
                           gap: '0.5rem',
@@ -853,41 +888,11 @@ const Home = ({ onlyActive = false, minimal = false }) => {
             transform: translateY(0) scale(1);
           }
         }
-        /* Responsive styles */
-        @media (max-width: 1200px) {
-          .home-job-card-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important; }
-        }
-        @media (max-width: 900px) {
-          .home-hero-title { font-size: 2.2rem !important; }
-          .home-hero-subtitle { font-size: 1.3rem !important; }
-          .home-hero-logo { height: 56px !important; }
-          .home-section { padding: 2rem 1rem !important; }
-          .home-job-card-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 1rem !important; }
-        }
-        @media (max-width: 768px) {
-          .home-job-card-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
-          .home-job-card { margin: 0 0.5rem !important; }
-          .job-card-header { padding: 1rem !important; }
-          .job-details-grid { grid-template-columns: 1fr !important; gap: 0.5rem !important; }
-        }
-        @media (max-width: 600px) {
-          .home-hero-title { font-size: 1.5rem !important; }
-          .home-hero-subtitle { font-size: 1rem !important; }
-          .home-hero-logo { height: 40px !important; }
-          .home-section { padding: 1.2rem 0.5rem !important; }
-          .home-searchbar, .home-quick-actions, .home-features { padding: 1.2rem 0.5rem !important; }
-          .home-job-card-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
-          .home-job-card { min-width: 0 !important; margin: 0 !important; }
-          .job-card-header { padding: 0.75rem !important; }
-          .job-details-grid { grid-template-columns: 1fr !important; gap: 0.4rem !important; }
-          .home-btn, .home-input, .home-select { width: 100% !important; min-width: 0 !important; }
-        }
-        @media (max-width: 400px) {
-          .home-hero-title { font-size: 1.1rem !important; }
-          .home-hero-subtitle { font-size: 0.9rem !important; }
-          .home-section, .home-searchbar, .home-quick-actions, .home-features { padding: 0.5rem 0.2rem !important; }
-          .home-job-card-grid { gap: 0.5rem !important; }
-          .job-card-header { padding: 0.5rem !important; }
+        /* Basic responsive text wrapping */
+        .home-job-card h3,
+        .home-job-card p {
+          word-wrap: break-word;
+          overflow-wrap: break-word;
         }
       `}</style>
     </div>
