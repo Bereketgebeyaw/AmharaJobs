@@ -26,20 +26,31 @@ const transporter = nodemailer.createTransport({
 
 // Helper: send verification email
 async function sendVerificationEmail(email, token) {
-  // Use environment-specific base URL
-  const baseUrl = process.env.NODE_ENV === 'production' 
-    ? 'https://amharajobs.onrender.com' 
-    : 'http://localhost:5000';
-  const verifyUrl = `${baseUrl}/api/auth/verify?token=${token}`;
-  
-  await transporter.sendMail({
-    from: `AmharaJobs <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: 'Verify your AmharaJobs account',
-    html: `<p>Thank you for registering at AmharaJobs.</p>
-           <p>Please <a href="${verifyUrl}">click here to verify your account</a> or copy and paste this link in your browser:</p>
-           <p>${verifyUrl}</p>`
-  });
+  try {
+    // Use environment-specific base URL
+    const baseUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://amharajobs.onrender.com' 
+      : 'http://localhost:5000';
+    const verifyUrl = `${baseUrl}/api/auth/verify?token=${token}`;
+    
+    console.log('Sending verification email to:', email);
+    console.log('Verification URL:', verifyUrl);
+    console.log('Email user:', process.env.EMAIL_USER);
+    
+    await transporter.sendMail({
+      from: `AmharaJobs <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Verify your AmharaJobs account',
+      html: `<p>Thank you for registering at AmharaJobs.</p>
+             <p>Please <a href="${verifyUrl}">click here to verify your account</a> or copy and paste this link in your browser:</p>
+             <p>${verifyUrl}</p>`
+    });
+    
+    console.log('Verification email sent successfully to:', email);
+  } catch (error) {
+    console.error('Error sending verification email:', error);
+    throw error;
+  }
 }
 
 // Register jobseeker
@@ -83,7 +94,7 @@ router.get('/verify', async (req, res) => {
     
     // Use environment-specific frontend URL
     const frontendUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://amharajobs-frontend-d30gy78x2-berekets-projects-2ce4c776.vercel.app/login'
+      ? 'https://amharajobs.vercel.app/login'
       : 'http://localhost:5173/login';
     
     res.send(`
