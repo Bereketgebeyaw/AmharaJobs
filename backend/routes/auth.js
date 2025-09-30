@@ -69,8 +69,18 @@ router.post('/register', async (req, res) => {
     const [user] = await knex('users')
       .insert({ fullname, email, phone, password_hash, verification_token, is_verified: false })
       .returning(['id', 'fullname', 'email', 'phone', 'created_at']);
-    await sendVerificationEmail(email, verification_token);
-    res.status(201).json({ user, message: 'Registration successful. Please check your email to verify your account.' });
+    
+    try {
+      await sendVerificationEmail(email, verification_token);
+      res.status(201).json({ user, message: 'Registration successful. Please check your email to verify your account.' });
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // Still create the user but mark as unverified
+      res.status(201).json({ 
+        user, 
+        message: 'Registration successful. Email verification failed - please contact support.' 
+      });
+    }
   } catch (err) {
     res.status(500).json({ error: 'Registration failed.' });
   }
@@ -187,8 +197,17 @@ router.post('/employer/register', async (req, res) => {
         is_active: true
       });
     }
-    await sendVerificationEmail(email, verification_token);
-    res.status(201).json({ user, message: 'Registration successful. Please check your email to verify your account.' });
+    try {
+      await sendVerificationEmail(email, verification_token);
+      res.status(201).json({ user, message: 'Registration successful. Please check your email to verify your account.' });
+    } catch (emailError) {
+      console.error('Email sending failed:', emailError);
+      // Still create the user but mark as unverified
+      res.status(201).json({ 
+        user, 
+        message: 'Registration successful. Email verification failed - please contact support.' 
+      });
+    }
   } catch (err) {
     res.status(500).json({ error: 'Registration failed.' });
   }
